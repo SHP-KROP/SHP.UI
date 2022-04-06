@@ -1,5 +1,8 @@
+using AutoMapper;
 using IdentityServer.Data;
 using IdentityServer.Data.Entities;
+using IdentityServer.Data.Interfaces;
+using IdentityServer.Mapping;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -46,6 +49,13 @@ namespace IdentityServer
                 .AddEntityFrameworkStores<DataContext>();
 
             services.AddAuthentication();
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            services.AddSingleton(mapperConfig.CreateMapper() as IMapper);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
