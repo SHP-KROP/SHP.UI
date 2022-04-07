@@ -28,14 +28,14 @@ namespace IdentityServer.Data
 
             builder
                 .Entity<AppUser>()
-                .HasMany(ur => ur.Roles)
+                .HasMany(ur => ur.UserRoles)
                 .WithOne(u => u.User)
                 .HasForeignKey(u => u.UserId)
                 .IsRequired();
 
             builder
                 .Entity<AppRole>()
-                .HasMany(ur => ur.Users)
+                .HasMany(ur => ur.UserRoles)
                 .WithOne(r => r.Role)
                 .HasForeignKey(r => r.RoleId)
                 .IsRequired();

@@ -1,7 +1,9 @@
-﻿namespace IdentityServer.Helpers.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace IdentityServer.Helpers.Interfaces
 {
     public interface ISeeder
     {
-        void Seed();
+        Task Seed();
     }
 }

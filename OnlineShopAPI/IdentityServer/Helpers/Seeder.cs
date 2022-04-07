@@ -3,6 +3,8 @@ using IdentityServer.Data.Entities;
 using IdentityServer.Helpers.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace IdentityServer.Helpers
 {
@@ -17,13 +19,13 @@ namespace IdentityServer.Helpers
             _roleManager = roleManager;
         }
 
-        public Seeder()
+        public async Task Seed()
         {
+            if (_userManager.Users.Any() || _roleManager.Roles.Any())
+            {
+                return;
+            }
 
-        }
-
-        public void Seed()
-        {
             var roles = new List<AppRole>
             {
                 new AppRole { Name = "admin" },
@@ -34,7 +36,7 @@ namespace IdentityServer.Helpers
 
             foreach (AppRole role in roles)
             {
-                _roleManager.CreateAsync(role);
+                await _roleManager.CreateAsync(role);
             }
 
             var admin = new AppUser { UserName = "admin" };
@@ -42,15 +44,15 @@ namespace IdentityServer.Helpers
             var seller = new AppUser { UserName = "seller" };
             var buyer = new AppUser { UserName = "buyer" };
 
-            _userManager.CreateAsync(admin, "Pa$$w0rd");
-            _userManager.CreateAsync(moder, "Pa$$w0rd");
-            _userManager.CreateAsync(seller, "Pa$$w0rd");
-            _userManager.CreateAsync(buyer, "Pa$$w0rd");
-
-            _userManager.AddToRoleAsync(admin, "admin");
-            _userManager.AddToRoleAsync(moder, "moderator");
-            _userManager.AddToRoleAsync(seller, "seller");
-            _userManager.AddToRoleAsync(buyer, "buyer");
+            await _userManager.CreateAsync(admin, "Pa$$w0rd");
+            await _userManager.CreateAsync(moder, "Pa$$w0rd");
+            await _userManager.CreateAsync(seller, "Pa$$w0rd");
+            await _userManager.CreateAsync(buyer, "Pa$$w0rd");
+            
+            await _userManager.AddToRoleAsync(admin, "admin");
+            await _userManager.AddToRoleAsync(moder, "moderator");
+            await _userManager.AddToRoleAsync(seller, "seller");
+            await _userManager.AddToRoleAsync(buyer, "buyer");
         }
     }
 }

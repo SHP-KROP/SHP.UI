@@ -15,7 +15,7 @@ namespace IdentityServer
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var build = CreateHostBuilder(args).Build();
 
@@ -25,7 +25,7 @@ namespace IdentityServer
 
                 var seeder = services.GetRequiredService<Seeder>();
 
-                seeder.Seed();
+                await seeder.Seed();
             }
 
             build.Run();

@@ -9,6 +9,6 @@ namespace IdentityServer.Data.Entities
         
         public double Balance { get; set; }
 
-        public ICollection<AppUserRole> Roles { get; set; }
+        public ICollection<AppUserRole> UserRoles { get; set; }
     }
 }
