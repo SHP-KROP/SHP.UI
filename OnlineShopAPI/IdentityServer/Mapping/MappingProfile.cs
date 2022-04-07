@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using IdentityServer.Data.Entities;
 using IdentityServer.DTO;
-using System.Collections.Generic;
 
 namespace IdentityServer.Mapping
 {
