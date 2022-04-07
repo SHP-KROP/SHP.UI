@@ -1,13 +1,7 @@
-using AutoMapper;
 using IdentityServer.Data;
-using IdentityServer.Data.Entities;
-using IdentityServer.Helpers;
-using IdentityServer.Mapping;
-using IdentityServer.Services;
-using IdentityServer.Services.Interfaces;
+using IdentityServer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,29 +27,12 @@ namespace IdentityServer
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<Seeder>();
+            services.ProvideIdentity();
 
-            services.AddIdentityCore<AppUser>(opt =>
-            {
-                opt.Password.RequireNonAlphanumeric = false;
-            })
-                .AddRoles<AppRole>()
-                .AddRoleManager<RoleManager<AppRole>>()
-                .AddSignInManager<SignInManager<AppUser>>()
-                .AddRoleValidator<RoleValidator<AppRole>>()
-                .AddEntityFrameworkStores<DataContext>();
-
-            services.AddAuthentication();
-
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
-
-            services.AddSingleton(mapperConfig.CreateMapper() as IMapper);
+            services.AddAutoMapping();
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IdentityServer", Version = "v1" });
