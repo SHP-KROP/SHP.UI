@@ -1,23 +1,18 @@
 using AutoMapper;
 using IdentityServer.Data;
 using IdentityServer.Data.Entities;
-using IdentityServer.Data.Interfaces;
+using IdentityServer.Helpers;
 using IdentityServer.Mapping;
+using IdentityServer.Services;
+using IdentityServer.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace IdentityServer
 {
@@ -37,6 +32,9 @@ namespace IdentityServer
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<Seeder>();
 
             services.AddIdentityCore<AppUser>(opt =>
             {

@@ -2,8 +2,10 @@
 using IdentityServer.Data.Entities;
 using IdentityServer.Data.Interfaces;
 using IdentityServer.DTO;
+using IdentityServer.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -16,24 +18,27 @@ namespace IdentityServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RegisterController : ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly ITokenService _tokenService;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public RegisterController(
+        public UserController(
             IMapper mapper,
+            ITokenService tokenService,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager)
         {
             _mapper = mapper;
+            _tokenService = tokenService;
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<AppUser>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
             var existingUser = _userManager.Users.FirstOrDefault(u => u.NormalizedUserName == userRegisterDto.UserName.ToUpper());
 
@@ -44,6 +49,10 @@ namespace IdentityServer.Controllers
 
             var newUser = _mapper.Map<AppUser>(userRegisterDto);
 
+            var userDto = _mapper.Map<UserDto>(newUser);
+            var token = _tokenService.CreateToken(newUser);
+            userDto.Token = token;
+
             var result = await _userManager.CreateAsync(newUser, userRegisterDto.Password);
 
             if (!result.Succeeded)
@@ -51,13 +60,34 @@ namespace IdentityServer.Controllers
                 return BadRequest(result.Errors);
             }
 
-            return Ok(_mapper.Map<UserDto>(newUser));
+            return Ok(userDto);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        [HttpPost("login")]
+        public async Task<ActionResult<UserDto>> LogIn([FromBody] UserLogInDto userLogInDto)
         {
-            return Ok(_mapper.Map<IEnumerable<UserDto>>(_userManager.Users.ToList()));
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(
+                user => user.NormalizedUserName == userLogInDto.UserName.ToUpper()
+                );
+
+            if (user == null)
+            {
+                return Unauthorized($"There is not user with username {userLogInDto.UserName}");
+            }
+
+            var result = await _signInManager
+                .CheckPasswordSignInAsync(user, userLogInDto.Password, lockoutOnFailure: false);
+
+            if (!result.Succeeded)
+            {
+                return Unauthorized("Wrong password");
+            }
+
+            var userDto = _mapper.Map<UserDto>(user);
+            userDto.Token = _tokenService.CreateToken(user);
+
+            return Ok(userDto);
         }
     }
 }

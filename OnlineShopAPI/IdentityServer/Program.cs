@@ -1,5 +1,6 @@
 using IdentityServer.Data;
 using IdentityServer.Data.Entities;
+using IdentityServer.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,19 +23,9 @@ namespace IdentityServer
             {
                 var services = scope.ServiceProvider;
 
-                var context = services.GetRequiredService<DataContext>();
+                var seeder = services.GetRequiredService<Seeder>();
 
-                context.Database.EnsureCreated();
-
-                context.Users.Add(new AppUser
-                {
-                    UserName = "Name",
-                    Email = "email",
-                    PasswordHash = "asd",
-                    Gender = "Male"
-                });
-
-                context.SaveChanges();
+                seeder.Seed();
             }
 
             build.Run();
