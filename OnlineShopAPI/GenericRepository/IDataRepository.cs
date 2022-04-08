@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GenericRepository
 {
-    interface IDataRepository<T> where T : class
+    public interface IDataRepository<T> where T : class
     {
         Task<T> GetAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();

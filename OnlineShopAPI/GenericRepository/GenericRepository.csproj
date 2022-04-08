@@ -6,6 +6,7 @@
     <Company>shp</Company>
     <PackageId>SHPGenericRepositoryTest</PackageId>
     <Description>Package has repository to work with data context</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
