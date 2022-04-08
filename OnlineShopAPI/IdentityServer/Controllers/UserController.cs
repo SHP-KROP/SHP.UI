@@ -44,10 +44,6 @@ namespace IdentityServer.Controllers
 
             var newUser = _mapper.Map<AppUser>(userRegisterDto);
 
-            var userDto = _mapper.Map<UserDto>(newUser);
-            var token = _tokenService.CreateToken(newUser);
-            userDto.Token = token;
-
             var result = await _userManager.CreateAsync(newUser, userRegisterDto.Password);
 
             if (!result.Succeeded)
@@ -55,7 +51,13 @@ namespace IdentityServer.Controllers
                 return BadRequest(result.Errors);
             }
 
+            var createdUser = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == newUser.UserName);
+
             await _userManager.AddToRoleAsync(newUser, "buyer");
+
+            var userDto = _mapper.Map<UserDto>(createdUser);
+            var token = _tokenService.CreateToken(createdUser);
+            userDto.Token = token;
 
             return Ok(userDto);
         }
