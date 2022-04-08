@@ -7,7 +7,7 @@ namespace IdentityServer.Data.Entities
     public class AppUser : IdentityUser<int>
     {
         [Required]
-        public string Gender { get; set; }
+        public string Gender { get; set; } = "Male";
         
         [Required]
         [Range(0, 10000)]

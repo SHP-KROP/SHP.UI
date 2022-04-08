@@ -1,3 +1,4 @@
+using IdentityServer.Data;
 using IdentityServer.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,9 @@ namespace IdentityServer
             using (var scope = build.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
+
+                var context = services.GetRequiredService<DataContext>();
+                context.Database.EnsureCreated();
 
                 var seeder = services.GetRequiredService<Seeder>();
 
