@@ -1,13 +1,12 @@
 import React from 'react';
 import './Search.scss';
+import Login from './Login';
 
 import IconSearch from '../img/icon-search.png';
-
+import Card from '../img/icon-card.png';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
-import User from '../img/icon-user.png';
-import Card from '../img/icon-card.png';
 
 const Search = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -54,9 +53,7 @@ const Search = () => {
         <img src={IconSearch} alt="search" />
       </div>
       <div className="profile">
-        <a href="#">
-          <img src={User} alt="user" />
-        </a>
+        <Login />
         <a href="#">
           <img src={Card} alt="card" />
         </a>

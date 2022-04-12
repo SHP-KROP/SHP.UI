@@ -1,34 +1,18 @@
 import React from 'react';
 import '../components/Recepies.scss';
+import SideMenuList from './SideMenuList';
 
 const Recepies = () => {
   return (
     <div className="categories">
-      <div className="categories__menu">
-        <p>
-          <strong>Category menu</strong>
-        </p>
-        <ul>
-          <li>
-            <a href="#">Bakery</a>
-          </li>
-          <li>
-            <a href="#">Fruit and vegetables</a>
-          </li>
-          <li>
-            <a href="#">Meat and fish</a>
-          </li>
-          <li>
-            <a href="#">Drinks</a>
-          </li>
-          <li>
-            <a href="#">Kitchen</a>
-          </li>
-        </ul>
-        <button>
-          <strong>More categories</strong> &#11166;
-        </button>
-      </div>
+      <SideMenuList
+        nameCategory="Category menu"
+        item="Bakery"
+        item1="Fruit and vegetables"
+        item2="Meat and fish"
+        item3="Drinks"
+        item4="Kitchen"
+      />
       <div className="categories__banner">
         <div className="categories__banner-info">
           <span>Banner subfocus</span>

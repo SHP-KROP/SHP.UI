@@ -1,4 +1,5 @@
 import './App.scss';
+import BlockProduct from './components/BlockProduct';
 import Header from './components/Header';
 import Recepies from './components/Recepies';
 import Search from './components/Search';
@@ -10,6 +11,8 @@ function App() {
       <Search />
       {/* <MenuBoard /> */}
       <Recepies />
+      <BlockProduct />
+      <BlockProduct />
     </div>
   );
 }
