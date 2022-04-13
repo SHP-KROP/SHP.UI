@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenericRepository", "GenericRepository\GenericRepository.csproj", "{F067C32D-5F34-44DB-A246-5C0ADBEBEBC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServerTests", "IdentityServerTests\IdentityServerTests.csproj", "{5BABFF48-B466-4582-99E1-90F77E673C07}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{F067C32D-5F34-44DB-A246-5C0ADBEBEBC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F067C32D-5F34-44DB-A246-5C0ADBEBEBC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F067C32D-5F34-44DB-A246-5C0ADBEBEBC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5BABFF48-B466-4582-99E1-90F77E673C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BABFF48-B466-4582-99E1-90F77E673C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BABFF48-B466-4582-99E1-90F77E673C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BABFF48-B466-4582-99E1-90F77E673C07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
