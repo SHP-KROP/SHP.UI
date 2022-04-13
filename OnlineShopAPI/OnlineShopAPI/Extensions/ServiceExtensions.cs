@@ -6,7 +6,7 @@ namespace OnlineShopAPI.Extensions
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddMapping(this IServiceCollection services)
+        public static IServiceCollection AddAutoMapping(this IServiceCollection services)
         {
             var mapperConfig = new MapperConfiguration(mc =>
             {

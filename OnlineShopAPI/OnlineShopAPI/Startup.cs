@@ -27,7 +27,8 @@ namespace OnlineShopAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMapping();
+            services.AddAutoMapping();
+            services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
