@@ -1,22 +1,23 @@
+﻿using FluentAssertions;
 using IdentityServer.Controllers;
-using NUnit.Framework;
+using System;
+using Xunit;
 
 namespace IdentityServerTests
 {
-    public class Tests
+    public class UserControllerTests
     {
-        private UserController _userController;
+        private readonly UserController _userController;
 
-        [SetUp]
-        public void Setup()
+        public UserControllerTests()
         {
 
         }
 
-        [Test]
-        public void Test1()
+        [Fact]
+        public void ShouldReturnTrue()
         {
-            Assert.Pass();
+            true.Should().BeTrue();
         }
     }
 }
