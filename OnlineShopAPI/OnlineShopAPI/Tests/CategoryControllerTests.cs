@@ -10,7 +10,7 @@ namespace OnlineShopAPI.Tests
 
         public CategoryControllerTests()
         {
-
+            // TODO: provide unit testing for CategoryController
         }
 
         [Fact]
