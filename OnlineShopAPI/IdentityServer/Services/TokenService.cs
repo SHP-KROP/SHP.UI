@@ -23,6 +23,11 @@ namespace IdentityServer.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
         }
 
+        public TokenService()
+        {
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TheMostSecretWordICouldDiscover"));
+        }
+
         public string CreateToken(AppUser user)
         {
             var claims = new List<Claim>

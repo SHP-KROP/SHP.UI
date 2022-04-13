@@ -32,6 +32,7 @@ namespace IdentityServer.Controllers
             _signInManager = signInManager;
         }
 
+
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
