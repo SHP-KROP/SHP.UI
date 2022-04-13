@@ -23,11 +23,11 @@ namespace OnlineShopAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{productName}")]
-        public async Task<ActionResult<string>> GetCategoryByName(string productName)
+        public async Task<ActionResult<string>> GetCategoryByName(string categoryName)
         {
             // TODO: Implement DA logic
 
-            return await Task.FromResult<ActionResult>(Ok(productName));
+            return await Task.FromResult<ActionResult>(Ok(categoryName));
         }
 
         //[Authorize]
@@ -45,22 +45,22 @@ namespace OnlineShopAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("{productName}")]
-        public async Task<ActionResult<string>> ChangeCategory(string productName, [FromBody] string value)
+        public async Task<ActionResult<string>> ChangeCategory(string categoryName, [FromBody] string value)
         {
             // TODO: Implement DA logic
 
-            return await Task.FromResult<ActionResult>(Ok(productName));
+            return await Task.FromResult<ActionResult>(Ok(categoryName));
         }
 
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<string>> DeleteCategory(string productName)
+        public async Task<ActionResult<string>> DeleteCategory(string categoryName)
         {
             // TODO: Implement DA logic
 
-            return await Task.FromResult<ActionResult>(Ok(productName));
+            return await Task.FromResult<ActionResult>(Ok(categoryName));
         }
     }
 }
