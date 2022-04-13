@@ -29,7 +29,7 @@ namespace OnlineShopAPI.Controllers
         {
             // TODO: Implement DA logic
 
-            return new ProductDto[] {};
+            return Ok(new ProductDto[] {});
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -43,7 +43,7 @@ namespace OnlineShopAPI.Controllers
         }
 
         //[Authorize]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<string>> CreateProduct([FromBody] CreateProductDto createProductDto)
