@@ -1,9 +1,11 @@
 $linkcolor: #f4768d;
+$productCardTextColor: #151515;
+$borderButtonsColorInCard: #b42020;
+
 .product-card__body {
   background: #ffffff;
   border: 1px solid #d1d1d1;
   border-radius: 12px;
-  flex: 0.2 1;
 }
 .product-card__img {
   margin: 5%;
@@ -14,7 +16,7 @@ $linkcolor: #f4768d;
 }
 .product-card__info {
   padding: 0 5% 0 5%;
-  color: #151515;
+  color: $productCardTextColor;
   > p {
     font-weight: 500;
     font-size: 15px;
@@ -33,7 +35,7 @@ $linkcolor: #f4768d;
   > button {
     background: $linkcolor;
     padding: 6.5px 12px 6.5px 12px;
-    border: 2px solid #b42020;
+    border: 2px solid $borderButtonsColorInCard;
     border-radius: 12px;
     color: white;
   }

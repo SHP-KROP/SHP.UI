@@ -26,6 +26,7 @@ const SideMenuList = (props) => {
       </ul>
       <button>
         <strong>More categories</strong> &#11166;
+        {/*&#11166 - html code sybmol: arrow right*/}
       </button>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Search.scss';
 import Login from './Login';
 
@@ -9,8 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
 
 const Search = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isOpen = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -26,9 +26,9 @@ const Search = () => {
         <button
           className="search__buttonList"
           id="fade-button"
-          aria-controls={open ? 'fade-menu' : undefined}
+          aria-controls={isOpen ? 'fade-menu' : undefined}
           aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
+          aria-expanded={isOpen ? 'true' : undefined}
           onClick={handleClick}
         >
           <p className="list">
@@ -41,7 +41,7 @@ const Search = () => {
             'aria-labelledby': 'fade-button',
           }}
           anchorEl={anchorEl}
-          open={open}
+          open={isOpen}
           onClose={handleClose}
           TransitionComponent={Fade}
         >

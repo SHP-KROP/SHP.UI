@@ -1,3 +1,4 @@
+$stripColor: #d1d1d1;
 .header {
   &__contact {
     display: flex;
@@ -13,7 +14,7 @@
   > hr {
     width: 95%;
     margin: 0 auto;
-    background-color: #d1d1d1;
-    border-color: #d1d1d1;
+    background-color: $stripColor;
+    border-color: $stripColor;
   }
 }

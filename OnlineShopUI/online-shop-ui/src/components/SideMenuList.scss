@@ -1,9 +1,10 @@
+$buttonBg: #f5f5f5;
 .categories__menu {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  flex: 0.3;
   margin-left: 40px;
+  margin-top: 20px;
   > ul {
     gap: 15px;
     display: flex;
@@ -13,7 +14,7 @@
     }
   }
   > button {
-    background-color: #f5f5f5;
+    background-color: $buttonBg;
     padding: 12px 30px 12px 16px;
     border: none;
     outline: none;

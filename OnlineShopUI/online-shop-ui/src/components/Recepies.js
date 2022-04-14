@@ -37,7 +37,7 @@ const Recepies = () => {
         <button className="categories__read">
           <p className="categories__button-text">
             <strong>Read recepies</strong>
-            <p>&#11166;</p>
+            <p>&#11166;</p> {/* html code arrow right */}
           </p>
         </button>
       </div>
