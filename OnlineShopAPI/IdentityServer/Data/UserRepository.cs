@@ -16,12 +16,17 @@ namespace IdentityServer.Data
             _userManager = userManager;
         }
 
+        public async Task<IdentityResult> AddToRoleAsync(AppUser appUser, string role)
+        {
+            return await _userManager.AddToRoleAsync(appUser, role);
+        }
+
         public async Task<IdentityResult> CreateUserAsync(AppUser appUser, string password)
         {
             return await _userManager.CreateAsync(appUser, password);
         }
 
-        public async Task<AppUser> GetUserByUsernamyAsync(string username)
+        public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
             return await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == username.ToUpper());
         }

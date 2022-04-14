@@ -7,10 +7,12 @@ namespace IdentityServer.Data.Interfaces
 {
     public interface IUserRepository
     {
-        public Task<AppUser> GetUserByUsernamyAsync(string username);
+        public Task<AppUser> GetUserByUsernameAsync(string username);
 
         public Task<IEnumerable<AppUser>> GetUsersAsync();
 
         public Task<IdentityResult> CreateUserAsync(AppUser appUser, string password);
+
+        public Task<IdentityResult> AddToRoleAsync(AppUser appUser, string role);
     }
 }

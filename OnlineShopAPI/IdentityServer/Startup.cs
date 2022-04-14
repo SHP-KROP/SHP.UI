@@ -29,6 +29,7 @@ namespace IdentityServer
             });
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISignInManager, SignInManager>();
 
             services.ProvideIdentity();
 

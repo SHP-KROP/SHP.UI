@@ -17,29 +17,27 @@ namespace IdentityServer.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
-        //private readonly UserManager<AppUser> _userManager;
-        //private readonly SignInManager<AppUser> _signInManager;
         private readonly IUserRepository _userRepository;
+        private readonly ISignInManager _signInManager;
 
         public UserController(
             IMapper mapper,
             ITokenService tokenService,
-            //UserManager<AppUser> userManager,
-            //SignInManager<AppUser> signInManager,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            ISignInManager signInManager
+            )
         {
             _mapper = mapper;
             _tokenService = tokenService;
-            //_userManager = userManager;
-            //_signInManager = signInManager;
             _userRepository = userRepository;
+            _signInManager = signInManager;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
 
-            var existingUser = await _userRepository.GetUserByUsernamyAsync(userRegisterDto.UserName);
+            var existingUser = await _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
 
             if (existingUser != null)
             {
@@ -57,9 +55,9 @@ namespace IdentityServer.Controllers
                 return BadRequest(result.Errors);
             }
 
-            var createdUser = await _userRepository.GetUserByUsernamyAsync(userRegisterDto.UserName);
+            var createdUser = await _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
 
-            //await _userManager.AddToRoleAsync(newUser, "buyer");
+            await _userRepository.AddToRoleAsync(newUser, "buyer");
 
             var userDto = _mapper.Map<UserDto>(createdUser);
             var token = _tokenService.CreateToken(createdUser);
@@ -72,7 +70,7 @@ namespace IdentityServer.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> LogIn([FromBody] UserLogInDto userLogInDto)
         {
-            var user = await _userRepository.GetUserByUsernamyAsync(userLogInDto.UserName);
+            var user = await _userRepository.GetUserByUsernameAsync(userLogInDto.UserName);
 
             if (user == null)
             {
@@ -80,14 +78,14 @@ namespace IdentityServer.Controllers
                 return Unauthorized($"There is not user with username {userLogInDto.UserName}");
             }
 
-            //var result = await _signInManager
-            //    .CheckPasswordSignInAsync(user, userLogInDto.Password, lockoutOnFailure: false);
+            var result = await _signInManager
+                .CheckPasswordSignInAsync(user, userLogInDto.Password, lockoutOnFailure: false);
 
-            //if (!result.Succeeded)
-            //{
-            //    //2
-            //    return Unauthorized("Wrong password");
-            //}
+            if (!result.Succeeded)
+            {
+                //2
+                return Unauthorized("Wrong password");
+            }
 
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = _tokenService.CreateToken(user);
