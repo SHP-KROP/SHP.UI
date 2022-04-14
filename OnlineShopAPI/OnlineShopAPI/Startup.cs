@@ -29,6 +29,15 @@ namespace OnlineShopAPI
         {
             services.AddAutoMapping();
             services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
+
+            services.AddCors(o =>
+            {
+                o.AddPolicy(name: Configuration["CorsPolicyName"], p =>
+                {
+                    p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -51,6 +60,8 @@ namespace OnlineShopAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(Configuration["CorsPolicyName"]);
 
             app.UseEndpoints(endpoints =>
             {
