@@ -32,14 +32,20 @@ namespace IdentityServer.Controllers
             _signInManager = signInManager;
         }
 
+        public AppUser GetAppUser(string userName)
+        {
+            return _userManager.Users.FirstOrDefault(u => u.NormalizedUserName == userName.ToUpper());
+        }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
-            var existingUser = _userManager.Users.FirstOrDefault(u => u.NormalizedUserName == userRegisterDto.UserName.ToUpper());
+
+            var existingUser = GetAppUser(userRegisterDto.UserName);
 
             if (existingUser != null)
             {
+                //1
                 return BadRequest("User with this name already exists");
             }
 
@@ -49,6 +55,7 @@ namespace IdentityServer.Controllers
 
             if (!result.Succeeded)
             {
+                //2
                 return BadRequest(result.Errors);
             }
 
@@ -60,6 +67,7 @@ namespace IdentityServer.Controllers
             var token = _tokenService.CreateToken(createdUser);
             userDto.Token = token;
 
+            //3
             return Ok(userDto);
         }
 
@@ -73,6 +81,7 @@ namespace IdentityServer.Controllers
 
             if (user == null)
             {
+                //1
                 return Unauthorized($"There is not user with username {userLogInDto.UserName}");
             }
 
@@ -81,12 +90,14 @@ namespace IdentityServer.Controllers
 
             if (!result.Succeeded)
             {
+                //2
                 return Unauthorized("Wrong password");
             }
 
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = _tokenService.CreateToken(user);
 
+            //3
             return Ok(userDto);
         }
     }
