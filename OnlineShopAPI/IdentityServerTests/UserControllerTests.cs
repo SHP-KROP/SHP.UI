@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using System.Linq;
+using IdentityServer.Data.Interfaces;
 
 namespace IdentityServerTests
 {
@@ -22,6 +23,7 @@ namespace IdentityServerTests
     {
         private UserController _userController;
         private Mock<UserManager<AppUser>> _userManager;
+        private readonly Mock<IUserRepository> _mockUserRepository;
 
         //private List<UserRegisterDto> GetTestUsers()
         //{
@@ -41,39 +43,45 @@ namespace IdentityServerTests
         {
             var mapper = new Mock<IMapper>();
             var tokenService = new Mock<ITokenService>();
-            _userManager = new Mock<UserManager<AppUser>>();
+            _mockUserRepository = new Mock<IUserRepository>();
 
-            _userManager.CallBase = true;
+            //_userManager = new Mock<UserManager<AppUser>>();
+
+            //_userManager.CallBase = true;
            
 
-            var signInManager = new Mock<SignInManager<AppUser>>();
+            //var signInManager = new Mock<SignInManager<AppUser>>();
             var roleManager = new Mock<RoleManager<AppRole>>();
 
             //var roleManager = new RoleManager<AppRole>();
             _userController = new UserController(
                 mapper.Object,
                 tokenService.Object,
-                _userManager.Object,
-                signInManager.Object,
-                roleManager.Object
+                _mockUserRepository.Object
             );
 
 
         }
 
         [Fact]
-        public void UserIsAlreadyExists()
+        public async void RegisterUser_ShouldReturnBadRequest_WhenUserAlreadyExists()
         {
-       
-
             //arrange
             var userDto = new UserRegisterDto { UserName = "Tomass", Password = "dd800Z" };
-            
+
+            _mockUserRepository
+                .Setup(ur => ur.GetUserByUsernamyAsync(It.IsAny<string>()))
+                .ReturnsAsync
+                ( new AppUser
+                    {
+                        UserName = "asd"
+                    }
+                );
 
             //act
-            var result = _userController.RegisterUser(userDto);
-            _userManager.Setup(x => x.Users.FirstOrDefault()).Returns(null);
-            _userController.
+            var response = await _userController.RegisterUser(userDto);
+
+            response.Value.Should().BeNull();
             //assert
             //Assert.IsType<OkResult>(result);
             //Assert.IsType<BadRequestObjectResult>(result);
