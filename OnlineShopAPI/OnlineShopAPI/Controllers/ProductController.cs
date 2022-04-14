@@ -29,7 +29,7 @@ namespace OnlineShopAPI.Controllers
         {
             // TODO: Implement DA logic
 
-            return Ok(new ProductDto[] {});
+            return Ok(new ProductDto[] { new ProductDto { Name = "SomeName" } });
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
