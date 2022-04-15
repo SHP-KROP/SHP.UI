@@ -1,4 +1,5 @@
 using IdentityServer.Data;
+using IdentityServer.Data.Interfaces;
 using IdentityServer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +27,9 @@ namespace IdentityServer
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISignInManager, SignInManager>();
 
             services.ProvideIdentity();
 
