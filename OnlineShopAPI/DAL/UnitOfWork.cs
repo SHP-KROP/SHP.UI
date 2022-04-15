@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+using DAL.Repositories;
 using GenericRepository;
 using System.Threading.Tasks;
 
@@ -12,18 +13,18 @@ namespace DAL.Interfaces
         {
             _context = context;
 
-            ProductRepository = new DataRepository<Product>(context);
+            ProductRepository = new ProductRepository(context);
             CategoryRepository = new DataRepository<Category>(context);
             ProductCategoryRepository = new DataRepository<ProductCategory>(context);
 
             _context.Database.EnsureCreated();
         }
 
-        public DataRepository<Product> ProductRepository { get; private set; }
+        public IProductRepository ProductRepository { get; private set; }
 
-        public DataRepository<Category> CategoryRepository { get; private set; }
+        public IDataRepository<Category> CategoryRepository { get; private set; }
 
-        public DataRepository<ProductCategory> ProductCategoryRepository { get; private set; }
+        public IDataRepository<ProductCategory> ProductCategoryRepository { get; private set; }
 
         public async Task<bool> ConfirmAsync()
         {

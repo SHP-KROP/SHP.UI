@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+using DAL.Repositories;
 using GenericRepository;
 using System.Threading.Tasks;
 
@@ -6,11 +7,11 @@ namespace DAL.Interfaces
 {
     public interface IUnitOfWork
     {
-        DataRepository<Product> ProductRepository { get; }
+        IProductRepository ProductRepository { get; }
 
-        DataRepository<Category> CategoryRepository { get; }
+        IDataRepository<Category> CategoryRepository { get; }
 
-        DataRepository<ProductCategory> ProductCategoryRepository { get; }
+        IDataRepository<ProductCategory> ProductCategoryRepository { get; }
 
         Task<bool> ConfirmAsync();
     }

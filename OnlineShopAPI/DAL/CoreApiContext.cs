@@ -21,19 +21,19 @@ namespace DAL
         {
             base.OnModelCreating(builder);
 
-            //builder
-            //    .Entity<AppUser>()
-            //    .HasMany(ur => ur.UserRoles)
-            //    .WithOne(u => u.User)
-            //    .HasForeignKey(u => u.UserId)
-            //    .IsRequired();
+            builder
+                .Entity<Product>()
+                .HasMany(pc => pc.ProductCategories)
+                .WithOne(pc => pc.Product)
+                .HasForeignKey(u => u.ProductId)
+                .IsRequired();
 
-            //builder
-            //    .Entity<AppRole>()
-            //    .HasMany(ur => ur.UserRoles)
-            //    .WithOne(r => r.Role)
-            //    .HasForeignKey(r => r.RoleId)
-            //    .IsRequired();
+            builder
+                .Entity<Category>()
+                .HasMany(pc => pc.ProductCategories)
+                .WithOne(pc => pc.Category)
+                .HasForeignKey(r => r.CategoryId)
+                .IsRequired();
         }
     }
 }
