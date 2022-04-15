@@ -1,251 +1,198 @@
-﻿///*using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using AutoMapper;
-//using Blog.Turnmeup.API.Controllers;
-//using Blog.Turnmeup.API.Models.Users;
-//using Blog.Turnmeup.DAL.Models;
-//using Blog.Turnmeup.DL.Infrastructure.ErrorHandler;
-//using Blog.Turnmeup.DL.Models;
-//using Blog.Turnmeup.DL.Repositories;
-//using Blog.Turnmeup.DL.Services;
-//using IdentityServer;
-//using IdentityServer.Data.Entities;
-//using IdentityServer.DTO;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using Moq;
-////using NUnit.Framework.Internal;
-//using Xunit;
+﻿using AutoMapper;
+using FluentAssertions;
+using IdentityServer.Controllers;
+using IdentityServer.Data.Entities;
+using IdentityServer.Data.Interfaces;
+using IdentityServer.DTO;
+using IdentityServer.Services.Interfaces;
+using IdentityServerTests.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Moq.Protected;
+using Xunit;
 
-//namespace Blog.Turnmeup.API.Tests.Controllers
-//{
-//    public class UserControllerTests : IClassFixture<TestFixture<Startup>>
-//    {
+namespace IdentityServerTests
+{
+    public class UserControllerTests
+    {
+        private readonly UserController _userController;
+        private Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<ISignInManager> _mockSignInManager;
+        private readonly Mock<IMapper> _mapper;
 
-//        private IUsersRepository Repository { get; set; }
+        public UserControllerTests()
+        {
+            _mapper = new Mock<IMapper>();
+            var tokenService = new Mock<ITokenService>();
+            _mockUserRepository = new Mock<IUserRepository>();
+            _mockSignInManager = new Mock<ISignInManager>();            
 
-//        private IUsersService Service { get; }
+            _userController = new UserController(
+                _mapper.Object,
+                tokenService.Object,
+                _mockUserRepository.Object,
+                _mockSignInManager.Object
+            );
+        }
 
-//        private UsersController Controller { get; }
+        [Fact]
+        public async void LogIn_ShouldReturnOk_WhenSignInResultSucceeded()
+        {
+            var userDto = new UserLogInDto { UserName = "Tomass", Password = "correctPass" };
 
-//        public UserControllerTests(TestFixture<Startup> fixture)
-//        {
+            var successfulSignInResult = new Microsoft.AspNetCore.Identity.SignInResult();
 
-//            var users = new List<UserDto>
-//            {
-//                new UserDto
-//                {
-//                    UserName = "Test",
-//                    Id = Guid.NewGuid().ToString(),
-//                    Email = "test@test.it"
-//                }
+            successfulSignInResult.GetType().GetProperty("Succeeded").SetValue(successfulSignInResult, true);
 
-//            }.AsQueryable();
+            _mockUserRepository
+                .Setup(ur => ur.GetUserByUsernameAsync(It.IsAny<string>()))
+                .ReturnsAsync
+                (new AppUser { UserName = "Tomass"});
 
-//            var fakeUserManager = new Mock<FakeUserManager>();
+            _mockSignInManager
+                .Setup(m => m.CheckPasswordSignInAsync
+                (
+                    It.IsAny<AppUser>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()
+                )).ReturnsAsync(successfulSignInResult);
 
-//            fakeUserManager.Setup(x => x.Users)
-//                .Returns(users);
+            _mapper
+                .Setup(m => m.Map<UserDto>(It.IsAny<AppUser>()))
+                .Returns(new UserDto { UserName = "Tomass" });
 
-//            fakeUserManager.Setup(x => x.DeleteAsync(It.IsAny<UserModel>()))
-//             .ReturnsAsync(IdentityResult.Success);
-//            fakeUserManager.Setup(x => x.CreateAsync(It.IsAny<UserModel>(), It.IsAny<string>()))
-//            .ReturnsAsync(IdentityResult.Success);
-//            fakeUserManager.Setup(x => x.UpdateAsync(It.IsAny<UserModel>()))
-//          .ReturnsAsync(IdentityResult.Success);
+            var response = await _userController.LogIn(userDto);
 
+            var parsedResponse = new Response<UserDto>(response);
 
-//            Repository = new UsersRepository(fakeUserManager.Object);
+            parsedResponse?.Value?.UserName.Should().BeSameAs(userDto.UserName);
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status200OK);
+        }
 
+        [Fact]
+        public async void LogIn_ShouldReturnUnauthorized_WhenUserPasswordIsWrong()
+        {
+            var userDto = new UserLogInDto { UserName = "Tomass", Password = "dd800Z" };
 
-//            var mapper = (IMapper)fixture.Server.Host.Services.GetService(typeof(IMapper));
-//            var errorHandler = (IErrorHandler)fixture.Server.Host.Services.GetService(typeof(IErrorHandler));
-//            var passwordhasher = (IPasswordHasher<AppUser>)fixture.Server.Host.Services.GetService(typeof(IPasswordHasher<AppUser>));
+            var successfulSignInResult = new Microsoft.AspNetCore.Identity.SignInResult();
 
+            _mockUserRepository
+                .Setup(ur => ur.GetUserByUsernameAsync(It.IsAny<string>()))
+                .ReturnsAsync
+                (new AppUser { UserName = "asd" });
+            _mockSignInManager.Setup(
+                m => m.CheckPasswordSignInAsync
+                (
+                    It.IsAny<AppUser>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()
+                )).ReturnsAsync(successfulSignInResult);
 
-//            var uservalidator = new Mock<IUserValidator<AppUser>>();
-//            uservalidator.Setup(x => x.ValidateAsync(It.IsAny<UserManager<AppUser>>(), It.IsAny<AppUser>()))
-//             .ReturnsAsync(IdentityResult.Success);
-//            var passwordvalidator = new Mock<IPasswordValidator<AppUser>>();
-//            passwordvalidator.Setup(x => x.ValidateAsync(It.IsAny<UserManager<AppUser>>(), It.IsAny<AppUser>(), It.IsAny<string>()))
-//             .ReturnsAsync(IdentityResult.Success);
+            var response = await _userController.LogIn(userDto);
 
-//            var signInManager = new Mock<FakeSignInManager>();
+            var parsedResponse = new Response<UserDto>(response);
 
-//            signInManager.Setup(
-//                    x => x.PasswordSignInAsync(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
-//                .ReturnsAsync(SignInResult.Success);
+            parsedResponse.Value.Should().BeNull();
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
+        }
 
+        [Fact]
+        public async void LogIn_ShouldReturnUnauthorized_WhenUserDoesNotExist()
+        {
+            var userDto = new UserLogInDto { UserName = "asd", Password = "Pa$$w0rd", };
 
-//            //SERVICES CONFIGURATIONS
-//            Service = new UsersService(Repository, mapper, uservalidator.Object, passwordvalidator.Object, passwordhasher, signInManager.Object);
-//            Controller = new UsersController(Service, errorHandler);
-//        }
+            _mockUserRepository
+                .Setup(ur => ur.GetUserByUsernameAsync(It.IsAny<string>()))
+                .ReturnsAsync(null as AppUser);
 
+            var response = await _userController.LogIn(userDto);
 
+            var parsedResponse = new Response<UserDto>(response);
 
-//        [Theory]
-//        [InlineData("test@test.it", "Ciao.Ciao", "Test_user")]
-//        public async Task Insert(string email, string password, string name)
-//        {
-//            //Arrange
-//            var testUser = new CreateRequestModel
-//            {
-//                Email = email,
-//                Name = name,
-//                Password = password
-//            };
-//            //Act
-//            var createdUser = await Controller.Create(testUser);
-//            //Assert
-//            Assert.Equal(email, createdUser.Email);
-//        }
-
-//        [Fact]
-//        public void Get()
-//        {
-//            //Act
-//            var result = Controller.Get();
-//            // Assert
-//            Assert.IsNotNull(result);
-//        }
-
-//        [Theory]
-//        [InlineData("test@test.it")]
-//        public void GetByEmail(string email)
-//        {
-//            //Act
-//            var result = Controller.Get(email);
-//            // Assert
-//            Assert.AreEqual(result.Email, email);
-//        }
+            parsedResponse.Value.Should().BeNull();
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
+        }
 
 
 
-//        [Theory]
-//        [InlineData("test@test.it", "password", "Test")]
-//        public async Task Update(string email, string password, string name)
-//        {
-//            //Arrange
-//            var testUser = new UpdateRequestModel
-//            {
-//                Email = email,
-//                Password = password
-//            };
+        [Fact]
+        public async void RegisterUser_ShouldReturnBadRequest_WhenUserAlreadyExists()
+        {
+            var userDto = new UserRegisterDto { UserName = "Tomass", Password = "dd800Z" };
 
-//            //Act
-//            var updated = await Controller.Edit(testUser);
-//            // Assert
-//            Assert.Equal(email, updated.Email);
-//        }
+            _mockUserRepository
+                .Setup(ur => ur.GetUserByUsernameAsync(It.IsAny<string>()))
+                .ReturnsAsync
+                ( new AppUser
+                    {
+                        UserName = "asd"
+                    }
+                );
 
-//        [Theory]
-//        [InlineData("test@test.it", "Ciao.Ciao")]
-//        public async Task Delete(string email, string password)
-//        {
-//            //Arrange
-//            var testUser = new DeleteRequestModel
-//            {
-//                Email = email,
-//                Password = password
-//            };
-//            //Act
-//            var deleted = await Controller.Delete(testUser);
-//            //Assert
-//            Assert.Equal(email, deleted.Email);
-//        }
+            var response = await _userController.RegisterUser(userDto);
 
-//        [Theory]
-//        [InlineData("test@test.it", "Ciao.Ciao")]
-//        public async Task TokenAsync(string email, string password)
-//        {
-//            //Arrange
-//            var testUser = new TokenRequestModel
-//            {
-//                Username = email,
-//                Password = password
-//            };
+            var parsedResponse = new Response<UserDto>(response);
 
-//            //Act
-//            var updated = await Controller.Token(testUser);
-//            // Assert
-//            Assert.Equal("Test", updated.Principal.Identity.Name);
-//        }
-//    }
-//}*/
+            parsedResponse.Value.Should().BeNull();
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+        }
 
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using IdentityServer.Controllers;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using AutoMapper;
-//using System.Diagnostics;
-//using Microsoft.AspNetCore.Identity;
-//using IdentityServer.Data.Entities;
-//using IdentityServer.DTO;
-//using IdentityServer.Services.Interfaces;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using Microsoft.Extensions.Options;
-//using Microsoft.Extensions.Logging;
-//using IdentityServer.Mapping;
-//using IdentityServer.Services;
-//using FluentAssertions.Common;
+        [Fact]
+        public async void RegisterUser_ShouldReturnOk_WhenRegistrationResultSucceeded()
+        {
+            var userDto = new UserRegisterDto { UserName = "ADDDS7", Password = "ZalpO08" };
 
-//namespace IdentityServer.Controllers.Tests
-//{
-    
+            var identityResult = new Microsoft.AspNetCore.Identity.IdentityResult();
 
-//    [TestClass]
-//    public class UserControllerTests
-//    {
-//        private UserController _userController;
+            identityResult.GetType().GetProperty("Succeeded").SetValue(identityResult, true);
 
-//        public UserControllerTests()
-//        {
-//            var mapperConfig = new MapperConfiguration(mc =>
-//            {
-//                mc.AddProfile(new MappingProfile());
-//            });
-//            IMapper mapper = new Mapper(mapperConfig);
-//            ITokenService tokenService = new TokenService();
-//            UserManager<AppUser> userManager = new UserManager<AppUser>();
-//        }
+            _mockUserRepository
+                .Setup(ur => ur.GetUserByUsernameAsync(It.IsAny<string>()))
+                .ReturnsAsync(null as AppUser);
+
+            _mockUserRepository
+                .Setup(u => u.CreateUserAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(identityResult);
 
 
-//        [TestCleanup]
-//        public void TestCleanUp()
-//        {
+            _mapper
+                .Setup(m => m.Map<UserDto>(It.IsAny<AppUser>()))
+                .Returns(new UserDto { UserName = userDto.UserName });
 
-//        }
+            var response = await _userController.RegisterUser(userDto);
 
-//        [TestInitialize]
-//        public void TestInitialize()
-//        {
-//            Debug.WriteLine("Test initialize");
+            var parsedResponse = new Response<UserDto>(response);
 
-//            _userController = new UserController();
-//        }
+            parsedResponse?.Value?.UserName.Should().BeSameAs(userDto.UserName);
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status200OK);
+        }
 
-//        [TestMethod]
-//        public void RegisterUserTestFail()
-//        {
-//            //arrange
+        [Fact]
+        public async void RegisterUser_ShouldReturnBadRequest_WhenUserCannotBeRegistered()
+        {
+            var userDto = new UserRegisterDto { UserName = "ADDDS7", Password = "Zalp" };
 
-//            //act
+            var identityResult = new IdentityResult();
 
-//            //assert
+            _mockUserRepository
+                .Setup(ur => ur.GetUserByUsernameAsync(It.IsAny<string>()))
+                .ReturnsAsync
+                (null as AppUser);
 
-//        }
-//        [TestMethod]
-//        public void RegisterUserTestPass()
-//        {
+            _mockUserRepository
+                .Setup(u => u.CreateUserAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+                .ReturnsAsync(identityResult);
 
-//        }
-//    }
-//}
+            var response = await _userController.RegisterUser(userDto);
+
+            var parsedResponse = new Response<UserDto>(response);
+
+            parsedResponse.Value.Should().BeNull();
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+        }
+    }
+}
+
+
