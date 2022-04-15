@@ -8,9 +8,7 @@ using IdentityServer.Services.Interfaces;
 using IdentityServerTests.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
-using Moq.Protected;
 using Xunit;
 
 namespace IdentityServerTests
@@ -18,23 +16,26 @@ namespace IdentityServerTests
     public class UserControllerTests
     {
         private readonly UserController _userController;
-        private Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<IUserRepository> _mockUserRepository;
         private readonly Mock<ISignInManager> _mockSignInManager;
         private readonly Mock<IMapper> _mapper;
+        private readonly Mock<ITokenService> _tokenService;
 
         public UserControllerTests()
         {
             _mapper = new Mock<IMapper>();
-            var tokenService = new Mock<ITokenService>();
+            _tokenService = new Mock<ITokenService>();
             _mockUserRepository = new Mock<IUserRepository>();
             _mockSignInManager = new Mock<ISignInManager>();            
 
             _userController = new UserController(
                 _mapper.Object,
-                tokenService.Object,
+                _tokenService.Object,
                 _mockUserRepository.Object,
                 _mockSignInManager.Object
             );
+
+            _tokenService.Setup(ut => ut.CreateToken(It.IsAny<AppUser>())).Returns("Great");
         }
 
         [Fact]
