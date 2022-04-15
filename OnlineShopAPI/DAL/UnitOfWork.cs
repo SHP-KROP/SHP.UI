@@ -1,6 +1,4 @@
-﻿using DAL.Entities;
-using DAL.Repositories;
-using GenericRepository;
+﻿using DAL.Repositories;
 using System.Threading.Tasks;
 
 namespace DAL.Interfaces
