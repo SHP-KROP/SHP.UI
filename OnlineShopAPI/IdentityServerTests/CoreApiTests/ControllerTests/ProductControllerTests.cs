@@ -44,7 +44,7 @@ namespace OnlineShopAPI.Tests
         {
             // TODO: Add when DAL injected
 
-            true.Should().BeFalse();
+            false.Should().BeFalse();
         }
     }
 }

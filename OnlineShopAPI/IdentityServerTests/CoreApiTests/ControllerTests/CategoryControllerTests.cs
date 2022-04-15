@@ -1,10 +1,5 @@
-﻿using AutoMapper;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Moq;
+﻿using FluentAssertions;
 using OnlineShopAPI.Controllers;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OnlineShopAPI.Tests
