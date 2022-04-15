@@ -9,6 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenericRepository", "GenericRepository\GenericRepository.csproj", "{F067C32D-5F34-44DB-A246-5C0ADBEBEBC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServerTests", "IdentityServerTests\IdentityServerTests.csproj", "{10ADC610-6B12-4A4F-9166-CF6122CCEBBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenericRepository", "GenericRepository\GenericRepository.csproj", "{F067C32D-5F34-44DB-A246-5C0ADBEBEBC7}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{186327DE-47A2-4CC3-ABCF-8454D7944210}"
 EndProject
 Global
