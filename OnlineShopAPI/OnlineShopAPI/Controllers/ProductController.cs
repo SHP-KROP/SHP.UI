@@ -29,7 +29,7 @@ namespace OnlineShopAPI.Controllers
         {
             // TODO: Implement DA logic
 
-            return Ok(new ProductDto[] { new ProductDto { Name = "SomeName" } });
+            return Ok();
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -39,18 +39,18 @@ namespace OnlineShopAPI.Controllers
         {
             // TODO: Implement DA logic
 
-            return await Task.FromResult<ActionResult>(Ok(productName));
+            return await Task.FromResult<ActionResult>(Ok(new ProductDto()));
         }
 
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<ActionResult<string>> CreateProduct([FromBody] CreateProductDto createProductDto)
+        public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductDto createProductDto)
         {
             // TODO: Implement DA logic
 
-            return await Task.FromResult<ActionResult>(Ok(createProductDto));
+            return await Task.FromResult<ActionResult>(Ok(new ProductDto()));
         }
 
         //[Authorize]
@@ -67,7 +67,7 @@ namespace OnlineShopAPI.Controllers
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpDelete("{id}")]
+        [HttpDelete("{productName}")]
         public async Task<ActionResult<string>> DeleteProductByName(string productName)
         {
             // TODO: Implement DA logic
