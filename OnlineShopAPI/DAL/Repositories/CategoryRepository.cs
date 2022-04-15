@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class ProductRepository : DataRepository<Product>, IProductRepository
+    public class CategoryRepository : DataRepository<Category>, ICategoryRepository
     {
-        public ProductRepository(DbContext context) : base(context)
+        public CategoryRepository(DbContext context) : base(context)
         {
 
         }
 
-        public Task<IEnumerable<Product>> GetTopFiveMostPopularProducts()
+        public Task<IEnumerable<Product>> GetTopFiveMostPopularCategories()
         {
             throw new NotImplementedException();
         }

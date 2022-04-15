@@ -13,18 +13,15 @@ namespace DAL.Interfaces
         {
             _context = context;
 
-            ProductRepository = new ProductRepository(context);
-            CategoryRepository = new DataRepository<Category>(context);
-            ProductCategoryRepository = new DataRepository<ProductCategory>(context);
-
             _context.Database.EnsureCreated();
+
+            ProductRepository = new ProductRepository(context);
+            CategoryRepository = new CategoryRepository(context);
         }
 
         public IProductRepository ProductRepository { get; private set; }
 
-        public IDataRepository<Category> CategoryRepository { get; private set; }
-
-        public IDataRepository<ProductCategory> ProductCategoryRepository { get; private set; }
+        public ICategoryRepository CategoryRepository { get; private set; }
 
         public async Task<bool> ConfirmAsync()
         {

@@ -9,7 +9,7 @@ namespace GenericRepository
 {
     public class DataRepository<T> : IDataRepository<T> where T : class
     {
-        private readonly DbContext _context;
+        protected readonly DbContext _context;
 
         public DataRepository(DbContext context)
         {

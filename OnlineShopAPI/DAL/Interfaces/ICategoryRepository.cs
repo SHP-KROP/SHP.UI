@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public interface IProductRepository : IDataRepository<Product>
+    public interface ICategoryRepository : IDataRepository<Category>
     {
-        Task<IEnumerable<Product>> GetTopFiveMostPopularProducts();
+        Task<IEnumerable<Product>> GetTopFiveMostPopularCategories();
     }
 }

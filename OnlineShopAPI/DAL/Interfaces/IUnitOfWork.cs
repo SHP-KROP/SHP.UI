@@ -9,9 +9,7 @@ namespace DAL.Interfaces
     {
         IProductRepository ProductRepository { get; }
 
-        IDataRepository<Category> CategoryRepository { get; }
-
-        IDataRepository<ProductCategory> ProductCategoryRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
 
         Task<bool> ConfirmAsync();
     }
