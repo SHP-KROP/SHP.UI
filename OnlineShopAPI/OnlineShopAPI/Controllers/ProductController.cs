@@ -87,17 +87,20 @@ namespace OnlineShopAPI.Controllers
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPut("{productName}")]
-        public async Task<ActionResult> ChangeProduct(string productName, [FromBody] ChangeProductDto changeProductDto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ChangeProduct(int id, [FromBody] ChangeProductDto changeProductDto)
         {
-            var product = await _uow.ProductRepository.GetProductByNameAsync(productName);
+            var product = await _uow.ProductRepository.GetAsync(id);
 
             if (product is null)
             {
-                return BadRequest(string.Format("Not found product with name {0}", productName));
+                return BadRequest(string.Format("Not found product with id {0}", id));
             }
 
-            product = _mapper.Map<Product>(changeProductDto);
+            product.Name = changeProductDto.Name;
+            product.Amount = changeProductDto.Amount;
+            product.PhotoUrl = changeProductDto.PhotoUrl;
+            product.Description = changeProductDto.Description;
 
             _uow.ProductRepository.Update(product);
 

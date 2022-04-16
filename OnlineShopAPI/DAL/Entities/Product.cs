@@ -8,7 +8,7 @@ namespace DAL.Entities
 
         public string Name { get; set; }
 
-        public int Amount { get; set; }
+        public double Amount { get; set; }
 
         public double Price { get; set; }
 

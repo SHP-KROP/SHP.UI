@@ -1,3 +1,4 @@
+using DAL;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.InMemory;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnlineShopAPI
 {
@@ -30,6 +33,10 @@ namespace OnlineShopAPI
         {
             services.AddAutoMapping();
             services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
+            services.AddDbContext<CoreApiContext>(opt =>
+            {
+                opt.UseInMemoryDatabase("InMemoryDb");
+            });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddCors(o =>

@@ -146,31 +146,31 @@ namespace OnlineShopAPI.Tests
         public async Task ChangeProduct_ShouldReturnBadRequest_WhenProductWithNameNotFound()
         {
 
-            var wrongProductName = "wrong name";
+            var wrongId = -1;
 
             _productRepository
-                .Setup(pr => pr.GetProductByNameAsync(wrongProductName))
+                .Setup(pr => pr.GetAsync(wrongId))
                 .ReturnsAsync(null as Product);
 
-            var result = await _productController.ChangeProduct(wrongProductName, GetValidChangeProductDto()) as ObjectResult;
+            var result = await _productController.ChangeProduct(wrongId, GetValidChangeProductDto()) as ObjectResult;
 
             result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
 
-            result.Value.Should().Be(string.Format("Not found product with name {0}", wrongProductName));
+            result.Value.Should().Be(string.Format("Not found product with id {0}", wrongId));
         }
 
         [Fact]
         public async Task ChangeProduct_ShouldReturnNoContent_WhenProductValid()
         {
 
-            var properName = "proper name";
+            var properId = 3;
 
             _productRepository
-                .Setup(pr => pr.GetProductByNameAsync(properName))
+                .Setup(pr => pr.GetAsync(properId))
                 .ReturnsAsync(new Product { Id = 3, Name = "proper name"});
 
             var result = await _productController
-                .ChangeProduct(properName, GetValidChangeProductDto()) as StatusCodeResult;
+                .ChangeProduct(properId, GetValidChangeProductDto()) as StatusCodeResult;
 
             result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
