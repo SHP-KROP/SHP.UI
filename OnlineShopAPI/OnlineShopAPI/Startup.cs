@@ -1,3 +1,4 @@
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +30,7 @@ namespace OnlineShopAPI
         {
             services.AddAutoMapping();
             services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddCors(o =>
             {

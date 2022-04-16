@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using DAL.Entities;
+using DAL.Interfaces;
+using DAL.Repositories;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using OnlineShopAPI.Controllers;
 using OnlineShopAPI.DTO.Product;
+using OnlineShopAPI.Mapping;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,19 +20,33 @@ namespace OnlineShopAPI.Tests
     public class ProductControllerTests
     {
         private readonly ProductController _productController;
+        private readonly Mock<IUnitOfWork> _mockUow;
+        private readonly Mock<IProductRepository> _productRepository;
 
         public ProductControllerTests()
         {
             var mockLogger = new Mock<ILogger>();
-            var mockMapper = new Mock<IMapper>();
 
-            _productController = new ProductController(mockLogger.Object, mockMapper.Object);
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            var mapper = mapperConfig.CreateMapper() as IMapper;
+            _mockUow = new Mock<IUnitOfWork>();
+            _productRepository = new Mock<IProductRepository>();
+            _mockUow.SetupGet(uow => uow.ProductRepository).Returns(_productRepository.Object);
+
+            _productController = new ProductController(mockLogger.Object, mapper, _mockUow.Object);
         }
 
         [Fact]
-        public async Task GetProducts_ShouldReturnOkWithNotEmptyProducts()
+        public async Task GetProducts_ShouldReturnOk_WithNotEmptyProducts()
         {
-            // TODO: Add when DAL injected
+            _productRepository
+                .Setup(pr => pr.GetAllAsync())
+                .ReturnsAsync(new List<Product> { new Product() });
+
             var products = await _productController.GetProducts() as ActionResult<IEnumerable<ProductDto>>;
 
             var result = products.Result as ObjectResult;
@@ -43,15 +61,16 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task GetProducts_ShouldReturnBadRequest_WhenProductCountIsZero()
         {
-            // TODO: Add when DAL injected
+            _productRepository
+                .Setup(pr => pr.GetAllAsync())
+                .ReturnsAsync(new List<Product> {});
 
             var products = await _productController.GetProducts() as ActionResult<IEnumerable<ProductDto>>;
 
             var result = products.Result as ObjectResult;
-            var value = result?.Value as IEnumerable<ProductDto>;
+            var value = result?.Value as string;
 
-            value?.Should().NotBeNull();
-            value?.Count().Should().Be(0);
+            value?.Should().Be("There are not any products");
 
             result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
@@ -59,7 +78,9 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task GetProductByName_ShouldReturnOk_WhenProductWithProperNameFound()
         {
-            // TODO: Add when DAL injected
+            _productRepository
+                .Setup(pr => pr.GetProductByNameAsync("SomeName"))
+                .ReturnsAsync(new Product { Name = "SomeName" });
 
             var products = await _productController.GetProductByName("SomeName") as ActionResult<ProductDto>;
 
@@ -76,14 +97,16 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task GetProductByName_ShouldReturnBadRequest_WhenProductNotFound()
         {
-            // TODO: Add when DAL injected
+            _productRepository
+                .Setup(pr => pr.GetProductByNameAsync("SomeName"))
+                .ReturnsAsync(null as Product);
 
             var products = await _productController.GetProductByName(It.IsAny<string>()) as ActionResult<ProductDto>;
 
             var result = products.Result as ObjectResult;
-            var value = result?.Value as ProductDto;
+            var value = result?.Value as string;
 
-            value?.Should().BeNull();
+            value?.Should().Be("Product not found");
 
             result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
@@ -91,15 +114,15 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task CreateProduct_ShouldReturnOkWithProduct_WhenProductIsValid()
         {
-            // TODO: Add when DAL injected
 
-            var products = await _productController.CreateProduct(GetValidCreateProductDto()) as ActionResult<ProductDto>;
+            
+            var products = await _productController.CreateProduct(GetValidCreateProductDto()) as ActionResult<Product>;
 
             var result = products.Result as ObjectResult;
             var value = result?.Value as ProductDto;
 
             value?.Should().NotBeNull();
-            value?.Should().BeOfType(typeof(ProductDto));
+            value?.Should().BeOfType(typeof(Product));
             value?.Should().BeEquivalentTo(GetValidCreateProductDto());
 
             result.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -108,14 +131,13 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task CreateProduct_ShouldReturnBadRequest_WhenProductHasEmptyName()
         {
-            // TODO: Add when DAL injected
-
-            var products = await _productController.CreateProduct(GetInvalidCreateProductDtoWithEmptyName()) as ActionResult<ProductDto>;
+            var products = await _productController
+                .CreateProduct(GetInvalidCreateProductDtoWithEmptyName()) as ActionResult<Product>;
 
             var result = products.Result as ObjectResult;
             var value = result?.Value;
 
-            value?.Should().Be("Unable to create product with empty mandatory fields");
+            value?.Should().Be("Product name cannot be null or empty");
             
             result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
@@ -123,15 +145,34 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task ChangeProduct_ShouldReturnBadRequest_WhenProductWithNameNotFound()
         {
-            // TODO: Add when DAL injected
 
-            var productName = "SomeName";
+            var wrongProductName = "wrong name";
 
-            var result = await _productController.ChangeProduct(productName, GetValidChangeProductDto()) as ObjectResult;
+            _productRepository
+                .Setup(pr => pr.GetProductByNameAsync(wrongProductName))
+                .ReturnsAsync(null as Product);
+
+            var result = await _productController.ChangeProduct(wrongProductName, GetValidChangeProductDto()) as ObjectResult;
 
             result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
 
-            result.Value.Should().Be(string.Format("Not found product with name {0}", productName));
+            result.Value.Should().Be(string.Format("Not found product with name {0}", wrongProductName));
+        }
+
+        [Fact]
+        public async Task ChangeProduct_ShouldReturnNoContent_WhenProductValid()
+        {
+
+            var properName = "proper name";
+
+            _productRepository
+                .Setup(pr => pr.GetProductByNameAsync(properName))
+                .ReturnsAsync(new Product { Id = 3, Name = "proper name"});
+
+            var result = await _productController
+                .ChangeProduct(properName, GetValidChangeProductDto()) as StatusCodeResult;
+
+            result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         private ChangeProductDto GetValidChangeProductDto() => new ChangeProductDto
@@ -146,9 +187,11 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task DeleteProductByName_ShouldReturnBadRequest_WhenProductNameDontMatchAnyProduct()
         {
-            // TODO: Add when DAL injected
-
             string productName = "SomeProduct";
+
+            _productRepository
+                .Setup(pr => pr.GetProductByNameAsync(productName))
+                .ReturnsAsync(null as Product);
 
             var products = await _productController.DeleteProductByName(productName) as ActionResult<string>;
 
@@ -163,16 +206,15 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task DeleteProductByName_ShouldReturnNoContent_WhenProductDeletedSuccessfully()
         {
-            // TODO: Add when DAL injected
-
             string productName = "SomeProduct";
+
+            _productRepository
+                .Setup(pr => pr.GetProductByNameAsync(productName))
+                .ReturnsAsync(new Product());
 
             var products = await _productController.DeleteProductByName(productName) as ActionResult<string>;
 
-            var result = products.Result as ObjectResult;
-            var value = result?.Value;
-
-            value?.Should().BeNull();
+            var result = products.Result as StatusCodeResult;
 
             result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
