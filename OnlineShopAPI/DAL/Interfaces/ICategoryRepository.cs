@@ -7,6 +7,6 @@ namespace DAL.Repositories
 {
     public interface ICategoryRepository : IDataRepository<Category>
     {
-        Task<IEnumerable<Product>> GetTopFiveMostPopularCategories();
+        Task<Category> GetCategoryByName(string categoryName);
     }
 }

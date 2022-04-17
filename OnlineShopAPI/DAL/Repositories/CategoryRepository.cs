@@ -3,6 +3,7 @@ using GenericRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -14,9 +15,11 @@ namespace DAL.Repositories
 
         }
 
-        public Task<IEnumerable<Product>> GetTopFiveMostPopularCategories()
+        public async Task<Category> GetCategoryByName(string categoryName)
         {
-            throw new NotImplementedException();
+            var category = await FindAsync(c => c.Name == categoryName);
+
+            return category.FirstOrDefault();
         }
     }
 }
