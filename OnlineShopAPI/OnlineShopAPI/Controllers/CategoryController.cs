@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OnlineShopAPI.DTO.Category;
+using OnlineShopAPI.Mapping;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -85,9 +86,20 @@ namespace OnlineShopAPI.Controllers
         [HttpPut("{categoryName}")]
         public async Task<ActionResult> ChangeCategory(string categoryName, [FromBody] ChangeCategoryDto changeCategoryDto)
         {
-            // TODO: Implement DA logic
+            var category = await _uow?.CategoryRepository.GetCategoryByName(categoryName);
 
-            return await Task.FromResult<ActionResult>(NoContent());
+            if (category is null)
+            {
+                return BadRequest(string.Format("Category with name {0} not found", categoryName));
+            }
+
+            category.ProjectFrom(changeCategoryDto);
+
+            _uow?.CategoryRepository.Update(category);
+
+            await _uow?.ConfirmAsync();
+
+            return NoContent();
         }
 
         //[Authorize]
