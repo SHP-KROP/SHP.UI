@@ -1,6 +1,6 @@
 import './App.scss';
 import Header from './components/Header';
-import Search from './components/Search';
+import HeadBlock from './components/HeadBlock';
 // import MenuBoard from './components/Menu';
 import ProductCard from './components/ProductCard';
 import SideMenuList from './components/SideMenuList';
@@ -8,38 +8,45 @@ import Banner from './components/Banner';
 
 const arr = [
   { name: 'NameTitle', price: '12999' },
-  { name: 'AnotherNameTitle', price: '12109' },
-  { name: 'AnotherNameTitle', price: '12109' },
-  { name: 'AnotherNameTitle', price: '12109' },
-  { name: 'AnotherNameTitle', price: '12109' },
-  { name: 'AnotherNameTitle', price: '12109' },
-  { name: 'AnotherNameTitle', price: '12109' },
-  { name: 'AnotherNameTitle', price: '12109' },
+  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
+  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
+  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
+  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
+  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
+  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
+  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
 ];
 const menu = [
   {
     nameCategory: 'asd',
-    item: 'asdasd',
-    item1: 'agfhg',
-    item2: 'opietu',
-    item3: 'wijvn',
-    item4: 'fsdgm',
+    subCategories: [
+      {
+        name: 'asdasd',
+        link: '/asdasd',
+      },
+    ],
   },
   {
     nameCategory: 'asd',
-    item: 'asdasd',
-    item1: 'agfhg',
-    item2: 'opietu',
-    item3: 'wijvn',
-    item4: 'fsdgm',
+    subCategories: [
+      {
+        name: 'asdasd',
+        link: '/asdasd',
+      },
+    ],
   },
   {
-    nameCategory: 'asd',
-    item: 'asdasd',
-    item1: 'agfhg',
-    item2: 'opietu',
-    item3: 'wijvn',
-    item4: 'fsdgm',
+    nameCategory: 'ass',
+    subCategories: [
+      {
+        name: 'pampers',
+        link: '/papmers',
+      },
+      {
+        name: 'poops',
+        link: '/poops',
+      },
+    ],
   },
 ];
 
@@ -47,18 +54,14 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Search />
+      <HeadBlock />
       {/* <MenuBoard /> */}
       <div className="blocks">
         <div className="blockSideMenus">
           {menu.map((obj) => (
             <SideMenuList
               nameCategory={obj.nameCategory}
-              item={obj.item}
-              item1={obj.item1}
-              item2={obj.item2}
-              item3={obj.item3}
-              item4={obj.item4}
+              subCategories={obj.subCategories}
             />
           ))}
         </div>
@@ -68,7 +71,11 @@ function App() {
         </div>
         <div className="blockCards">
           {arr.map((obj) => (
-            <ProductCard name={obj.name} price={obj.price} />
+            <ProductCard
+              name={obj.name}
+              description={obj.description}
+              price={obj.price}
+            />
           ))}
         </div>
       </div>

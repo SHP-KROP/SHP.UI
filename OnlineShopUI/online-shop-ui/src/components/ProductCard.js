@@ -10,7 +10,7 @@ const ProductCard = (props) => {
       </div>
       <div className="product-card__info">
         <p>{props.name}</p>
-        <span>Space for a small product description</span>
+        <span>{props.description}</span>
       </div>
       <div className="product-card__price">
         <p>

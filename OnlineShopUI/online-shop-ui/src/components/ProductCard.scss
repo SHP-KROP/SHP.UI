@@ -1,10 +1,10 @@
 $linkcolor: #f4768d;
 $productCardTextColor: #151515;
 $borderButtonsColorInCard: #b42020;
-
+$searchBg: #d1d1d1;
 .product-card__body {
-  background: #ffffff;
-  border: 1px solid #d1d1d1;
+  background: white;
+  border: 1px solid $searchBg;
   border-radius: 12px;
 }
 .product-card__img {

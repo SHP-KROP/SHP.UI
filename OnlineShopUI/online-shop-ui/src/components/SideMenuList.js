@@ -8,21 +8,13 @@ const SideMenuList = (props) => {
         <strong>{props.nameCategory}</strong>
       </p>
       <ul>
-        <li>
-          <a href="#">{props.item}</a>
-        </li>
-        <li>
-          <a href="#">{props.item1}</a>
-        </li>
-        <li>
-          <a href="#">{props.item2}</a>
-        </li>
-        <li>
-          <a href="#">{props.item3}</a>
-        </li>
-        <li>
-          <a href="#">{props.item4}</a>
-        </li>
+        {props.subCategories.map((linkName) => {
+          return (
+            <li>
+              <a href={linkName.link}>{linkName.name}</a>
+            </li>
+          );
+        })}
       </ul>
       <button>
         <strong>More categories</strong> &#11166;
