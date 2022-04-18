@@ -1,10 +1,14 @@
 ﻿//using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
+using DAL.Entities;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OnlineShopAPI.DTO.Category;
+using OnlineShopAPI.Mapping;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Controllers
@@ -15,11 +19,13 @@ namespace OnlineShopAPI.Controllers
     {
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _uow;
 
-        public CategoryController(ILogger logger, IMapper mapper)
+        public CategoryController(ILogger logger, IMapper mapper, IUnitOfWork uow)
         {
             _logger = logger;
             _mapper = mapper;
+            _uow = uow;
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -27,19 +33,29 @@ namespace OnlineShopAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
         {
-            // TODO: Implement DA logic
+            var categories = await _uow?.CategoryRepository.GetAllAsync();
 
-            return Ok(new CategoryDto[] {});
+            if (categories is null || categories.Count() == 0)
+            {
+                return BadRequest("There are not any categories");
+            }
+
+            return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpGet("{productName}")]
+        [HttpGet("{categoryName}")]
         public async Task<ActionResult<CategoryDto>> GetCategoryByName(string categoryName)
         {
-            // TODO: Implement DA logic
+            var category = await _uow?.CategoryRepository.GetCategoryByName(categoryName);
 
-            return await Task.FromResult<ActionResult>(Ok(new CategoryDto()));
+            if (category is null)
+            {
+                return BadRequest(string.Format("Category with name {0} not found", categoryName));
+            }
+
+            return _mapper.Map<CategoryDto>(category);
         }
 
         //[Authorize]
@@ -48,31 +64,62 @@ namespace OnlineShopAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> CreateCategory([FromBody] CreateCategoryDto createCategoryDto)
         {
-            // TODO: Implement DA logic
+            var category = _mapper.Map<Category>(createCategoryDto);
 
-            return await Task.FromResult<ActionResult>(Ok(new CategoryDto()));
+            await _uow?.CategoryRepository.AddAsync(category);
+
+            await _uow?.ConfirmAsync();
+
+            var createdCategory = await _uow?.CategoryRepository.GetCategoryByName(createCategoryDto.Name);
+
+            if (createdCategory is null)
+            {
+                return BadRequest("Unable to create category");
+            }
+
+            return _mapper.Map<CategoryDto>(createdCategory);
         }
 
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [HttpPut("{productName}")]
+        [HttpPut("{categoryName}")]
         public async Task<ActionResult> ChangeCategory(string categoryName, [FromBody] ChangeCategoryDto changeCategoryDto)
         {
-            // TODO: Implement DA logic
+            var category = await _uow?.CategoryRepository.GetCategoryByName(categoryName);
 
-            return await Task.FromResult<ActionResult>(NoContent());
+            if (category is null)
+            {
+                return BadRequest(string.Format("Category with name {0} not found", categoryName));
+            }
+
+            category.ProjectFrom(changeCategoryDto);
+
+            _uow?.CategoryRepository.Update(category);
+
+            await _uow?.ConfirmAsync();
+
+            return NoContent();
         }
 
         //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<string>> DeleteCategory(string categoryName)
+        public async Task<ActionResult<string>> DeleteCategory(int id)
         {
-            // TODO: Implement DA logic
+            var category = await _uow?.CategoryRepository.GetAsync(id);
 
-            return await Task.FromResult<ActionResult>(NoContent());
+            if (category is null)
+            {
+                return BadRequest(string.Format("Category with id {0} not found", id));
+            }
+
+            _uow?.CategoryRepository.Remove(category);
+
+            await _uow.ConfirmAsync();
+
+            return NoContent();
         }
     }
 }
