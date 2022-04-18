@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace DAL.Entities
+﻿namespace OnlineShopAPI.DTO.Product
 {
-    public class Product
+    public class ProductDto
     {
         public int Id { get; set; }
 
@@ -17,7 +15,5 @@ namespace DAL.Entities
         public string PhotoUrl { get; set; }
 
         public string Description { get; set; }
-
-        public ICollection<ProductCategory> ProductCategories { get; set; }
     }
 }

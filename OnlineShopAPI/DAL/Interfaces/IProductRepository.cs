@@ -7,6 +7,6 @@ namespace DAL.Repositories
 {
     public interface IProductRepository : IDataRepository<Product>
     {
-        Task<IEnumerable<Product>> GetTopFiveMostPopularProducts();
+        Task<Product> GetProductByNameAsync(string name);
     }
 }

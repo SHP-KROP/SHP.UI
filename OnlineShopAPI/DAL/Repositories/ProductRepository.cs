@@ -1,8 +1,7 @@
 ﻿using DAL.Entities;
 using GenericRepository;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -14,9 +13,11 @@ namespace DAL.Repositories
 
         }
 
-        public Task<IEnumerable<Product>> GetTopFiveMostPopularProducts()
+        public async Task<Product> GetProductByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            var query = await FindAsync(pr => pr.Name == name);
+            
+            return query.FirstOrDefault();
         }
     }
 }

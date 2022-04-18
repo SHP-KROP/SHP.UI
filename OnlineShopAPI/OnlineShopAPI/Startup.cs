@@ -1,16 +1,14 @@
+using DAL;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using OnlineShopAPI.Extensions;
 
 namespace OnlineShopAPI
 {
@@ -26,6 +24,21 @@ namespace OnlineShopAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapping();
+            services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
+            services.AddDbContext<CoreApiContext>(opt =>
+            {
+                opt.UseInMemoryDatabase("InMemoryDb");
+            });
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddCors(o =>
+            {
+                o.AddPolicy(name: Configuration["CorsPolicyName"], p =>
+                {
+                    p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -49,6 +62,8 @@ namespace OnlineShopAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(Configuration["CorsPolicyName"]);
 
             app.UseEndpoints(endpoints =>
             {
