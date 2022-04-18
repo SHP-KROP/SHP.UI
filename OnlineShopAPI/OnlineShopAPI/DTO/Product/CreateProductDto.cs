@@ -6,6 +6,8 @@
 
         public double Amount { get; set; }
 
+        public double Price { get; set; }
+
         public bool IsAvaliable { get; set; }
 
         public string PhotoUrl { get; set; }

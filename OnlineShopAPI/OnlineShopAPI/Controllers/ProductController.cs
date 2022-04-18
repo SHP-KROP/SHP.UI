@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OnlineShopAPI.DTO.Product;
+using OnlineShopAPI.Mapping;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -97,10 +98,7 @@ namespace OnlineShopAPI.Controllers
                 return BadRequest(string.Format("Not found product with id {0}", id));
             }
 
-            product.Name = changeProductDto.Name;
-            product.Amount = changeProductDto.Amount;
-            product.PhotoUrl = changeProductDto.PhotoUrl;
-            product.Description = changeProductDto.Description;
+            product.ProjectFrom(changeProductDto);
 
             _uow.ProductRepository.Update(product);
 

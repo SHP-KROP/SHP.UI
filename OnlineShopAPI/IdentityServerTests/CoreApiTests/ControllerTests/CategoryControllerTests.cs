@@ -65,9 +65,9 @@ namespace OnlineShopAPI.Tests
                 .Setup(cr => cr.GetAsync(It.IsAny<int>()))
                 .ReturnsAsync(null as Category);
 
-            var response = _categoryController.DeleteCategory(id);
+            var response = await _categoryController.DeleteCategory(id);
 
-            var result = response.Result.Result as ObjectResult;
+            var result = response.Result as ObjectResult;
             var value = result?.Value as string;
 
             result?.Value.Should().Be(string.Format("Category with id {0} not found", id));
