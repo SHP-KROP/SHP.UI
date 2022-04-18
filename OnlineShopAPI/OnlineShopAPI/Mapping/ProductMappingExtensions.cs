@@ -10,7 +10,7 @@ namespace OnlineShopAPI.Mapping
             product.Name = changeProductDto.Name;
             product.Description = changeProductDto.Description;
             product.Price = changeProductDto.Price;
-            product.IsAvaliable = changeProductDto.IsAvaliable;
+            product.IsAvailable = changeProductDto.IsAvailable;
             product.PhotoUrl = changeProductDto.PhotoUrl;
             product.Amount = changeProductDto.Amount;
         }

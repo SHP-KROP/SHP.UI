@@ -8,7 +8,7 @@
 
         public double Price { get; set; }
 
-        public bool IsAvaliable { get; set; }
+        public bool IsAvailable { get; set; }
 
         public string PhotoUrl { get; set; }
 

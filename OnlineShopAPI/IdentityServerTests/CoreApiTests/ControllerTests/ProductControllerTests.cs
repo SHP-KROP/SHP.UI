@@ -179,7 +179,7 @@ namespace OnlineShopAPI.Tests
         {
             Name = "SomeNewName",
             Amount = 100,
-            IsAvaliable = true,
+            IsAvailable = true,
             Description = "SomeDescription",
             PhotoUrl = "SomeUrl"
         };
@@ -223,7 +223,7 @@ namespace OnlineShopAPI.Tests
         {
             Name = "SomeName",
             Amount = 500,
-            IsAvaliable = true,
+            IsAvailable = true,
             Description = "SomeDescription",
             PhotoUrl = "SomeUrl"
         };
