@@ -7,7 +7,7 @@ import SideMenuList from './components/SideMenuList';
 import Banner from './components/Banner';
 
 const arr = [
-  { name: 'NameTitle', price: '12999' },
+  { name: 'NameTitle', description: 'decsr', price: '12999' },
   { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
   { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
   { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
