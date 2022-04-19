@@ -43,6 +43,14 @@ namespace IdentityServer
     
             });
 
+            services.AddCors(o =>
+            {
+                o.AddPolicy(name: Configuration["CorsPolicyName"], p =>
+                {
+                    p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ISignInManager, SignInManager>();
 
@@ -73,6 +81,8 @@ namespace IdentityServer
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(Configuration["CorsPolicyName"]);
 
             app.UseEndpoints(endpoints =>
             {

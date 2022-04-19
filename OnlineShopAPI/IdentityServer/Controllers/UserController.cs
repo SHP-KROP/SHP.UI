@@ -34,7 +34,7 @@ namespace IdentityServer.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<string>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
+        public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
 
             var existingUser = await _userRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
@@ -61,11 +61,11 @@ namespace IdentityServer.Controllers
             var token = _tokenService.CreateToken(createdUser);
             userDto.Token = token;
 
-            return Ok(userDto.Token);
+            return Ok(userDto);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> LogIn([FromBody] UserLogInDto userLogInDto)
+        public async Task<ActionResult<UserDto>> LogIn([FromBody] UserLogInDto userLogInDto)
         {
             var user = await _userRepository.GetUserByUsernameAsync(userLogInDto.UserName);
 
@@ -85,7 +85,7 @@ namespace IdentityServer.Controllers
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = _tokenService.CreateToken(user);
 
-            return Ok(userDto.Token);
+            return Ok(userDto);
         }
     }
 }
