@@ -28,7 +28,7 @@ namespace IdentityServer.Data
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            return await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == username.ToUpper());
+            return await _userManager.Users.FirstOrDefaultAsync(u => u.UserName.ToUpper() == username.ToUpper());
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()

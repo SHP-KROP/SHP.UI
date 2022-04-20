@@ -5,8 +5,10 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 
 namespace IdentityServer.Services
 {
@@ -25,9 +27,14 @@ namespace IdentityServer.Services
 
         public string CreateToken(AppUser user)
         {
+            var roles = user?.UserRoles?.Select(ur => ur.Role.Name);
+
             var claims = new List<Claim>
             {
-                new Claim("username", user.UserName)
+                new Claim("id", user.Id.ToString()),
+                new Claim("username", user.UserName),
+                new Claim("roles", JsonSerializer.Serialize(roles ?? new List<string>{ })),
+                new Claim("email", user.Email ?? string.Empty)
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
