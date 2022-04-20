@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IdentityServer\IdentityServer.csproj" />
+    <ProjectReference Include="..\OnlineShopAPI\OnlineShopAPI.csproj" />
   </ItemGroup>
 
 </Project>
