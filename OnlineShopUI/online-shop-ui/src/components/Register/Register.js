@@ -1,12 +1,23 @@
 import { Link } from "@mui/material";
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { AuthService } from "../../_services/AuthService";
+import axios from "axios";
+
+const BASE_URL = "https://localhost:44330/api/user/register/";
 
 const Register = () => {
-  const [userName, setUsername] = useState(() => "");
-  const [password, setPassword] = useState(() => "");
+  const [name, setUsername] = useState(() => "");
+  const [pass, setPassword] = useState(() => "");
 
-  const authService = new AuthService();
+  function register() {
+    axios
+      .post(BASE_URL, {
+        userName: name,
+        password: pass,
+      })
+      .then((response) => response.data)
+      .then((data) => localStorage.setItem("RESPONSE", data));
+  }
 
   return (
     <>
@@ -37,14 +48,7 @@ const Register = () => {
                 setPassword(e.target.value);
               }}
             />
-            <button
-              className="btn"
-              type="submit"
-              onClick={authService.register({
-                userName: userName,
-                password: password,
-              })}
-            >
+            <button className="btn" type="submit" onClick={register}>
               Submit
             </button>
           </form>
