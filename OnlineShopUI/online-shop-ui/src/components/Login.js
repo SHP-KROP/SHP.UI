@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,11 +9,55 @@ import Checkbox from "@mui/material/Checkbox";
 import User from "../img/icon-user.png";
 import Register from "./Register/Register";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import axios from "axios";
+
+const BASE_URL = "https://localhost:44330/api/user/login/";
 
 export default function Login() {
   const [isOpen, setOpen] = useState(() => false);
   const handleLogInModalOpen = () => setOpen(true);
   const handleLogInModalClose = () => setOpen(false);
+
+  const [name, setUsername] = useState(() => "");
+  const [pass, setPassword] = useState(() => "");
+  const [flag, setFlag] = useState(() => true);
+
+  const [response, setResponse] = useState(() => {});
+
+  useEffect(() => {
+    if (!(name && pass)) {
+      return;
+    }
+    console.log("Calling api started");
+    axios
+      .post(BASE_URL, {
+        userName: name,
+        password: pass,
+      })
+      .then((response) => {
+        setResponse(response.data);
+        proceedResponse(response.data);
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          alert("Wrong user credentials");
+        } else if (error.request) {
+          console.log(error.request);
+        } else if (error.message) {
+          console.log(error.message);
+        }
+      });
+  }, [flag]);
+
+  const proceedResponse = (response) => {
+    try {
+      alert(`Welcome ${response.userName}`);
+      localStorage.setItem("token", response.token);
+    } catch (ex) {
+      console.log(ex);
+      alert("Impossible to register such a user");
+    }
+  };
 
   return (
     <div>
@@ -45,12 +89,22 @@ export default function Login() {
             </div>
             <div className="login__date">
               <div className="login__email">
-                <label>Эл. почта или телефон</label>
-                <input type="text" placeholder="example@gmail.com" />
+                <label>Username</label>
+                <input
+                  type="text"
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                />
               </div>
               <div className="login__pass">
                 <label>Пароль</label>
-                <input type="text" />
+                <input
+                  type="password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
               </div>
               <a href="#">Забыли пароль?</a>
               <FormGroup>
@@ -63,7 +117,12 @@ export default function Login() {
             </div>
             <div className="login__actions">
               <div className="login__sign">
-                <button className="login__sign-btn">Войти</button>
+                <button
+                  className="login__sign-btn"
+                  onClick={() => setFlag(!flag)}
+                >
+                  Войти
+                </button>
               </div>
               <div className="login__register">
                 <Link to="/register" onClick={handleLogInModalClose}>
