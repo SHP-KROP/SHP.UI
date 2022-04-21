@@ -1,3 +1,5 @@
+#define ALEX
+
 using IdentityServer.Data;
 using IdentityServer.Data.Interfaces;
 using IdentityServer.Extensions;
@@ -25,7 +27,28 @@ namespace IdentityServer
         {
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+
+                opt.UseSqlServer(Configuration.GetConnectionString(
+#if (ALEX)
+                    "AlexConnection"
+#elif (EHOR)
+                    "EhorConnection"
+#elif (RUSLAN)
+                    "RuslanConnection"
+#elif (DANYA)
+                    "DanyaConnection"
+#endif
+                    ));
+
+    
+            });
+
+            services.AddCors(o =>
+            {
+                o.AddPolicy(name: Configuration["CorsPolicyName"], p =>
+                {
+                    p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
             });
 
             services.AddScoped<IUserRepository, UserRepository>();
@@ -58,6 +81,8 @@ namespace IdentityServer
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(Configuration["CorsPolicyName"]);
 
             app.UseEndpoints(endpoints =>
             {
