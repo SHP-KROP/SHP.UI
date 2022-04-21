@@ -28,6 +28,11 @@ export default function Login() {
     if (!(name && pass)) {
       return;
     }
+
+    if (localStorage.getItem("token")) {
+      alert("You are already logged in!");
+      return;
+    }
     console.log("Calling api started");
     axios
       .post(BASE_URL, {
