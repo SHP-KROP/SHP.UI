@@ -1,0 +1,102 @@
+$linkcolor: rgb(238, 174, 202);
+.registration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: rgb(238, 174, 202);
+  background: radial-gradient(
+    circle,
+    rgba(238, 174, 202, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
+  a {
+    color: $linkcolor;
+    text-decoration-color: $linkcolor;
+  }
+  &__body {
+    background-color: #fbf9f9;
+    width: 60%;
+    height: 80%;
+    border-radius: 12px;
+    display: flex;
+  }
+  .input {
+    display: flex;
+    flex-direction: column;
+    > input {
+      padding: 2%;
+      border-radius: 8px;
+      border-color: $linkcolor;
+      outline: none;
+    }
+    > label {
+      font-style: italic;
+      color: $linkcolor;
+      font-size: 16px;
+    }
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  &__info {
+    flex: 0.6 1;
+    display: flex;
+    flex-direction: column;
+  }
+  &__img {
+    flex: 0.4 1;
+  }
+  &__btn {
+    font-family: 'Poppins', sans-serif;
+    padding: 5px 15px 5px 10px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    text-transform: uppercase;
+    background: radial-gradient(
+      circle,
+      rgba(238, 174, 202, 1) 0%,
+      rgba(148, 187, 233, 1) 100%
+    );
+    font-weight: bold;
+    color: white;
+  }
+  &__form {
+    display: flex;
+    flex: 0.7;
+    flex-direction: column;
+    gap: 30px;
+    width: 60%;
+    margin: 10% auto;
+  }
+  &__exit {
+    flex: 0.25 1;
+    display: flex;
+    align-items: flex-end;
+    padding: 3%;
+  }
+  &__greeting {
+    > p > strong {
+      font-size: 35px;
+      color: $linkcolor;
+    }
+    > span {
+      color: $linkcolor;
+      font-style: italic;
+    }
+  }
+}
+@media screen and (max-width: 1200px) {
+  .registration__img {
+    display: none;
+  }
+  .registration__body {
+    display: block;
+  }
+  .registration__info {
+    height: 100%;
+  }
+}
