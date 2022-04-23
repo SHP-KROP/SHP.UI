@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
@@ -7,11 +7,13 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import User from "../img/icon-user.png";
-import Register from "./Register/Register";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const BASE_URL = "https://localhost:44330/api/user/login/";
+
+toast.configure();
 
 export default function Login() {
   const [isOpen, setOpen] = useState(() => false);
@@ -21,46 +23,64 @@ export default function Login() {
   const [name, setUsername] = useState(() => "");
   const [pass, setPassword] = useState(() => "");
   const [flag, setFlag] = useState(() => true);
-
-  const [response, setResponse] = useState(() => {});
+  let initialRender = useRef(true);
 
   useEffect(() => {
-    if (!(name && pass)) {
+    if (initialRender.current) {
+      initialRender.current = false;
       return;
     }
 
     if (localStorage.getItem("token")) {
-      alert("You are already logged in!");
+      toast.warn("You are already logged in!", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+
       return;
     }
-    console.log("Calling api started");
+
+    if (!(name && pass)) {
+      toast.warn("Name and password cannot be empty", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+
+      return;
+    }
+
     axios
       .post(BASE_URL, {
         userName: name,
         password: pass,
       })
       .then((response) => {
-        setResponse(response.data);
         proceedResponse(response.data);
       })
       .catch((error) => {
-        if (error.response.status === 401) {
-          alert("Wrong user credentials");
-        } else if (error.request) {
-          console.log(error.request);
-        } else if (error.message) {
-          console.log(error.message);
+        console.warn(error.response);
+        if (typeof error.response.data !== "object") {
+          toast.error(`${error.response.data}`, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+          return;
         }
+        toast.error("Internal server error", {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
       });
   }, [flag]);
 
   const proceedResponse = (response) => {
     try {
-      alert(`Welcome ${response.userName}`);
+      toast.success(`Welcome ${response.userName}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
       localStorage.setItem("token", response.token);
+      handleLogInModalClose();
     } catch (ex) {
-      console.log(ex);
-      alert("Impossible to register such a user");
+      console.warn(ex);
+      toast.error(`${ex.error}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
     }
   };
 
