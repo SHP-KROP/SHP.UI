@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using IdentityServer.Data;
-using IdentityServer.Data.Entities;
+using DAL;
+using DAL.Entities;
 using IdentityServer.Helpers;
 using IdentityServer.Mapping;
 using IdentityServer.Services;
@@ -25,7 +25,7 @@ namespace IdentityServer.Extensions
                 .AddRoleManager<RoleManager<AppRole>>()
                 .AddSignInManager<SignInManager<AppUser>>()
                 .AddRoleValidator<RoleValidator<AppRole>>()
-                .AddEntityFrameworkStores<DataContext>();
+                .AddEntityFrameworkStores<OnlineShopContext>();
 
             services.AddAuthentication();
 
