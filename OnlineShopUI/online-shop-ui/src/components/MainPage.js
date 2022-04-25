@@ -59,10 +59,10 @@ function MainPage() {
         {/* <MenuBoard /> */}
         <div className="blocks">
           <div className="blockSideMenus">
-            {menu.map((obj) => (
+            {menu.map((sideMenuListItem) => (
               <SideMenuList
-                nameCategory={obj.nameCategory}
-                subCategories={obj.subCategories}
+                nameCategory={sideMenuListItem.nameCategory}
+                subCategories={sideMenuListItem.subCategories}
               />
             ))}
           </div>
@@ -71,11 +71,11 @@ function MainPage() {
             <Banner />
           </div>
           <div className="blockCards">
-            {arr.map((obj) => (
+            {arr.map((productCardItem) => (
               <ProductCard
-                name={obj.name}
-                description={obj.description}
-                price={obj.price}
+                name={productCardItem.name}
+                description={productCardItem.description}
+                price={productCardItem.price}
               />
             ))}
           </div>
