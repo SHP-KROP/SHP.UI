@@ -1,4 +1,4 @@
-﻿using IdentityServer.Data.Entities;
+﻿using DAL.Entities;
 
 namespace IdentityServer.Services.Interfaces
 {

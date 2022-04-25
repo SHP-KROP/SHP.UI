@@ -25,12 +25,13 @@ namespace OnlineShopAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapping();
+            services.ProvideIdentity();
             services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
-            services.AddDbContext<CoreApiContext>(opt =>
-            {
-                opt.UseInMemoryDatabase("InMemoryDb");
-            });
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddDbContext<OnlineShopContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             services.AddCors(o =>
             {

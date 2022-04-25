@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
-namespace IdentityServer.Data.Entities
+namespace DAL.Entities
 {
     public class AppRole : IdentityRole<int>
     {

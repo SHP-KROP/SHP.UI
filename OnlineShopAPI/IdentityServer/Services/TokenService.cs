@@ -1,4 +1,4 @@
-﻿using IdentityServer.Data.Entities;
+﻿using DAL.Entities;
 using IdentityServer.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
