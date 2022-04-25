@@ -1,5 +1,3 @@
-#define ALEX
-
 using IdentityServer.Data;
 using IdentityServer.Data.Interfaces;
 using IdentityServer.Extensions;
@@ -27,20 +25,7 @@ namespace IdentityServer
         {
             services.AddDbContext<DataContext>(opt =>
             {
-
-                opt.UseSqlServer(Configuration.GetConnectionString(
-#if (ALEX)
-                    "AlexConnection"
-#elif (EHOR)
-                    "EhorConnection"
-#elif (RUSLAN)
-                    "RuslanConnection"
-#elif (DANYA)
-                    "DanyaConnection"
-#endif
-                    ));
-
-    
+                opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"));
             });
 
             services.AddCors(o =>
