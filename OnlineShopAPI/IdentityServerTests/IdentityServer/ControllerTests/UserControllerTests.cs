@@ -3,7 +3,6 @@ using DAL.Entities;
 using DAL.Interfaces;
 using FluentAssertions;
 using IdentityServer.Controllers;
-using IdentityServer.Data.Interfaces;
 using IdentityServer.DTO;
 using IdentityServer.Services.Interfaces;
 using IdentityServerTests.Helpers;

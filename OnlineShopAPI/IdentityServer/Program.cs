@@ -1,5 +1,4 @@
 using DAL;
-using IdentityServer.Data;
 using IdentityServer.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

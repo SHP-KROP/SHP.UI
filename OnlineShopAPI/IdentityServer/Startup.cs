@@ -1,7 +1,5 @@
 using DAL;
 using DAL.Interfaces;
-using IdentityServer.Data;
-using IdentityServer.Data.Interfaces;
 using IdentityServer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

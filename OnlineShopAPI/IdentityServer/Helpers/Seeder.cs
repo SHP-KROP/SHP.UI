@@ -1,5 +1,4 @@
 ﻿using DAL.Entities;
-using IdentityServer.Data.Entities;
 using IdentityServer.Helpers.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
