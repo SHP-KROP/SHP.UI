@@ -16,8 +16,7 @@ namespace IdentityServerTests
     public class UserControllerTests
     {
         private readonly UserController _userController;
-        private readonly Mock<IUserRepository> _mockUserRepository;
-        private readonly Mock<ISignInManager> _mockSignInManager;
+        private readonly Mock<IUnitOfWork> _uow;
         private readonly Mock<IMapper> _mapper;
         private readonly Mock<ITokenService> _tokenService;
 
@@ -25,14 +24,15 @@ namespace IdentityServerTests
         {
             _mapper = new Mock<IMapper>();
             _tokenService = new Mock<ITokenService>();
-            _mockUserRepository = new Mock<IUserRepository>();
-            _mockSignInManager = new Mock<ISignInManager>();            
+
+            _uow = new Mock<IUnitOfWork>();
+
+            _uow.SetupGet(_uow.Object.)
 
             _userController = new UserController(
                 _mapper.Object,
                 _tokenService.Object,
-                _mockUserRepository.Object,
-                _mockSignInManager.Object
+                _uow.Object
             );
 
             _tokenService.Setup(ut => ut.CreateToken(It.IsAny<AppUser>())).Returns("Great");
