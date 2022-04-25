@@ -35,16 +35,23 @@ namespace DAL
 
             builder
                 .Entity<Product>()
-                .HasMany(pc => pc.ProductCategories)
+                .HasMany(pr => pr.ProductCategories)
                 .WithOne(pc => pc.Product)
-                .HasForeignKey(u => u.ProductId)
+                .HasForeignKey(pc => pc.ProductId)
                 .IsRequired();
 
             builder
                 .Entity<Category>()
-                .HasMany(pc => pc.ProductCategories)
+                .HasMany(ct => ct.ProductCategories)
                 .WithOne(pc => pc.Category)
-                .HasForeignKey(r => r.CategoryId)
+                .HasForeignKey(pc => pc.CategoryId)
+                .IsRequired();
+
+            builder
+                .Entity<Product>()
+                .HasOne(pr => pr.User)
+                .WithMany(au => au.Products)
+                .HasForeignKey(pr => pr.Id)
                 .IsRequired();
         }
     }
