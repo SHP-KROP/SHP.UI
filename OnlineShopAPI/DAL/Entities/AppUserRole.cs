@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace IdentityServer.Data.Entities
+namespace DAL.Entities
 {
     /// <summary>
     /// To provide M:N relationship between AppUser and AppRole

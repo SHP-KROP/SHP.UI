@@ -1,4 +1,4 @@
-using IdentityServer.Data;
+using DAL;
 using IdentityServer.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +17,7 @@ namespace IdentityServer
             {
                 var services = scope.ServiceProvider;
 
-                var context = services.GetRequiredService<DataContext>();
+                var context = services.GetRequiredService<OnlineShopContext>();
                 context.Database.EnsureCreated();
 
                 var seeder = services.GetRequiredService<Seeder>();

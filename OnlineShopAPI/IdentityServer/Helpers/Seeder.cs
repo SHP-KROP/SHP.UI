@@ -1,4 +1,4 @@
-﻿using IdentityServer.Data.Entities;
+﻿using DAL.Entities;
 using IdentityServer.Helpers.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;

@@ -9,6 +9,10 @@ namespace DAL.Interfaces
 
         ICategoryRepository CategoryRepository { get; }
 
+        IUserRepository UserRepository { get; }
+
+        ISignInManager SignInManager { get; }
+
         Task<bool> ConfirmAsync();
     }
 }

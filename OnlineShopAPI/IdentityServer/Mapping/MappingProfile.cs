@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IdentityServer.Data.Entities;
+using DAL.Entities;
 using IdentityServer.DTO;
 
 namespace IdentityServer.Mapping

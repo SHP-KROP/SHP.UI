@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DAL.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +12,31 @@ namespace GenericRepository
 {
     public class DataRepository<T> : IDataRepository<T> where T : class
     {
-        protected readonly DbContext _context;
+        protected readonly IdentityDbContext
+        <
+        AppUser,
+        AppRole,
+        int,
+        IdentityUserClaim<int>,
+        AppUserRole,
+        IdentityUserLogin<int>,
+        IdentityRoleClaim<int>,
+        IdentityUserToken<int>
+        > _context;
 
-        public DataRepository(DbContext context)
+        public DataRepository(
+            IdentityDbContext
+        <
+        AppUser,
+        AppRole,
+        int,
+        IdentityUserClaim<int>,
+        AppUserRole,
+        IdentityUserLogin<int>,
+        IdentityRoleClaim<int>,
+        IdentityUserToken<int>
+        > context
+            )
         {
             _context = context;
         }

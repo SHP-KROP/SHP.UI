@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using DAL.Entities;
+using DAL.Interfaces;
 using FluentAssertions;
 using IdentityServer.Controllers;
-using IdentityServer.Data.Entities;
-using IdentityServer.Data.Interfaces;
 using IdentityServer.DTO;
 using IdentityServer.Services.Interfaces;
 using IdentityServerTests.Helpers;
@@ -16,23 +16,31 @@ namespace IdentityServerTests
     public class UserControllerTests
     {
         private readonly UserController _userController;
-        private readonly Mock<IUserRepository> _mockUserRepository;
-        private readonly Mock<ISignInManager> _mockSignInManager;
+        private readonly Mock<IUnitOfWork> _uow;
         private readonly Mock<IMapper> _mapper;
         private readonly Mock<ITokenService> _tokenService;
+        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<ISignInManager> _mockSignInManager;
 
         public UserControllerTests()
         {
             _mapper = new Mock<IMapper>();
             _tokenService = new Mock<ITokenService>();
+
+            _uow = new Mock<IUnitOfWork>();
+
             _mockUserRepository = new Mock<IUserRepository>();
-            _mockSignInManager = new Mock<ISignInManager>();            
+
+            _mockSignInManager = new Mock<ISignInManager>();
+
+            _uow.SetupGet(u => u.UserRepository).Returns(_mockUserRepository.Object);
+
+            _uow.SetupGet(u => u.SignInManager).Returns(_mockSignInManager.Object);
 
             _userController = new UserController(
                 _mapper.Object,
                 _tokenService.Object,
-                _mockUserRepository.Object,
-                _mockSignInManager.Object
+                _uow.Object
             );
 
             _tokenService.Setup(ut => ut.CreateToken(It.IsAny<AppUser>())).Returns("Great");

@@ -1,5 +1,5 @@
-using IdentityServer.Data;
-using IdentityServer.Data.Interfaces;
+using DAL;
+using DAL.Interfaces;
 using IdentityServer.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +23,7 @@ namespace IdentityServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(opt =>
+            services.AddDbContext<OnlineShopContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"));
             });
@@ -36,8 +36,7 @@ namespace IdentityServer
                 });
             });
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<ISignInManager, SignInManager>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.ProvideIdentity();
 
