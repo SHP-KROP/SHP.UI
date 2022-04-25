@@ -29,7 +29,13 @@ namespace IdentityServerTests
 
             _uow = new Mock<IUnitOfWork>();
 
-            //_uow.SetupGet(_uow.Object.);
+            _mockUserRepository = new Mock<IUserRepository>();
+
+            _mockSignInManager = new Mock<ISignInManager>();
+
+            _uow.SetupGet(u => u.UserRepository).Returns(_mockUserRepository.Object);
+
+            _uow.SetupGet(u => u.SignInManager).Returns(_mockSignInManager.Object);
 
             _userController = new UserController(
                 _mapper.Object,
