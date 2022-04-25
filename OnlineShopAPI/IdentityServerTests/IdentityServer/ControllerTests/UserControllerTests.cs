@@ -19,6 +19,8 @@ namespace IdentityServerTests
         private readonly Mock<IUnitOfWork> _uow;
         private readonly Mock<IMapper> _mapper;
         private readonly Mock<ITokenService> _tokenService;
+        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<ISignInManager> _mockSignInManager;
 
         public UserControllerTests()
         {
@@ -27,7 +29,7 @@ namespace IdentityServerTests
 
             _uow = new Mock<IUnitOfWork>();
 
-            _uow.SetupGet(_uow.Object.)
+            //_uow.SetupGet(_uow.Object.);
 
             _userController = new UserController(
                 _mapper.Object,
