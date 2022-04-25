@@ -5,7 +5,6 @@ import { Navigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import './Register.scss';
-import RegisterBG from '../../img/registr-bg.jpg';
 import Header from '../Header';
 
 const BASE_URL = 'https://localhost:44330/api/user/register/';
@@ -140,10 +139,6 @@ const Register = () => {
               <Link href="/main">Back to main page</Link>
             </div>
           </div>
-          {/* <div className="registration__img">
-            <h1>Hello!</h1>
-            <span>We were waiting for you</span>
-          </div> */}
         </div>
       </div>
     </>
