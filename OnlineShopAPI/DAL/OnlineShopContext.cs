@@ -1,11 +1,23 @@
 ﻿using DAL.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
-    public class CoreApiContext : DbContext
+    public class OnlineShopContext : IdentityDbContext
+        <
+        AppUser,
+        AppRole,
+        int,
+        IdentityUserClaim<int>,
+        AppUserRole,
+        IdentityUserLogin<int>,
+        IdentityRoleClaim<int>,
+        IdentityUserToken<int>
+        >
     {
-        public CoreApiContext(DbContextOptions options)
+        public OnlineShopContext(DbContextOptions options)
             : base(options)
         {
 

@@ -1,13 +1,15 @@
-﻿using DAL.Repositories;
+﻿using DAL.Entities;
+using DAL.Repositories;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly CoreApiContext _context;
+        private readonly OnlineShopContext _context;
         
-        public UnitOfWork(CoreApiContext context)
+        public UnitOfWork(OnlineShopContext context, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _context = context;
 
@@ -15,11 +17,17 @@ namespace DAL.Interfaces
 
             ProductRepository = new ProductRepository(context);
             CategoryRepository = new CategoryRepository(context);
+            UserRepository = new UserRepository(userManager);
+            SignInManager = new SignInManager(signInManager);
         }
 
         public IProductRepository ProductRepository { get; private set; }
 
         public ICategoryRepository CategoryRepository { get; private set; }
+
+        public IUserRepository UserRepository { get; private set; }
+
+        public ISignInManager SignInManager { get; private set; }
 
         public async Task<bool> ConfirmAsync()
         {

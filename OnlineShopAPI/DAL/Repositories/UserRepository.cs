@@ -1,11 +1,11 @@
-﻿using IdentityServer.Data.Entities;
-using IdentityServer.Data.Interfaces;
+﻿using DAL.Entities;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace IdentityServer.Data
+namespace DAL.Repositories
 {
     public class UserRepository : IUserRepository
     {

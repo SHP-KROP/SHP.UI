@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace IdentityServer.Data.Entities
+namespace DAL.Entities
 {
     public class AppUser : IdentityUser<int>
     {
         [Required]
         public string Gender { get; set; } = "Male";
-        
+
         [Required]
         [Range(0, 10000)]
         public double Balance { get; set; }
 
         public ICollection<AppUserRole> UserRoles { get; set; }
+
+        public ICollection<Product> Products { get; set; }
     }
 }

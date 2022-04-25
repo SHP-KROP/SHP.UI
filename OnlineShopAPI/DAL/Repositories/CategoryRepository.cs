@@ -1,8 +1,7 @@
 ﻿using DAL.Entities;
 using GenericRepository;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,7 +9,17 @@ namespace DAL.Repositories
 {
     public class CategoryRepository : DataRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(DbContext context) : base(context)
+        public CategoryRepository(IdentityDbContext
+        <
+        AppUser,
+        AppRole,
+        int,
+        IdentityUserClaim<int>,
+        AppUserRole,
+        IdentityUserLogin<int>,
+        IdentityRoleClaim<int>,
+        IdentityUserToken<int>
+        > context) : base(context)
         {
 
         }

@@ -1,9 +1,9 @@
-﻿using IdentityServer.Data.Entities;
+﻿using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace IdentityServer.Data.Interfaces
+namespace DAL.Interfaces
 {
     public interface IUserRepository
     {

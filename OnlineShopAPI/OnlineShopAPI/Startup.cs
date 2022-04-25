@@ -26,7 +26,7 @@ namespace OnlineShopAPI
         {
             services.AddAutoMapping();
             services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
-            services.AddDbContext<CoreApiContext>(opt =>
+            services.AddDbContext<OnlineShopContext>(opt =>
             {
                 opt.UseInMemoryDatabase("InMemoryDb");
             });
