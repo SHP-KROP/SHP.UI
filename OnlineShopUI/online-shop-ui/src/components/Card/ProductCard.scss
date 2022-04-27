@@ -1,0 +1,42 @@
+$linkcolor: #f4768d;
+$productCardTextColor: #151515;
+$borderButtonsColorInCard: #b42020;
+$searchBg: #d1d1d1;
+.product-card__body {
+  background: white;
+  border: 1px solid $searchBg;
+  border-radius: 12px;
+}
+.product-card__img {
+  margin: 5%;
+  > img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.product-card__info {
+  padding: 0 5% 0 5%;
+  color: $productCardTextColor;
+  > p {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 22px;
+  }
+  > span {
+    font-weight: 400;
+    font-size: 10px;
+  }
+}
+.product-card__price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5%;
+  > button {
+    background: $linkcolor;
+    padding: 6.5px 12px 6.5px 12px;
+    border: 2px solid $borderButtonsColorInCard;
+    border-radius: 12px;
+    color: white;
+  }
+}
