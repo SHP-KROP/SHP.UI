@@ -1,10 +1,8 @@
-$linkcolor: #f4768d;
-$productCardTextColor: #151515;
-$borderButtonsColorInCard: #b42020;
-$searchBg: #d1d1d1;
+@import '../../Helper/ListColorVariable.scss';
+
 .product-card__body {
   background: white;
-  border: 1px solid $searchBg;
+  border: 1px solid $searchBgInProductCard;
   border-radius: 12px;
 }
 .product-card__img {
@@ -16,7 +14,7 @@ $searchBg: #d1d1d1;
 }
 .product-card__info {
   padding: 0 5% 0 5%;
-  color: $productCardTextColor;
+  color: $TextColorInProductCard;
   > p {
     font-weight: 500;
     font-size: 15px;
@@ -35,7 +33,7 @@ $searchBg: #d1d1d1;
   > button {
     background: $linkcolor;
     padding: 6.5px 12px 6.5px 12px;
-    border: 2px solid $borderButtonsColorInCard;
+    border: 2px solid $borderButtonsColorCardInProductCard;
     border-radius: 12px;
     color: white;
   }

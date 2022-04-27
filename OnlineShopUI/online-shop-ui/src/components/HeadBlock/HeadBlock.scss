@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
-$searchBg: #d1d1d1;
+@import '../../Helper/ListColorVariable.scss';
+$searchBgInHeadBlock: #d1d1d1;
 
 .search {
   display: flex;
@@ -15,7 +16,7 @@ $searchBg: #d1d1d1;
     input {
       border: none;
       outline: none;
-      background-color: $searchBg;
+      background-color: $searchBgInHeadBlock;
       padding: 10px;
     }
     > button {

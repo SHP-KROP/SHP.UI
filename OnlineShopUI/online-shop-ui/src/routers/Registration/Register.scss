@@ -1,4 +1,4 @@
-$linkcolor: black;
+@import '../../Helper/ListColorVariable.scss';
 * {
   font-family: 'Poppins', sans-serif;
 }
@@ -11,8 +11,8 @@ $linkcolor: black;
     rgb(255, 126, 151) 100%
   );
   a {
-    color: $linkcolor;
-    text-decoration-color: $linkcolor;
+    color: $linkcolorInRegistration;
+    text-decoration-color: $linkcolorInRegistration;
     text-decoration-thickness: from-font;
   }
   &__body {
@@ -106,10 +106,10 @@ $linkcolor: black;
   &__greeting {
     > p > strong {
       font-size: 35px;
-      color: $linkcolor;
+      color: $linkcolorInRegistration;
     }
     > span {
-      color: $linkcolor;
+      color: $linkcolorInRegistration;
     }
   }
 }

@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap');
-$linkcolor: #f4768d;
+@import '../../Helper/ListColorVariable.scss';
 .log-modal {
   height: 100vh;
 }
