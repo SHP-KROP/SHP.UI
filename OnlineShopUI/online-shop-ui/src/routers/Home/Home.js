@@ -5,52 +5,13 @@ import HeadBlock from '../../components/HeadBlock/HeadBlock';
 import ProductCard from '../../components/Card/ProductCard';
 import SideMenuList from '../../components/SideMenuList/SideMenuList';
 import Banner from '../../components/Banner/Banner';
+import useMenuFilling from '../Home/Logic/MenuLogic';
+import useProductCardFilling from '../Home/Logic/ProductLogic';
 
-const arr = [
-  { name: 'NameTitle', description: 'decsr', price: '12999' },
-  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-  { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-];
-const menu = [
-  {
-    nameCategory: 'asd',
-    subCategories: [
-      {
-        name: 'asdasd',
-        link: '/asdasd',
-      },
-    ],
-  },
-  {
-    nameCategory: 'asd',
-    subCategories: [
-      {
-        name: 'asdasd',
-        link: '/asdasd',
-      },
-    ],
-  },
-  {
-    nameCategory: 'ass',
-    subCategories: [
-      {
-        name: 'pampers',
-        link: '/papmers',
-      },
-      {
-        name: 'poops',
-        link: '/poops',
-      },
-    ],
-  },
-];
+function Home() {
+  const menu = useMenuFilling();
+  const productCards = useProductCardFilling();
 
-function Home(props) {
   return (
     <>
       <div className="MainPage">
@@ -71,7 +32,7 @@ function Home(props) {
             <Banner />
           </div>
           <div className="blockCards">
-            {arr.map((productCardItem) => (
+            {productCards.map((productCardItem) => (
               <ProductCard
                 name={productCardItem.name}
                 description={productCardItem.description}
