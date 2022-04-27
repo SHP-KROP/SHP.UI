@@ -11,12 +11,14 @@ import Fade from '@mui/material/Fade';
 const HeadBlock = () => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isOpen = !!anchorElement;
+
   const handleClick = (event) => {
     setAnchorElement(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorElement(null);
   };
+
   return (
     <div className="search">
       <div className="name-shop">
