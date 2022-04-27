@@ -2,6 +2,7 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using IdentityServer.DTO;
+using IdentityServer.Extensions;
 using IdentityServer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace IdentityServer.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(result.Errors);
+                return BadRequest(result.ToErrorsString());
             }
 
             var createdUser = await _uow.UserRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
