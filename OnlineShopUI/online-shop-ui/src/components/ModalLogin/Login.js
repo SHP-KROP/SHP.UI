@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
@@ -9,17 +8,12 @@ import Checkbox from '@mui/material/Checkbox';
 import User from '../../img/icon-user.png';
 import { Link } from 'react-router-dom';
 import useLogin from './Logic/LoginLogic';
+import Handlers from '../Helper/Handlers';
 
 export default function Login() {
-  const [
-    handleLogInModalOpen,
-    handleLogInModalClose,
-    isOpen,
-    setUsername,
-    setPassword,
-    flag,
-    setFlag,
-  ] = useLogin();
+  const [setUsername, setPassword, flag, setFlag] = useLogin();
+
+  const [handleLogInModalOpen, handleLogInModalClose, isOpen] = Handlers();
 
   return (
     <div>

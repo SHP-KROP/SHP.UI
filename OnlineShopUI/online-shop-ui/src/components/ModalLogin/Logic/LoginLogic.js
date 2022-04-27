@@ -1,15 +1,13 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
-
+import Handlers from '../../Helper/Handlers';
 const BASE_URL = 'https://localhost:44330/api/user/login/';
 
 toast.configure();
 
 const useLogin = () => {
-  const [isOpen, setOpen] = useState(() => false);
-  const handleLogInModalOpen = () => setOpen(true);
-  const handleLogInModalClose = () => setOpen(false);
+  const [handleLogInModalClose] = Handlers();
 
   const [name, setUsername] = useState(() => '');
   const [pass, setPassword] = useState(() => '');
@@ -75,15 +73,7 @@ const useLogin = () => {
     }
   };
 
-  return [
-    handleLogInModalOpen,
-    handleLogInModalClose,
-    isOpen,
-    setUsername,
-    setPassword,
-    flag,
-    setFlag,
-  ];
+  return [setUsername, setPassword, flag, setFlag];
 };
 
 export default useLogin;
