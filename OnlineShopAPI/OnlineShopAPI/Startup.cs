@@ -9,6 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using OnlineShopAPI.Extensions;
+using OnlineShopAPI.Services;
+using OnlineShopAPI.Services.Interfaces;
 
 namespace OnlineShopAPI
 {
@@ -28,6 +30,7 @@ namespace OnlineShopAPI
             services.ProvideIdentity();
             services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddDbContext<OnlineShopContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"), b => b.MigrationsAssembly("DAL"));
