@@ -8,7 +8,7 @@
   margin: 10% auto;
   width: 300px;
   height: 400px;
-  background: #ffffff;
+  background: white;
   border-radius: 8px;
 
   &__date {
@@ -25,9 +25,9 @@
   &__email,
   &__pass {
     > input {
-      background: #ffffff;
+      background: white;
       padding: 10px 10px 10px 20px;
-      border: 1px solid #eaeaf0;
+      border: 1px solid $InputBorderColorInLogin;
       box-sizing: border-box;
       border-radius: 5px;
       width: 85%;
@@ -44,7 +44,7 @@
     justify-content: space-between;
     align-items: center;
     border-radius: 8px 8px 0 0;
-    background-color: #edf2f6;
+    background-color: $BGColorLoginTop;
     padding: 10px 0 10px 0;
     > p {
       margin-left: 30px;
