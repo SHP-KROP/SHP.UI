@@ -31,7 +31,6 @@ namespace IdentityServer.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
-
             var existingUser = await _uow.UserRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
 
             if (existingUser != null)
@@ -62,6 +61,7 @@ namespace IdentityServer.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> LogIn([FromBody] UserLogInDto userLogInDto)
         {
+            throw new System.Exception();
             var user = await _uow.UserRepository.GetUserByUsernameAsync(userLogInDto.UserName);
 
             if (user == null)
@@ -70,7 +70,7 @@ namespace IdentityServer.Controllers
             }
 
             var result = await _uow.SignInManager
-                .CheckPasswordSignInAsync(user, userLogInDto.Password, lockoutOnFailure: false);
+                .CheckPasswordSignInAsync(user, userLogInDto.Password ?? string.Empty, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {

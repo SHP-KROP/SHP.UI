@@ -1,6 +1,7 @@
 using DAL;
 using DAL.Interfaces;
 using IdentityServer.Extensions;
+using IdentityServer.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,8 @@ namespace IdentityServer
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ValidationHandlerMiddleware>();
 
             app.UseCors(Configuration["CorsPolicyName"]);
 
