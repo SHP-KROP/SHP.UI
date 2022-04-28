@@ -14,5 +14,9 @@ namespace DAL.Interfaces
         public Task<IdentityResult> CreateUserAsync(AppUser appUser, string password);
 
         public Task<IdentityResult> AddToRoleAsync(AppUser appUser, string role);
+
+        public Task<AppUser> FindAsync(int id);
+
+        public Task UpdateAsync(AppUser user);
     }
 }

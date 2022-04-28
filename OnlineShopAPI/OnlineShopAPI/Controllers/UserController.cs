@@ -26,11 +26,12 @@ namespace OnlineShopAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AppUser>> AddPhotoToUser(IFormFile photo)
+        public async Task<ActionResult<AppUser>> AddPhotoToUser(int id, IFormFile photo)
         {
+            //HttpContext.Request.Headers.TryGetValue("Authorization", out var token);
 
-
-            return Ok();
+            //token.ToString();
+            return await _photoService.AddPhotoToUser(id, photo) ? Ok(new AppUser()) : BadRequest("Unable to upload the photo");
         }
     }
 }

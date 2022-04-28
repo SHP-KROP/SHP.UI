@@ -3,6 +3,7 @@ using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -34,6 +35,16 @@ namespace DAL.Repositories
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _userManager.Users.ToListAsync();
+        }
+
+        public async Task<AppUser> FindAsync(int id)
+        {
+            return await _userManager.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateAsync(AppUser user)
+        {
+            await _userManager.UpdateAsync(user);
         }
     }
 }
