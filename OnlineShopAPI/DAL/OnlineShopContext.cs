@@ -29,6 +29,8 @@ namespace DAL
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
 
+        public DbSet<Photo> Photos { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -52,6 +54,12 @@ namespace DAL
                 .HasOne(pr => pr.User)
                 .WithMany(au => au.Products)
                 .HasForeignKey(pr => pr.Id)
+                .IsRequired();
+
+            builder
+                .Entity<Product>()
+                .HasMany(pr => pr.Photos)
+                .WithOne(photo => photo.Product)
                 .IsRequired();
         }
     }

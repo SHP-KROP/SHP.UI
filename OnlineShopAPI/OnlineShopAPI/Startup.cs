@@ -30,7 +30,7 @@ namespace OnlineShopAPI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddDbContext<OnlineShopContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"), b => b.MigrationsAssembly("DAL"));
             });
 
             services.AddCors(o =>

@@ -25,7 +25,7 @@ namespace IdentityServer
         {
             services.AddDbContext<OnlineShopContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"));
+                opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"), b => b.MigrationsAssembly("DAL"));
             });
 
             services.AddCors(o =>
