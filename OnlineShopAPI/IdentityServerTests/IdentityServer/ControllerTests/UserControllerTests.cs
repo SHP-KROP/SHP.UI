@@ -47,6 +47,38 @@ namespace IdentityServerTests
         }
 
         [Fact]
+        public async void LogIn_ShouldReturnUnathorized_WhenPasswordIsNull()
+        {
+            var userDto = new UserLogInDto { UserName = "Tomass", Password = null };
+
+            var signInResult = new Microsoft.AspNetCore.Identity.SignInResult();
+
+            _mockUserRepository
+                .Setup(ur => ur.GetUserByUsernameAsync(It.IsAny<string>()))
+                .ReturnsAsync
+                (new AppUser { UserName = "Tomass" });
+
+            _mockSignInManager
+                .Setup(m => m.CheckPasswordSignInAsync
+                (
+                    It.IsAny<AppUser>(),
+                    It.IsAny<string>(),
+                    It.IsAny<bool>()
+                )).ReturnsAsync(signInResult);
+
+            _mapper
+                .Setup(m => m.Map<UserDto>(It.IsAny<AppUser>()))
+                .Returns(new UserDto { UserName = "Tomass" });
+
+            var response = await _userController.LogIn(userDto);
+
+            var parsedResponse = new Response<UserDto>(response);
+
+            parsedResponse.Value.Should().BeNull();
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
+        }
+
+        [Fact]
         public async void LogIn_ShouldReturnOk_WhenSignInResultSucceeded()
         {
             var userDto = new UserLogInDto { UserName = "Tomass", Password = "correctPass" };

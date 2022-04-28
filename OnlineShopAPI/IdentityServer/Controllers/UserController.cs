@@ -61,7 +61,6 @@ namespace IdentityServer.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> LogIn([FromBody] UserLogInDto userLogInDto)
         {
-            throw new System.Exception();
             var user = await _uow.UserRepository.GetUserByUsernameAsync(userLogInDto.UserName);
 
             if (user == null)
