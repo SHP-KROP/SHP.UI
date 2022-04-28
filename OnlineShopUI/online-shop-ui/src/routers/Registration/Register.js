@@ -1,9 +1,9 @@
-import { Link, LinearProgress } from "@mui/material";
-import { Navigate } from "react-router-dom";
-import "react-toastify/dist/ReactToastify.css";
-import "./Register.scss";
-import Feedback from "../../components/FeedbackATop/Feedback";
-import useRegister from "./Logic/RegisterLogic";
+import { Link, LinearProgress } from '@mui/material';
+import { Navigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
+import './Register.scss';
+import Feedback from '../../components/FeedbackATop/Feedback';
+import useRegister from './Logic/RegisterLogic';
 
 const Register = () => {
   const [isRedirect, isLoading, setFlag, setName, setPass, flag] =
@@ -11,7 +11,7 @@ const Register = () => {
 
   return (
     <>
-      {isRedirect ? <Navigate push to="/main" /> : null}
+      {isRedirect ? <Navigate push to="/home" /> : null}
       <div className="registration">
         <Feedback />
 
@@ -67,7 +67,7 @@ const Register = () => {
             )}
 
             <div className="registration__exit">
-              <Link href="/main">Back to main page</Link>
+              <Link href="/home">Back to main page</Link>
             </div>
           </div>
         </div>

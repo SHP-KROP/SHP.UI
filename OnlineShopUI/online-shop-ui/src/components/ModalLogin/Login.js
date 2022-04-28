@@ -13,7 +13,7 @@ import Handlers from '../../Helper/Handlers';
 export default function Login() {
   const [setUsername, setPassword, flag, setFlag] = useLogin();
 
-  const [handleLogInModalOpen, handleLogInModalClose, isOpen] = Handlers();
+  const [handleModalClose, handleModalOpen, isOpen] = Handlers();
 
   return (
     <div>
@@ -22,13 +22,13 @@ export default function Login() {
           src={User}
           alt="user"
           className="log-btn"
-          onClick={handleLogInModalOpen}
+          onClick={handleModalOpen}
         />
       </a>
       <Modal
         className="log-modal"
         open={isOpen}
-        onClose={handleLogInModalClose}
+        onClose={handleModalClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -40,7 +40,7 @@ export default function Login() {
               </p>
               <CloseIcon
                 className="login__btnclose"
-                onClick={handleLogInModalClose}
+                onClick={handleModalClose}
               ></CloseIcon>
             </div>
             <div className="login__date">
@@ -81,7 +81,7 @@ export default function Login() {
                 </button>
               </div>
               <div className="login__register">
-                <Link to="/register" onClick={handleLogInModalClose}>
+                <Link to="/register" onClick={handleModalClose}>
                   Register
                 </Link>
               </div>
