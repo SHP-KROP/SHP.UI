@@ -1,31 +1,23 @@
-$linkcolor: black;
+@import '../../Helper/ListColorVariable.scss';
 * {
   font-family: 'Poppins', sans-serif;
 }
 .registration {
   height: 100vh;
-  background: rgb(250, 232, 232);
-  background: linear-gradient(
-    351deg,
-    rgb(250, 232, 232) 30%,
-    rgb(255, 126, 151) 100%
-  );
+  background: $BGPageRegistrationColor;
+  background: $BGPageRegistrationGradient;
   a {
-    color: $linkcolor;
-    text-decoration-color: $linkcolor;
+    color: $linkcolorInRegistration;
+    text-decoration-color: $linkcolorInRegistration;
     text-decoration-thickness: from-font;
   }
   &__body {
-    background-color: #fff;
+    background-color: white;
     width: 60%;
     height: 80%;
     border-radius: 12px;
-    background: rgb(250, 232, 232);
-    background: linear-gradient(
-      177deg,
-      rgb(250, 232, 232) 30%,
-      rgb(255, 126, 151) 100%
-    );
+    background: $BGFormRegistrationColor;
+    background: $BGFormRegistrationGradient;
     margin: 5% auto;
   }
   .input {
@@ -36,7 +28,7 @@ $linkcolor: black;
       border-radius: 8px;
       border: 0;
       outline: none;
-      box-shadow: 0px 5px 10px 2px rgb(34 60 80 / 20%) inset;
+      box-shadow: 0px 5px 10px 2px $InputFormShadowColor inset;
     }
     > label {
       color: $linkcolor;
@@ -56,22 +48,6 @@ $linkcolor: black;
     justify-content: space-between;
     height: 100%;
   }
-  &__img {
-    flex: 0.4 1;
-    background-color: rgba(251, 126, 255, 1);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-    flex-direction: column;
-    > span {
-      font-weight: bold;
-      font-size: 20px;
-    }
-  }
   &__btn {
     width: 60%;
     padding: 5px 15px 5px 10px;
@@ -79,16 +55,12 @@ $linkcolor: black;
     outline: none;
     border: none;
     text-transform: uppercase;
-    background: rgb(251, 103, 103);
-    background: linear-gradient(
-      239deg,
-      rgb(251, 103, 103) 30%,
-      rgb(251, 126, 255) 91%
-    );
+    background: $FormRegistrationButtonColor;
+    background: $FormRegistrationButtonGradient;
     font-weight: bold;
     color: white;
     margin: 0 auto;
-    box-shadow: 0px 5px 10px 2px rgb(34 60 80 / 20%) inset;
+    box-shadow: 0px 5px 10px 2px $InputFormShadowColor inset;
   }
   &__form {
     display: flex;
@@ -106,10 +78,10 @@ $linkcolor: black;
   &__greeting {
     > p > strong {
       font-size: 35px;
-      color: $linkcolor;
+      color: $linkcolorInRegistration;
     }
     > span {
-      color: $linkcolor;
+      color: $linkcolorInRegistration;
     }
   }
 }

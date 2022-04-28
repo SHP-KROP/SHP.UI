@@ -1,10 +1,10 @@
 import React from 'react';
-import './Header.scss';
+import './Feedback.scss';
 
-const Header = () => {
+const Feedback = () => {
   return (
-    <div className="header">
-      <div className="header__contact">
+    <div className="feedback">
+      <div className="feedback__contact">
         <ul>
           <li>
             <a href="#">Chat with us</a>
@@ -29,4 +29,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Feedback;

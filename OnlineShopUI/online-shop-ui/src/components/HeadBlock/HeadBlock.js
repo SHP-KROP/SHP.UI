@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './HeadBlock.scss';
-import Login from './Login';
+import '../HeadBlock/HeadBlock.scss';
+import Login from '../ModalLogin/Login';
 
-import IconSearch from '../img/icon-search.png';
-import Card from '../img/icon-card.png';
+import IconSearch from '../../img/icon-search.png';
+import Card from '../../img/icon-card.png';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
@@ -11,12 +11,14 @@ import Fade from '@mui/material/Fade';
 const HeadBlock = () => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isOpen = !!anchorElement;
+
   const handleClick = (event) => {
     setAnchorElement(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorElement(null);
   };
+
   return (
     <div className="search">
       <div className="name-shop">

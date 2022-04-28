@@ -1,5 +1,5 @@
-$stripColor: #d1d1d1;
-.header {
+@import '../../Helper/ListColorVariable.scss';
+.feedback {
   &__contact {
     display: flex;
     justify-content: space-between;
@@ -14,7 +14,7 @@ $stripColor: #d1d1d1;
   > hr {
     width: 95%;
     margin: 0 auto;
-    background-color: $stripColor;
-    border-color: $stripColor;
+    background-color: $stripColorInFeedback;
+    border-color: $stripColorInFeedback;
   }
 }

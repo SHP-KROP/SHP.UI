@@ -1,5 +1,4 @@
-$linkcolor: #f4768d;
-$subfocusAndBorderColor: #b42020;
+@import '../../Helper/ListColorVariable.scss';
 
 .categories__banner {
   background-color: $linkcolor;
@@ -19,13 +18,13 @@ $subfocusAndBorderColor: #b42020;
     font-weight: 600;
     font-size: 12px;
     line-height: 18px;
-    color: $subfocusAndBorderColor;
+    color: $subfocusAndBorderColorInBanner;
   }
 }
 .categories__read {
   margin: 30px;
   width: 160px;
-  border: 2px solid $subfocusAndBorderColor;
+  border: 2px solid $subfocusAndBorderColorInBanner;
   background: none;
   border-radius: 12px;
   padding: 12px 30px 12px 16px;

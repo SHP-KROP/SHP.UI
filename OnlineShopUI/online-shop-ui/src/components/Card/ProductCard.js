@@ -1,6 +1,6 @@
 import React from 'react';
 import './ProductCard.scss';
-import ProductBg from '../img/product-img.png';
+import ProductBg from '../../img/product-img.png';
 
 const ProductCard = (props) => {
   return (
