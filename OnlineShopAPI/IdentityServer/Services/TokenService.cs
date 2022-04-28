@@ -31,10 +31,10 @@ namespace IdentityServer.Services
 
             var claims = new List<Claim>
             {
-                new Claim("id", user.Id.ToString()),
-                new Claim("username", user.UserName),
+                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Name, user.UserName),
                 new Claim("roles", JsonSerializer.Serialize(roles ?? new List<string>{ })),
-                new Claim("email", user.Email ?? string.Empty)
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty)
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
