@@ -1,9 +1,9 @@
 import { useState } from 'react';
-const Handlers = () => {
+const UseHandlers = () => {
   const [isOpen, setOpen] = useState(() => false);
   const handleModalOpen = () => setOpen(true);
   const handleModalClose = () => setOpen(false);
 
   return [handleModalClose, handleModalOpen, isOpen];
 };
-export default Handlers;
+export default UseHandlers;
