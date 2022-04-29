@@ -28,6 +28,11 @@ namespace DAL.Repositories
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
+            if (username is null)
+            {
+                return await Task.FromResult(null as AppUser);
+            }
+
             return await _userManager.Users.FirstOrDefaultAsync(u => u.UserName.ToUpper() == username.ToUpper());
         }
 
