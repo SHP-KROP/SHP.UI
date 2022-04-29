@@ -34,11 +34,13 @@ namespace OnlineShopAPI.Controllers
         [HttpPost("photo-to-product")]
         public async Task<ActionResult<Product>> AddPhotoToProduct(int productId, IFormFile photo)
         {
-            var user = await _uow.UserRepository.FindAsync(GetUserId());
+            var user = await _uow.UserRepository.GetUserWithProductsWithPhotosAsync(GetUserId());
 
             var result = await _photoService.AddPhotoToProduct(user, productId, photo);
 
-            return new Product();
+            await _uow?.ConfirmAsync();
+
+            return result ? Ok() : BadRequest();
         }
 
         private int GetUserId()

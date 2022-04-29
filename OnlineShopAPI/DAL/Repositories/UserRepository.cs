@@ -64,5 +64,16 @@ namespace DAL.Repositories
 
             await _userManager.UpdateAsync(user);
         }
+
+        public async Task<AppUser> GetUserWithProductsWithPhotosAsync(int id)
+        {
+            var user = await _userManager.Users
+                .Where(x => x.Id == id)
+                .Include(u => u.Products)
+                .ThenInclude(p => p.Photos)
+                .FirstOrDefaultAsync();
+
+            return user;
+        }
     }
 }

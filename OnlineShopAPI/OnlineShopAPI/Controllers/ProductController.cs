@@ -58,7 +58,7 @@ namespace OnlineShopAPI.Controllers
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
-        [Authorize(Roles = "seller,admin")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]

@@ -62,7 +62,7 @@ namespace OnlineShopAPI.Services
 
             product.Photos.Add(photoEntity);
 
-            _uow.ProductRepository.Update(product);
+            await _uow.UserRepository.UpdateAsync(user);
 
             return await Task.FromResult(true);
         }
@@ -93,6 +93,8 @@ namespace OnlineShopAPI.Services
             user.PhotoUrl = linkToPhoto.AbsoluteUri;
 
             await _uow.UserRepository.UpdateAsync(user);
+
+            await _uow.ConfirmAsync();
 
             return await Task.FromResult(true);
         }
