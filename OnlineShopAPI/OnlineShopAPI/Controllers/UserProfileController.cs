@@ -45,8 +45,9 @@ namespace OnlineShopAPI.Controllers
 
         private int GetUserId()
         {
-            return int.Parse(User.Claims
-                .First(x => x.Type == JwtClaimOptions.AuthorizationNameId).Value);
+            int.TryParse(User.Claims.First(x => x.Type == JwtClaimOptions.AuthorizationNameId).Value, out var id);
+
+            return id;
         }
     }
 }

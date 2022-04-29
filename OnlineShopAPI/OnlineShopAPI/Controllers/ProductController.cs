@@ -63,7 +63,7 @@ namespace OnlineShopAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] CreateProductDto createProductDto)
+        public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductDto createProductDto)
         {
             if (string.IsNullOrEmpty(createProductDto?.Name))
             {
@@ -140,8 +140,9 @@ namespace OnlineShopAPI.Controllers
 
         private int GetUserId()
         {
-            return int.Parse(User.Claims.First(x => x.Type ==
-            JwtClaimOptions.AuthorizationNameId).Value);
+            int.TryParse(User?.Claims?.First(x => x.Type == JwtClaimOptions.AuthorizationNameId)?.Value, out var id);
+
+            return id;
         }
     }
 }

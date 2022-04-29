@@ -9,6 +9,7 @@ using IdentityServerTests.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Moq;
+using System.Collections.Generic;
 using Xunit;
 
 namespace IdentityServerTests
@@ -43,7 +44,7 @@ namespace IdentityServerTests
                 _uow.Object
             );
 
-            _tokenService.Setup(ut => ut.CreateToken(It.IsAny<AppUser>())).Returns("Great");
+            _tokenService.Setup(ut => ut.CreateToken(It.IsAny<AppUser>(), new List<string>())).Returns("Great");
         }
 
         [Fact]
