@@ -38,6 +38,7 @@ namespace OnlineShopAPI.Services
 
         public async Task<bool> AddPhotoToUser(int userId, IFormFile photo)
         {
+            
             if (photo == null)
             {
                 return false;

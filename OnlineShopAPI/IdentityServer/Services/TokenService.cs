@@ -31,7 +31,7 @@ namespace IdentityServer.Services
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
+                new Claim("nameid", user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, user.UserName),
                 new Claim("roles", JsonSerializer.Serialize(roles ?? new List<string>{ })),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty)

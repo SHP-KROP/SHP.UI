@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using OnlineShopAPI.Extensions;
 using OnlineShopAPI.Services;
 using OnlineShopAPI.Services.Interfaces;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace OnlineShopAPI
 {
@@ -28,6 +29,7 @@ namespace OnlineShopAPI
         {
             services.AddAutoMapping();
             services.ProvideIdentity();
+            services.AddBearerAuthentication(Configuration);
             services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPhotoService, PhotoService>();
@@ -48,6 +50,14 @@ namespace OnlineShopAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "OnlineShopAPI", Version = "v1" });
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = "Authorization using Bearer scheme 'Bearer <token>'",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
             });
         }
 
@@ -64,6 +74,8 @@ namespace OnlineShopAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
