@@ -6,7 +6,7 @@
 
         public string URL { get; set; }
 
-        public bool IsMain { get; set; } = true;
+        public bool IsMain { get; set; }
 
         public Product Product { get; set; }
     }
