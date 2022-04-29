@@ -29,8 +29,12 @@ namespace DAL.Repositories
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            return await _userManager.Users
-                .FirstOrDefaultAsync(u => u.UserName.ToUpper() == username.ToUpper());
+            if (username is null)
+            {
+                return await Task.FromResult(null as AppUser);
+            }
+
+            return await _userManager.Users.FirstOrDefaultAsync(u => u.UserName.ToUpper() == username.ToUpper());
         }
 
         public async Task<ICollection<string>> GetUserRoles(AppUser user)

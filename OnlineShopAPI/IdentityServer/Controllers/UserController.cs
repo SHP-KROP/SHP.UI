@@ -26,12 +26,11 @@ namespace IdentityServer.Controllers
             _mapper = mapper;
             _tokenService = tokenService;
             _uow = uow;
-    }
+        }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
-
             var existingUser = await _uow.UserRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
 
             if (existingUser != null)
@@ -72,7 +71,7 @@ namespace IdentityServer.Controllers
             }
 
             var result = await _uow.SignInManager
-                .CheckPasswordSignInAsync(user, userLogInDto.Password, lockoutOnFailure: false);
+                .CheckPasswordSignInAsync(user, userLogInDto.Password ?? string.Empty, lockoutOnFailure: false);
 
             if (!result.Succeeded)
             {
