@@ -44,7 +44,7 @@ export default function Login() {
           <div className="login">
             <div className="login__type">
               <p>
-                <strong>Вход</strong>
+                <strong>Log in</strong>
               </p>
               <CloseIcon
                 className="login__btnclose"
@@ -78,7 +78,7 @@ export default function Login() {
                 )}
               </div>
               <div className="login__pass">
-                <label>Пароль</label>
+                <label>Password</label>
                 <input
                   type="password"
                   onChange={(e) => {
@@ -89,9 +89,6 @@ export default function Login() {
                     pattern: {
                       value:
                         /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{5,}$/,
-                    },
-                    minLength: {
-                      message: 'Password must be more than 5 characters',
                     },
                   })}
                 />
@@ -105,12 +102,12 @@ export default function Login() {
                   </p>
                 )}
               </div>
-              <a href="#">Забыли пароль?</a>
+              <a href="#">Forgot password?</a>
               <FormGroup>
                 <FormControlLabel
                   className="login__check"
                   control={<Checkbox defaultChecked />}
-                  label="Запомнить меня"
+                  label="Remember me"
                 />
               </FormGroup>
             </form>
@@ -120,7 +117,7 @@ export default function Login() {
                   type="submit"
                   className="login__sign-btn"
                   onClick={() => setFlag(!flag)}
-                  value="Войти"
+                  value="Log in"
                   disabled={!isValid}
                 />
               </div>

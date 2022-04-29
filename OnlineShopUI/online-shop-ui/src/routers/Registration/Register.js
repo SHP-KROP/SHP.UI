@@ -81,9 +81,6 @@ const Register = () => {
                       value:
                         /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{5,}$/,
                     },
-                    minLength: {
-                      message: 'Password must be more than 5 characters',
-                    },
                   })}
                 />
               </div>
