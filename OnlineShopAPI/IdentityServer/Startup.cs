@@ -69,8 +69,6 @@ namespace IdentityServer
             app.UseCors(Configuration[ConfigurationOptions.CorsPolicyName]);
             app.UseMiddleware<ValidationHandlerMiddleware>();
 
-            app.UseCors(Configuration["CorsPolicyName"]);
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
