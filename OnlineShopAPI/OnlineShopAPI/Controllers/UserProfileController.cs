@@ -25,22 +25,22 @@ namespace OnlineShopAPI.Controllers
 
         [Authorize]
         [HttpPost("photo-to-user")]
-        public async Task<ActionResult<AppUser>> AddPhotoToUser(IFormFile photo)
+        public async Task<ActionResult> AddPhotoToUser(IFormFile photo)
         {
-            return await _photoService.AddPhotoToUser(GetUserId(), photo) ? Ok(new AppUser()) : BadRequest("Unable to upload the photo");
+            return await _photoService.AddPhotoToUser(GetUserId(), photo) 
+                ? Ok(new AppUser()) 
+                : BadRequest("Unable to upload the photo");
         }
 
         [Authorize]
         [HttpPost("photo-to-product")]
-        public async Task<ActionResult<Product>> AddPhotoToProduct(int productId, IFormFile photo)
+        public async Task<ActionResult> AddPhotoToProduct(int productId, IFormFile photo)
         {
             var user = await _uow.UserRepository.GetUserWithProductsWithPhotosAsync(GetUserId());
-
             var result = await _photoService.AddPhotoToProduct(user, productId, photo);
-
             await _uow?.ConfirmAsync();
 
-            return result ? Ok() : BadRequest();
+            return result ? Ok() : BadRequest("Unable to upload the photo");
         }
 
         private int GetUserId()

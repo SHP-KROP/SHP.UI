@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OnlineShopAPI.DTO.Product;
 using OnlineShopAPI.Mapping;
+using OnlineShopAPI.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -140,7 +141,7 @@ namespace OnlineShopAPI.Controllers
         private int GetUserId()
         {
             return int.Parse(User.Claims.First(x => x.Type ==
-            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value);
+            JwtClaimOptions.AuthorizationNameId).Value);
         }
     }
 }

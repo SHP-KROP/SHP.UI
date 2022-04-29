@@ -64,10 +64,11 @@ namespace IdentityServer
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseMiddleware<ValidationHandlerMiddleware>(env);
 
             app.UseCors(Configuration[ConfigurationOptions.CorsPolicyName]);
-            app.UseMiddleware<ValidationHandlerMiddleware>();
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
