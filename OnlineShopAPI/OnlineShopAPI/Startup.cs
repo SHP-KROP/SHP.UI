@@ -38,6 +38,13 @@ namespace OnlineShopAPI
                 opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"), b => b.MigrationsAssembly("DAL"));
             });
 
+            services
+                .AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
             services.AddCors(o =>
             {
                 o.AddPolicy(name: Configuration["CorsPolicyName"], p =>

@@ -52,8 +52,10 @@ namespace IdentityServer.Controllers
 
             await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
 
+            var roles = await _uow.UserRepository.GetUserRoles(createdUser);
+
             var userDto = _mapper.Map<UserDto>(createdUser);
-            var token = _tokenService.CreateToken(createdUser);
+            var token = _tokenService.CreateToken(createdUser, roles);
             userDto.Token = token;
 
             return Ok(userDto);
@@ -77,8 +79,9 @@ namespace IdentityServer.Controllers
                 return Unauthorized("Wrong password");
             }
 
+            var roles = await _uow.UserRepository.GetUserRoles(user);
             var userDto = _mapper.Map<UserDto>(user);
-            userDto.Token = _tokenService.CreateToken(user);
+            userDto.Token = _tokenService.CreateToken(user, roles);
 
             return Ok(userDto);
         }

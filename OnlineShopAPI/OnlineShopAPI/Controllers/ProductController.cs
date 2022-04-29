@@ -58,7 +58,7 @@ namespace OnlineShopAPI.Controllers
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
-        [Authorize]
+        [Authorize(Roles = "seller,admin")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -70,8 +70,9 @@ namespace OnlineShopAPI.Controllers
             }
 
             var product = _mapper.Map<Product>(createProductDto);
+            var user = await _uow.UserRepository.FindAsync(GetUserId());
 
-            product.User = await _uow.UserRepository.FindAsync(GetUserId());
+            product.User = user;
 
             try
             {
@@ -84,7 +85,7 @@ namespace OnlineShopAPI.Controllers
 
             await _uow?.ConfirmAsync();
 
-            return Ok();
+            return Ok(_mapper.Map<ProductDto>(product));
         }
 
         //[Authorize]

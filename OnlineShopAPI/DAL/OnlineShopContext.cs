@@ -50,10 +50,9 @@ namespace DAL
                 .IsRequired();
 
             builder
-                .Entity<Product>()
-                .HasOne(pr => pr.User)
-                .WithMany(au => au.Products)
-                .HasForeignKey(pr => pr.Id)
+                .Entity<AppUser>()
+                .HasMany(u => u.Products)
+                .WithOne(p => p.User)
                 .IsRequired();
 
             builder

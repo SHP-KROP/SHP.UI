@@ -25,10 +25,8 @@ namespace IdentityServer.Services
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
         }
 
-        public string CreateToken(AppUser user)
+        public string CreateToken(AppUser user, ICollection<string> roles)
         {
-            var roles = user?.UserRoles?.Select(ur => ur.Role.Name);
-
             var claims = new List<Claim>
             {
                 new Claim("nameid", user.Id.ToString()),

@@ -20,5 +20,7 @@ namespace DAL.Interfaces
         public Task UpdateAsync(AppUser user);
 
         public Task AddProductToUserAsync(int id, Product product);
+
+        public Task<ICollection<string>> GetUserRoles(AppUser user);
     }
 }
