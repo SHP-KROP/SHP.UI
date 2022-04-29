@@ -4,24 +4,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import './Register.scss';
 import Feedback from '../../components/FeedbackATop/Feedback';
 import useRegister from './Logic/RegisterLogic';
-import { useForm } from 'react-hook-form';
+import Error from '../../img/icon-error.png';
+import UseValidation from '../../Validation/Validation';
 
 const Register = () => {
   const [isRedirect, isLoading, setFlag, setName, setPass, flag] =
     useRegister();
 
-  const {
-    register,
-    formState: { errors, isValid },
-    handleSubmit,
-    reset,
-  } = useForm({
-    mode: 'onBlur',
-  });
+  const [register, handleSubmit, reset, errors, isValid] = UseValidation();
 
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data));
-    console.log(errors.Password);
+  const onSubmit = () => {
     reset();
   };
 
@@ -59,17 +51,20 @@ const Register = () => {
                     setName(e.target.value);
                   }}
                   {...register('Username', {
-                    required: 'Field Username required for registration',
+                    required: <p>Field Username required for registration</p>,
                     minLength: {
                       value: 3,
-                      message: 'Username must be more than 3 characters',
+                      message: <p>Username must be more than 3 characters</p>,
                     },
                   })}
                 />
               </div>
               <div className="registration__error">
                 {errors?.Username && (
-                  <p>{errors?.Username.message || 'Error!'}</p>
+                  <p>
+                    <img src={Error} alt="Erorr" />
+                    {errors?.Username.message || 'Error!'}
+                  </p>
                 )}
               </div>
 
@@ -83,11 +78,10 @@ const Register = () => {
                   {...register('Password', {
                     required: 'Field Password required for registration',
                     pattern: {
-                      value: /^[A-Za-z]+$/i,
-                      message: 'Password must included',
+                      value:
+                        /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{5,}$/,
                     },
                     minLength: {
-                      value: 5,
                       message: 'Password must be more than 5 characters',
                     },
                   })}
@@ -95,8 +89,13 @@ const Register = () => {
               </div>
 
               <div className="registration__error">
-                {errors?.Password &&
-                  'Password must be longer than 5 characters and contain at least one special character'}
+                {errors?.Password && (
+                  <p>
+                    <img src={Error} alt="Erorr" />
+                    Password must be longer than 5 characters and contain at
+                    least one special character
+                  </p>
+                )}
               </div>
               {isLoading ? (
                 <LinearProgress />
