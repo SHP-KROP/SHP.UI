@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using OnlineShopAPI.Options;
 using OnlineShopAPI.Services.Interfaces;
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -103,9 +102,9 @@ namespace OnlineShopAPI.Services
         {
             var account = new Account
             {
-                Cloud = _configuration.GetSection(ConfigurationOptions.CloudName).Value,
-                ApiKey = _configuration.GetSection(ConfigurationOptions.ApiKey).Value,
-                ApiSecret = _configuration.GetSection(ConfigurationOptions.ApiSecret).Value
+                Cloud = _configuration.GetSection(ConfigurationOptions.Cloudinary.CloudName).Value,
+                ApiKey = _configuration.GetSection(ConfigurationOptions.Cloudinary.ApiKey).Value,
+                ApiSecret = _configuration.GetSection(ConfigurationOptions.Cloudinary.ApiSecret).Value
             };
 
             _cloudinary = new Cloudinary(account);

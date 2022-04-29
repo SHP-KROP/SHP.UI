@@ -1,12 +1,18 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using DAL.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using OnlineShopAPI.Mapping;
+using OnlineShopAPI.Services;
+using OnlineShopAPI.Services.Interfaces;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 namespace OnlineShopAPI.Extensions
@@ -24,6 +30,45 @@ namespace OnlineShopAPI.Extensions
                 .AddSignInManager<SignInManager<AppUser>>()
                 .AddRoleValidator<RoleValidator<AppRole>>()
                 .AddEntityFrameworkStores<OnlineShopContext>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddInjectableServices(this IServiceCollection services)
+        {
+            services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPhotoService, PhotoService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddNewtonsoftSupport(this IServiceCollection services)
+        {
+            services
+                .AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
+            return services;
+        }
+
+        public static IServiceCollection AddSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OnlineShopAPI", Version = "v1" });
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Description = "Authorization using Bearer scheme 'Bearer <token>'",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.OperationFilter<SecurityRequirementsOperationFilter>();
+            });
 
             return services;
         }

@@ -1,6 +1,7 @@
 using DAL;
 using DAL.Interfaces;
 using IdentityServer.Extensions;
+using IdentityServer.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,7 @@ namespace IdentityServer
 
             services.AddCors(o =>
             {
-                o.AddPolicy(name: Configuration["CorsPolicyName"], p =>
+                o.AddPolicy(name: Configuration[ConfigurationOptions.CorsPolicyName], p =>
                 {
                     p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                 });
@@ -39,9 +40,7 @@ namespace IdentityServer
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.ProvideIdentity();
-
             services.AddAutoMapping();
-
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -66,7 +65,7 @@ namespace IdentityServer
 
             app.UseAuthorization();
 
-            app.UseCors(Configuration["CorsPolicyName"]);
+            app.UseCors(Configuration[ConfigurationOptions.CorsPolicyName]);
 
             app.UseEndpoints(endpoints =>
             {
