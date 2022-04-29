@@ -1,5 +1,6 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,7 @@ using OnlineShopAPI.Options;
 using OnlineShopAPI.Services.Interfaces;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Services
@@ -25,20 +27,48 @@ namespace OnlineShopAPI.Services
             SetupCloudinaryService();
         }
 
-        public Task<bool> AddPhotoToProduct(int productId, IFormFile photo)
+        public async Task<bool> AddPhotoToProduct(AppUser user, int productId, IFormFile photo)
         {
+            if (photo == null)
+            {
+                return false;
+            }
+
             var uploadParams = new ImageUploadParams()
             {
-                File = new FileDescription(photo.FileName)
+                File = new FileDescription(Guid.NewGuid().ToString(), photo.OpenReadStream()),
             };
-            var uploadResult = _cloudinary.UploadAsync(uploadParams);
 
-            return Task.FromResult(true);
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            var linkToPhoto = uploadResult.Url;
+
+            var product = user.Products.Where(p => p.Id == productId).FirstOrDefault();
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            var photoEntity = new Photo
+            {
+                URL = linkToPhoto.AbsoluteUri
+            };
+
+            if (!product.Photos.Any())
+            {
+                photoEntity.IsMain = true;
+            }
+
+            product.Photos.Add(photoEntity);
+
+            _uow.ProductRepository.Update(product);
+
+            return await Task.FromResult(true);
         }
 
         public async Task<bool> AddPhotoToUser(int userId, IFormFile photo)
         {
-            
             if (photo == null)
             {
                 return false;

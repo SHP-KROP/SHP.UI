@@ -10,7 +10,8 @@ namespace OnlineShopAPI.Mapping
         public MappingProfile()
         {
             // Product mappings
-            CreateMap<ProductDto, Product>();
+            CreateMap<ProductDto, Product>()
+                .ForMember(src => src.Id, opts => opts.Ignore());
             CreateMap<Product, ProductDto>();
 
             CreateMap<Product, CreateProductDto>();

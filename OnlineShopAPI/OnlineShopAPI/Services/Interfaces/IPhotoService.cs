@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DAL.Entities;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Services.Interfaces
@@ -7,6 +8,6 @@ namespace OnlineShopAPI.Services.Interfaces
     {
         Task<bool> AddPhotoToUser(int userId, IFormFile photo);
 
-        Task<bool> AddPhotoToProduct(int productId, IFormFile photo);
+        Task<bool> AddPhotoToProduct(AppUser user, int productId, IFormFile photo);
     }
 }

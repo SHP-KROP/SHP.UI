@@ -46,5 +46,17 @@ namespace DAL.Repositories
         {
             await _userManager.UpdateAsync(user);
         }
+
+        public async Task AddProductToUserAsync(int id, Product product)
+        {
+            var user = await _userManager.Users
+                .Where(x => x.Id == id)
+                .Include(u => u.Products)
+                .FirstOrDefaultAsync();
+
+            user.Products.Add(product);
+
+            await _userManager.UpdateAsync(user);
+        }
     }
 }

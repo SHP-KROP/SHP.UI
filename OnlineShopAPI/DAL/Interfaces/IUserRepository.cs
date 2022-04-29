@@ -18,5 +18,7 @@ namespace DAL.Interfaces
         public Task<AppUser> FindAsync(int id);
 
         public Task UpdateAsync(AppUser user);
+
+        public Task AddProductToUserAsync(int id, Product product);
     }
 }
