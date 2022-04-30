@@ -79,7 +79,7 @@ const Register = () => {
                     required: 'Field Password required for registration',
                     pattern: {
                       value:
-                        /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{5,}$/,
+                        /(?=.*?[#?!@$%^&*-]).{5,30}/,
                     },
                   })}
                 />
