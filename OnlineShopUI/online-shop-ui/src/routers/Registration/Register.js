@@ -73,7 +73,7 @@ const Register = () => {
                     required: 'Field Password required for registration',
                     pattern: {
                       value:
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&].{6,30}/,
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&].{6,30}$/,
                     },
                   })}
                 />
@@ -83,8 +83,8 @@ const Register = () => {
                 {errors?.pass && (
                   <p>
                     <img src={Error} alt="Erorr" />
-                    Password must be longer than 5 characters and contain at
-                    least one special character
+                    Password must be between 5 and 30 characters and contain at
+                    least one special character, digit, uppercase and lowercase letter
                   </p>
                 )}
               </div>
