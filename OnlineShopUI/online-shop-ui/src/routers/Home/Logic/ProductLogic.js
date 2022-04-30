@@ -1,16 +1,28 @@
-const useProductCardFilling = () => {
-  const productCards = [
-    { name: 'NameTitle', description: 'decsr', price: '12999' },
-    { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-    { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-    { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-    { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-    { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-    { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-    { name: 'AnotherNameTitle', description: 'decsr', price: '12109' },
-  ];
+import { useEffect, useState } from "react";
+import axios from 'axios';
 
-  return productCards;
+const BASE_URL = "https://localhost:44318/api/Product";
+
+const useProductCardFilling = () => {
+  const [products, setProducts] = useState(() => []);
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  function getProducts() {
+    axios
+    .get(BASE_URL)
+    .then((response) => {
+      console.log(response.data)
+      setProducts(response.data);
+    })
+    .catch((error) => {
+      console.warn(error);
+    })
+  }
+
+  return products;
 };
 
 export default useProductCardFilling;
