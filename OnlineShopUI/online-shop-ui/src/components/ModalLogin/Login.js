@@ -78,7 +78,7 @@ export default function Login() {
                 <input
                   type="submit"
                   className="login__sign-btn"
-                  onClick={() => {setFlag(!flag); console.log("submited");}}
+                  onClick={() => setFlag(!flag)}
                   value="Log in"
                 />
               </div>
