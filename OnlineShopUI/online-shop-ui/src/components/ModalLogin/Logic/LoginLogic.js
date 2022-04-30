@@ -42,19 +42,30 @@ const useLogin = () => {
         password: pass,
       })
       .then((response) => {
-        proceedResponse(response.data);
-      })
-      .catch((error) => {
-        console.warn(error.response);
-        if (typeof error.response.data !== 'object') {
-          toast.error(`${error.response.data}`, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          });
+        if (response) {
+          proceedResponse(response?.data);
+
           return;
         }
+
         toast.error('Internal server error', {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
+      })
+      .catch((error) => {
+        try {
+          console.warn(error?.response);
+          if (typeof error.response.data !== 'object') {
+            toast.error(`${error.response.data}`, {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            return;
+          }
+        } catch {
+          toast.error('Internal server error', {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+        }
       });
   }, [flag]);
 

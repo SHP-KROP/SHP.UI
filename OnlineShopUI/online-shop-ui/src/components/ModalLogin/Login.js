@@ -9,19 +9,11 @@ import User from '../../img/icon-user.png';
 import { Link } from 'react-router-dom';
 import useLogin from './Logic/LoginLogic';
 import UseHandlers from '../../Helper/Handlers';
-import Error from '../../img/icon-error.png';
-import UseValidation from '../../Validation/Validation';
 
 export default function Login() {
   const [setUsername, setPassword, flag, setFlag] = useLogin();
 
   const [handleModalClose, handleModalOpen, isOpen] = UseHandlers();
-
-  const [register, handleSubmit, reset, errors, isValid] = UseValidation();
-
-  const onSubmit = () => {
-    reset();
-  };
 
   return (
     <div>
@@ -52,7 +44,7 @@ export default function Login() {
               ></CloseIcon>
             </div>
 
-            <form className="login__date" onSubmit={handleSubmit(onSubmit)}>
+            <form className="login__date">
               <div className="login__email">
                 <label>Username</label>
                 <input
@@ -60,23 +52,9 @@ export default function Login() {
                   onChange={(e) => {
                     setUsername(e.target.value);
                   }}
-                  {...register('Username', {
-                    required: <p>Field Username required for registration</p>,
-                    minLength: {
-                      value: 3,
-                      message: <p>Username must be more than 3 characters</p>,
-                    },
-                  })}
                 />
               </div>
-              <div className="login__error">
-                {errors?.Username && (
-                  <p>
-                    <img src={Error} alt="Erorr" />
-                    {errors?.Username.message || 'Error!'}
-                  </p>
-                )}
-              </div>
+              
               <div className="login__pass">
                 <label>Password</label>
                 <input
@@ -84,23 +62,7 @@ export default function Login() {
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
-                  {...register('Password', {
-                    required: 'Field Password required for registration',
-                    pattern: {
-                      value:
-                        /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{5,}$/,
-                    },
-                  })}
                 />
-              </div>
-              <div className="login__error">
-                {errors?.Password && (
-                  <p>
-                    <img src={Error} alt="Erorr" />
-                    Password must be longer than 5 characters and contain at
-                    least one special character
-                  </p>
-                )}
               </div>
               <a href="#">Forgot password?</a>
               <FormGroup>
@@ -116,9 +78,8 @@ export default function Login() {
                 <input
                   type="submit"
                   className="login__sign-btn"
-                  onClick={() => setFlag(!flag)}
+                  onClick={() => {setFlag(!flag); console.log("submited");}}
                   value="Log in"
-                  disabled={!isValid}
                 />
               </div>
               <div className="login__register">
