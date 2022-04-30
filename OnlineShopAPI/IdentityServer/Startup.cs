@@ -2,6 +2,7 @@ using DAL;
 using DAL.Interfaces;
 using IdentityServer.Extensions;
 using IdentityServer.Middlewares;
+using IdentityServer.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,12 +27,12 @@ namespace IdentityServer
         {
             services.AddDbContext<OnlineShopContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"));
+                opt.UseSqlServer(Configuration.GetConnectionString("AWSConnection"), b => b.MigrationsAssembly("DAL"));
             });
 
             services.AddCors(o =>
             {
-                o.AddPolicy(name: Configuration["CorsPolicyName"], p =>
+                o.AddPolicy(name: Configuration[ConfigurationOptions.CorsPolicyName], p =>
                 {
                     p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                 });
@@ -40,9 +41,7 @@ namespace IdentityServer
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.ProvideIdentity();
-
             services.AddAutoMapping();
-
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -65,11 +64,11 @@ namespace IdentityServer
 
             app.UseRouting();
 
+            app.UseMiddleware<ValidationHandlerMiddleware>(env);
+
+            app.UseCors(Configuration[ConfigurationOptions.CorsPolicyName]);
+
             app.UseAuthorization();
-
-            app.UseMiddleware<ValidationHandlerMiddleware>();
-
-            app.UseCors(Configuration["CorsPolicyName"]);
 
             app.UseEndpoints(endpoints =>
             {

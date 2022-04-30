@@ -3,6 +3,7 @@ using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories
@@ -36,9 +37,47 @@ namespace DAL.Repositories
             return await _userManager.Users.FirstOrDefaultAsync(u => u.UserName.ToUpper() == username.ToUpper());
         }
 
+        public async Task<ICollection<string>> GetUserRoles(AppUser user)
+        {
+            return await _userManager.GetRolesAsync(user);
+        }
+
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
             return await _userManager.Users.ToListAsync();
+        }
+
+        public async Task<AppUser> FindAsync(int id)
+        {
+            return await _userManager.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateAsync(AppUser user)
+        {
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task AddProductToUserAsync(int id, Product product)
+        {
+            var user = await _userManager.Users
+                .Where(x => x.Id == id)
+                .Include(u => u.Products)
+                .FirstOrDefaultAsync();
+
+            user.Products.Add(product);
+
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<AppUser> GetUserWithProductsWithPhotosAsync(int id)
+        {
+            var user = await _userManager.Users
+                .Where(x => x.Id == id)
+                .Include(u => u.Products)
+                .ThenInclude(p => p.Photos)
+                .FirstOrDefaultAsync();
+
+            return user;
         }
     }
 }

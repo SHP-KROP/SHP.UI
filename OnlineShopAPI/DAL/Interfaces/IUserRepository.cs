@@ -14,5 +14,15 @@ namespace DAL.Interfaces
         public Task<IdentityResult> CreateUserAsync(AppUser appUser, string password);
 
         public Task<IdentityResult> AddToRoleAsync(AppUser appUser, string role);
+
+        public Task<AppUser> FindAsync(int id);
+
+        public Task UpdateAsync(AppUser user);
+
+        public Task AddProductToUserAsync(int id, Product product);
+
+        public Task<ICollection<string>> GetUserRoles(AppUser user);
+
+        public Task<AppUser> GetUserWithProductsWithPhotosAsync(int id);
     }
 }
