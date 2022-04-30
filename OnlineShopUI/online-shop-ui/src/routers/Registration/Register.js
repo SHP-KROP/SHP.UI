@@ -13,7 +13,10 @@ const Register = () => {
 
   const [register, handleSubmit, reset, errors, isValid] = UseValidation();
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
+    setName(data?.name);
+    setPass(data?.pass);
+    setFlag(!flag);
     reset();
   };
 
@@ -22,7 +25,6 @@ const Register = () => {
       {isRedirect ? <Navigate push to="/home" /> : null}
       <div className="registration">
         <Feedback />
-
         <div className="registration__body">
           <div className="registration__info">
             <div className="registration__header">
@@ -36,9 +38,7 @@ const Register = () => {
                 <Link>Sign in</Link>
               </div>
             </div>
-            {/* Calling to the methods */}
             <div className="messages"></div>
-
             <form
               className="registration__form"
               onSubmit={handleSubmit(onSubmit)}
@@ -47,10 +47,7 @@ const Register = () => {
                 <label className="label">Username</label>
                 <input
                   type="text"
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                  {...register('Username', {
+                  {...register('name', {
                     required: <p>Field Username required for registration</p>,
                     minLength: {
                       value: 3,
@@ -60,10 +57,10 @@ const Register = () => {
                 />
               </div>
               <div className="registration__error">
-                {errors?.Username && (
+                {errors?.name && (
                   <p>
                     <img src={Error} alt="Erorr" />
-                    {errors?.Username.message || 'Error!'}
+                    {errors?.name.message || 'Error!'}
                   </p>
                 )}
               </div>
@@ -72,10 +69,7 @@ const Register = () => {
                 <label className="label">Password</label>
                 <input
                   type="password"
-                  onChange={(e) => {
-                    setPass(e.target.value);
-                  }}
-                  {...register('Password', {
+                  {...register('pass', {
                     required: 'Field Password required for registration',
                     pattern: {
                       value:
@@ -86,7 +80,7 @@ const Register = () => {
               </div>
 
               <div className="registration__error">
-                {errors?.Password && (
+                {errors?.pass && (
                   <p>
                     <img src={Error} alt="Erorr" />
                     Password must be longer than 5 characters and contain at
@@ -100,9 +94,6 @@ const Register = () => {
                 <input
                   type="submit"
                   className="registration__btn"
-                  onClick={() => {
-                    setFlag(!flag);
-                  }}
                   value="Get Started"
                   disabled={!isValid}
                 />

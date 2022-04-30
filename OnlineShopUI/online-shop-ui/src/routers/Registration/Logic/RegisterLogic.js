@@ -16,6 +16,8 @@ const useRegister = () => {
   let initialRender = useRef(true);
 
   useEffect(() => {
+    console.log(name);
+    console.log(pass);
     if (initialRender.current) {
       initialRender.current = false;
       return;
