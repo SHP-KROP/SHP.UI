@@ -7,7 +7,7 @@ const UseValidation = () => {
     handleSubmit,
     reset,
   } = useForm({
-    mode: 'onBlur',
+    mode: 'onChange',
   });
 
   return [register, handleSubmit, reset, errors, isValid];
