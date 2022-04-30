@@ -36,14 +36,15 @@ export default function Login() {
           <div className="login">
             <div className="login__type">
               <p>
-                <strong>Вход</strong>
+                <strong>Log in</strong>
               </p>
               <CloseIcon
                 className="login__btnclose"
                 onClick={handleModalClose}
               ></CloseIcon>
             </div>
-            <div className="login__date">
+
+            <form className="login__date">
               <div className="login__email">
                 <label>Username</label>
                 <input
@@ -53,8 +54,9 @@ export default function Login() {
                   }}
                 />
               </div>
+              
               <div className="login__pass">
-                <label>Пароль</label>
+                <label>Password</label>
                 <input
                   type="password"
                   onChange={(e) => {
@@ -62,23 +64,23 @@ export default function Login() {
                   }}
                 />
               </div>
-              <a href="#">Забыли пароль?</a>
+              <a href="#">Forgot password?</a>
               <FormGroup>
                 <FormControlLabel
                   className="login__check"
                   control={<Checkbox defaultChecked />}
-                  label="Запомнить меня"
+                  label="Remember me"
                 />
               </FormGroup>
-            </div>
+            </form>
             <div className="login__actions">
               <div className="login__sign">
-                <button
+                <input
+                  type="submit"
                   className="login__sign-btn"
                   onClick={() => setFlag(!flag)}
-                >
-                  Войти
-                </button>
+                  value="Log in"
+                />
               </div>
               <div className="login__register">
                 <Link to="/register" onClick={handleModalClose}>

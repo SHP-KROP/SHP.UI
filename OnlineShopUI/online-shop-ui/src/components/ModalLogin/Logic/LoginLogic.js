@@ -1,14 +1,11 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
-import UseHandlers from '../../../Helper/Handlers';
 const BASE_URL = 'https://localhost:44330/api/user/login/';
 
 toast.configure();
 
 const useLogin = () => {
-  const [handleLogInModalClose] = UseHandlers();
-
   const [name, setUsername] = useState(() => '');
   const [pass, setPassword] = useState(() => '');
   const [flag, setFlag] = useState(() => true);
@@ -42,19 +39,30 @@ const useLogin = () => {
         password: pass,
       })
       .then((response) => {
-        proceedResponse(response.data);
-      })
-      .catch((error) => {
-        console.warn(error.response);
-        if (typeof error.response.data !== 'object') {
-          toast.error(`${error.response.data}`, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          });
+        if (response) {
+          proceedResponse(response?.data);
+
           return;
         }
+
         toast.error('Internal server error', {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
+      })
+      .catch((error) => {
+        try {
+          console.warn(error?.response);
+          if (typeof error.response.data !== 'object') {
+            toast.error(`${error.response.data}`, {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            return;
+          }
+        } catch {
+          toast.error('Internal server error', {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+        }
       });
   }, [flag]);
 
@@ -64,7 +72,7 @@ const useLogin = () => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       localStorage.setItem('token', response.token);
-      handleLogInModalClose();
+      console.success('Success, window need to be closed!');
     } catch (ex) {
       console.warn(ex);
       toast.error(`${ex.error}`, {

@@ -1,4 +1,5 @@
 @import '../../Helper/ListColorVariable.scss';
+@import '../../Helper/Mixins.scss';
 * {
   font-family: 'Poppins', sans-serif;
 }
@@ -82,6 +83,12 @@
     }
     > span {
       color: $linkcolorInRegistration;
+    }
+  }
+  &__error {
+    > p {
+      @include ErrorValidation;
+      width: 100%;
     }
   }
 }
