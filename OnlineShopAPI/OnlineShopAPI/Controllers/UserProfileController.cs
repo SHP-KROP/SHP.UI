@@ -28,7 +28,7 @@ namespace OnlineShopAPI.Controllers
         public async Task<ActionResult> AddPhotoToUser(IFormFile photo)
         {
             return await _photoService.AddPhotoToUser(GetUserId(), photo) 
-                ? Ok(new AppUser()) 
+                ? Ok((await _uow?.UserRepository.FindAsync(GetUserId())).PhotoUrl) 
                 : BadRequest("Unable to upload the photo");
         }
 
@@ -40,7 +40,9 @@ namespace OnlineShopAPI.Controllers
             var result = await _photoService.AddPhotoToProduct(user, productId, photo);
             await _uow?.ConfirmAsync();
 
-            return result ? Ok() : BadRequest("Unable to upload the photo");
+            return result 
+                ? Ok() 
+                : BadRequest("Unable to upload the photo");
         }
 
         private int GetUserId()
