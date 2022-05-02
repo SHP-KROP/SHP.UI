@@ -22,6 +22,7 @@ namespace OnlineShopAPI.Tests
         private readonly ProductController _productController;
         private readonly Mock<IUnitOfWork> _mockUow;
         private readonly Mock<IProductRepository> _productRepository;
+        private readonly Mock<IUserRepository> _userRepository;
 
         public ProductControllerTests()
         {
@@ -34,8 +35,12 @@ namespace OnlineShopAPI.Tests
 
             var mapper = mapperConfig.CreateMapper() as IMapper;
             _mockUow = new Mock<IUnitOfWork>();
+
             _productRepository = new Mock<IProductRepository>();
             _mockUow.SetupGet(uow => uow.ProductRepository).Returns(_productRepository.Object);
+
+            _userRepository = new Mock<IUserRepository>();
+            _mockUow.SetupGet(uow => uow.UserRepository).Returns(_userRepository.Object);
 
             _productController = new ProductController(mockLogger.Object, mapper, _mockUow.Object);
         }
@@ -114,15 +119,13 @@ namespace OnlineShopAPI.Tests
         [Fact]
         public async Task CreateProduct_ShouldReturnOkWithProduct_WhenProductIsValid()
         {
-
-            
-            var products = await _productController.CreateProduct(GetValidCreateProductDto()) as ActionResult<Product>;
+            var products = await _productController.CreateProduct(GetValidCreateProductDto()) as ActionResult<ProductDto>;
 
             var result = products.Result as ObjectResult;
             var value = result?.Value as ProductDto;
 
             value?.Should().NotBeNull();
-            value?.Should().BeOfType(typeof(Product));
+            value?.Should().BeOfType(typeof(ProductDto));
             value?.Should().BeEquivalentTo(GetValidCreateProductDto());
 
             result.StatusCode.Should().Be(StatusCodes.Status200OK);
@@ -132,7 +135,7 @@ namespace OnlineShopAPI.Tests
         public async Task CreateProduct_ShouldReturnBadRequest_WhenProductHasEmptyName()
         {
             var products = await _productController
-                .CreateProduct(GetInvalidCreateProductDtoWithEmptyName()) as ActionResult<Product>;
+                .CreateProduct(GetInvalidCreateProductDtoWithEmptyName()) as ActionResult<ProductDto>;
 
             var result = products.Result as ObjectResult;
             var value = result?.Value;

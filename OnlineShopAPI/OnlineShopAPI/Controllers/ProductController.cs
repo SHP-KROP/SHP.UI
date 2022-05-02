@@ -1,12 +1,13 @@
-﻿//using Microsoft.AspNetCore.Authorization;
-using AutoMapper;
+﻿using AutoMapper;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OnlineShopAPI.DTO.Product;
 using OnlineShopAPI.Mapping;
+using OnlineShopAPI.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,11 +59,11 @@ namespace OnlineShopAPI.Controllers
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] CreateProductDto createProductDto)
+        public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductDto createProductDto)
         {
             if (string.IsNullOrEmpty(createProductDto?.Name))
             {
@@ -70,19 +71,22 @@ namespace OnlineShopAPI.Controllers
             }
 
             var product = _mapper.Map<Product>(createProductDto);
+            var user = await _uow.UserRepository.FindAsync(GetUserId());
+
+            product.User = user;
 
             try
             {
-                _uow?.ProductRepository.AddAsync(product);
+                await _uow?.ProductRepository.AddAsync(product);
             }
             catch
             {
                 return BadRequest("Database error");
             }
 
-            await _uow.ConfirmAsync();
+            await _uow?.ConfirmAsync();
 
-            return Ok(product);
+            return Ok(_mapper.Map<ProductDto>(product));
         }
 
         //[Authorize]
@@ -132,6 +136,13 @@ namespace OnlineShopAPI.Controllers
             await _uow.ConfirmAsync();
 
             return NoContent();
+        }
+
+        private int GetUserId()
+        {
+            int.TryParse(User?.Claims?.First(x => x.Type == JwtClaimOptions.AuthorizationNameId)?.Value, out var id);
+
+            return id;
         }
     }
 }

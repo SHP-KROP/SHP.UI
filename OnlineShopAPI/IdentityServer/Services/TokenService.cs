@@ -1,11 +1,11 @@
 ﻿using DAL.Entities;
+using IdentityServer.Options;
 using IdentityServer.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -22,19 +22,17 @@ namespace IdentityServer.Services
         public TokenService(IConfiguration configuration)
         {
             _config = configuration;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config[ConfigurationOptions.Token]));
         }
 
-        public string CreateToken(AppUser user)
+        public string CreateToken(AppUser user, ICollection<string> roles)
         {
-            var roles = user?.UserRoles?.Select(ur => ur.Role.Name);
-
             var claims = new List<Claim>
             {
-                new Claim("id", user.Id.ToString()),
-                new Claim("username", user.UserName),
-                new Claim("roles", JsonSerializer.Serialize(roles ?? new List<string>{ })),
-                new Claim("email", user.Email ?? string.Empty)
+                new Claim(JwtClaimOptions.NameId, user.Id.ToString()),
+                new Claim(JwtClaimOptions.Name, user.UserName),
+                new Claim(JwtClaimOptions.Roles, JsonSerializer.Serialize(roles ?? new List<string>{ })),
+                new Claim(JwtClaimOptions.Email, user.Email ?? string.Empty)
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);

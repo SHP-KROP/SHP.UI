@@ -13,6 +13,8 @@ namespace DAL.Entities
         [Range(0, 10000)]
         public double Balance { get; set; }
 
+        public string PhotoUrl { get; set; }
+
         public ICollection<AppUserRole> UserRoles { get; set; }
 
         public ICollection<Product> Products { get; set; }
