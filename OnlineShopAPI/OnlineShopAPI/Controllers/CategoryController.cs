@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OnlineShopAPI.Constants;
 using OnlineShopAPI.DTO.Category;
 using OnlineShopAPI.Mapping;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Controllers
 {
-    [Authorize(Roles = "admin,moderator")]
+    [Authorize(Roles = Roles.AdminOrModer)]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase

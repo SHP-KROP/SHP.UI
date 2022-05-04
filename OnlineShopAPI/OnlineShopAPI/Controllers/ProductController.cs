@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OnlineShopAPI.Constants;
 using OnlineShopAPI.DTO.Product;
 using OnlineShopAPI.Mapping;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Controllers
 {
-    [Authorize(Roles = "admin,seller,moderator")]
+    [Authorize(Roles = Roles.AdminOrModerOrSeller)]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
