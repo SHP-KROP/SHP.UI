@@ -32,7 +32,7 @@ namespace OnlineShopAPI.Controllers
 
             if (products is null || !products.Any())
             {
-                return BadRequest("No liked products");
+                return BadRequest("There are not liked products");
             }
 
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
@@ -44,7 +44,7 @@ namespace OnlineShopAPI.Controllers
             var product = await _uow?.ProductRepository.LikeProductByUser(this.GetUserId(), productId);
 
             return await _uow?.ConfirmAsync() 
-                ? _mapper.Map<ProductDto>(product) 
+                ? Ok(_mapper.Map<ProductDto>(product))
                 : BadRequest("Unable to like the product");
         }
 
@@ -54,7 +54,7 @@ namespace OnlineShopAPI.Controllers
             var product = await _uow?.ProductRepository.UnlikeProductByUser(this.GetUserId(), productId);
 
             return await _uow?.ConfirmAsync()
-                ? _mapper.Map<ProductDto>(product)
+                ? Ok(_mapper.Map<ProductDto>(product))
                 : BadRequest("Unable to unlike the product");
         }
     }
