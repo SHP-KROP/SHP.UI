@@ -5,15 +5,16 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OnlineShopAPI.Constants;
 using OnlineShopAPI.DTO.Product;
 using OnlineShopAPI.Mapping;
-using OnlineShopAPI.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Controllers
 {
+    [Authorize(Roles = Roles.AdminOrModerOrSeller)]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -29,6 +30,7 @@ namespace OnlineShopAPI.Controllers
             _uow = uow;
         }
 
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
@@ -44,6 +46,7 @@ namespace OnlineShopAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
         }
 
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{productName}")]
@@ -59,7 +62,6 @@ namespace OnlineShopAPI.Controllers
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -71,7 +73,7 @@ namespace OnlineShopAPI.Controllers
             }
 
             var product = _mapper.Map<Product>(createProductDto);
-            var user = await _uow.UserRepository.FindAsync(GetUserId());
+            var user = await _uow.UserRepository.FindAsync(this.GetUserId());
 
             product.User = user;
 
@@ -89,7 +91,6 @@ namespace OnlineShopAPI.Controllers
             return Ok(_mapper.Map<ProductDto>(product));
         }
 
-        //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("{id}")]
@@ -111,7 +112,6 @@ namespace OnlineShopAPI.Controllers
             return NoContent();
         }
 
-        //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{productName}")]
@@ -136,13 +136,6 @@ namespace OnlineShopAPI.Controllers
             await _uow.ConfirmAsync();
 
             return NoContent();
-        }
-
-        private int GetUserId()
-        {
-            int.TryParse(User?.Claims?.First(x => x.Type == JwtClaimOptions.AuthorizationNameId)?.Value, out var id);
-
-            return id;
         }
     }
 }

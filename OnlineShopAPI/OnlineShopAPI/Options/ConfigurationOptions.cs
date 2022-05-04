@@ -2,7 +2,8 @@
 {
     public static class ConfigurationOptions
     {
-        public static string CorsPolicyName = "DefaultCorsPolicy";
+        public const string CorsPolicyName = "DefaultCorsPolicy";
+        public const string Token = "TokenKey";
 
         public static class Cloudinary
         {

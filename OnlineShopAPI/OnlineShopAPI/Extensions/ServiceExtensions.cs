@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using OnlineShopAPI.Mapping;
+using OnlineShopAPI.Options;
 using OnlineShopAPI.Services;
 using OnlineShopAPI.Services.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
@@ -76,13 +77,18 @@ namespace OnlineShopAPI.Extensions
         public static IServiceCollection AddBearerAuthentication(this IServiceCollection services, IConfiguration config)
         {
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
                 .AddJwtBearer(options =>
                 {
+                    options.SaveToken = true;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config[ConfigurationOptions.Token])),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
