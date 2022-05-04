@@ -7,16 +7,19 @@ import SideMenuList from '../../components/SideMenuList/SideMenuList';
 import Banner from '../../components/Banner/Banner';
 import useMenuFilling from '../Home/Logic/MenuLogic';
 import useProductCardFilling from '../Home/Logic/ProductLogic';
-
+import Basket from '../../components/Basket/Basket';
+import { useState } from 'react';
 function Home() {
   const menu = useMenuFilling();
   const productCards = useProductCardFilling();
-
+  const [cartOpened, setCartOpened] = useState(false);
   return (
     <>
       <div className="MainPage">
         <Feedback />
-        <HeadBlock />
+        <Basket onClose={() => setCartOpened(false)} opened={cartOpened} />
+        <HeadBlock onClickCart={() => setCartOpened(true)} />
+
         {/* <MenuBoard /> */}
         <div className="blocks">
           <div className="blockSideMenus">

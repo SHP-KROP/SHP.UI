@@ -3,12 +3,12 @@ import '../HeadBlock/HeadBlock.scss';
 import Login from '../ModalLogin/Login';
 
 import IconSearch from '../../img/icon-search.png';
-import Card from '../../img/icon-card.png';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
+import Card from '../../img/icon-card.png';
 
-const HeadBlock = () => {
+const HeadBlock = (props) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isOpen = !!anchorElement;
 
@@ -18,7 +18,6 @@ const HeadBlock = () => {
   const handleClose = () => {
     setAnchorElement(null);
   };
-
   return (
     <div className="search">
       <div className="name-shop">
@@ -56,9 +55,9 @@ const HeadBlock = () => {
       </div>
       <div className="profile">
         <Login />
-        <a href="#">
+        <button className="openCartButton" onClick={props.onClickCart}>
           <img src={Card} alt="card" />
-        </a>
+        </button>
       </div>
     </div>
   );
