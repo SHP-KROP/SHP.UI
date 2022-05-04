@@ -48,16 +48,14 @@ namespace OnlineShopAPI.Controllers
                 : BadRequest("Unable to like product");
         }
 
-        // PUT api/<LikeController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpDelete("{productId}")]
+        public async Task<ActionResult<ProductDto>> UnlikeProduct(int productId)
         {
-        }
+            var product = await _uow?.ProductRepository.UnlikeProductByUser(this.GetUserId(), productId);
 
-        // DELETE api/<LikeController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return await _uow?.ConfirmAsync()
+                ? _mapper.Map<ProductDto>(product)
+                : BadRequest("Unable to like product");
         }
     }
 }

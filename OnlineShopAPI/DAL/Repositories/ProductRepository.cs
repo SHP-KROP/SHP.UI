@@ -56,5 +56,29 @@ namespace DAL.Repositories
 
             return product;
         }
+
+        public async Task<Product> UnlikeProductByUser(int userId, int productId)
+        {
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Likes)
+                .ThenInclude(like => like.Product)
+                .FirstOrDefaultAsync();
+
+            var product = await GetAsync(productId);
+
+            var like = user.Likes
+                .Where(like => like.ProductId == product.Id && like.UserId == user.Id)
+                .FirstOrDefault();
+
+            if (like is null)
+            {
+                return null;
+            }
+
+            user.Likes.Remove(like);
+
+            return product;
+        }
     }
 }

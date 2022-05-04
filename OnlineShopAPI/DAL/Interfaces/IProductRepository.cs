@@ -9,5 +9,7 @@ namespace DAL.Repositories
         Task<Product> GetProductByNameAsync(string name);
 
         Task<Product> LikeProductByUser(int userId, int productId);
+
+        Task<Product> UnlikeProductByUser(int userId, int productId);
     }
 }
