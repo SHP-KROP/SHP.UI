@@ -31,6 +31,8 @@ namespace DAL
 
         public DbSet<Photo> Photos { get; set; }
 
+        public DbSet<Like> Likes { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
