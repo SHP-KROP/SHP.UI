@@ -2,6 +2,7 @@
 using AutoMapper;
 using DAL.Entities;
 using DAL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Controllers
 {
+    [Authorize(Roles = "admin,moderator")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -28,6 +30,7 @@ namespace OnlineShopAPI.Controllers
             _uow = uow;
         }
 
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet]
@@ -43,6 +46,7 @@ namespace OnlineShopAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
         }
 
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpGet("{categoryName}")]
@@ -58,7 +62,6 @@ namespace OnlineShopAPI.Controllers
             return _mapper.Map<CategoryDto>(category);
         }
 
-        //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
@@ -80,7 +83,6 @@ namespace OnlineShopAPI.Controllers
             return _mapper.Map<CategoryDto>(createdCategory);
         }
 
-        //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPut("{categoryName}")]
@@ -102,7 +104,6 @@ namespace OnlineShopAPI.Controllers
             return NoContent();
         }
 
-        //[Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{id}")]
