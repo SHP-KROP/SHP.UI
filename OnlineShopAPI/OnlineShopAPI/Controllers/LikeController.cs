@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Controllers
 {
-    [Authorize(Roles = Roles.Buyer)]
+    [Authorize] //(Roles = Roles.Buyer)
     [Route("api/[controller]")]
     [ApiController]
     public class LikeController : ControllerBase
@@ -38,17 +38,14 @@ namespace OnlineShopAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
         }
 
-        // GET api/<LikeController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPost("{productId}")]
+        public async Task<ActionResult<ProductDto>> LikeProduct(int productId)
         {
-            return "value";
-        }
+            var product = await _uow?.ProductRepository.LikeProductByUser(this.GetUserId(), productId);
 
-        // POST api/<LikeController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
+            return await _uow?.ConfirmAsync() 
+                ? _mapper.Map<ProductDto>(product) 
+                : BadRequest("Unable to like product");
         }
 
         // PUT api/<LikeController>/5

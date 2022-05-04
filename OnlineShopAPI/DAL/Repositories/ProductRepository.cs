@@ -2,6 +2,7 @@
 using GenericRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,6 +32,29 @@ namespace DAL.Repositories
             var query = await FindAsync(pr => pr.Name == name);
             
             return query.FirstOrDefault();
+        }
+
+        public async Task<Product> LikeProductByUser(int userId, int productId)
+        {
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.Likes)
+                .ThenInclude(like => like.Product)
+                .FirstOrDefaultAsync();
+
+            var product = await GetAsync(productId);
+
+            var userLike = new Like
+            {
+                User = user,
+                Product = product,
+                UserId = user.Id,
+                ProductId = product.Id
+            };
+
+            user.Likes.Add(userLike);
+
+            return product;
         }
     }
 }
