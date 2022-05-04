@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OnlineShopAPI.Constants;
 using OnlineShopAPI.Services.Interfaces;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace OnlineShopAPI.Controllers
                 : BadRequest("Unable to upload the photo");
         }
 
-        [Authorize()]
+        [Authorize(Roles = Roles.AdminOrModerOrSeller)]
         [HttpPost("photo-to-product")]
         public async Task<ActionResult> AddPhotoToProduct(int productId, IFormFile photo)
         {
