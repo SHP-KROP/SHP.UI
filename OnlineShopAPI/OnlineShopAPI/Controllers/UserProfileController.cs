@@ -1,11 +1,8 @@
-﻿using DAL.Entities;
-using DAL.Interfaces;
+﻿using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OnlineShopAPI.Options;
 using OnlineShopAPI.Services.Interfaces;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Controllers
@@ -27,29 +24,22 @@ namespace OnlineShopAPI.Controllers
         [HttpPost("photo-to-user")]
         public async Task<ActionResult> AddPhotoToUser(IFormFile photo)
         {
-            return await _photoService.AddPhotoToUser(GetUserId(), photo) 
-                ? Ok((await _uow?.UserRepository.FindAsync(GetUserId())).PhotoUrl) 
+            return await _photoService.AddPhotoToUser(this.GetUserId(), photo) 
+                ? Ok((await _uow?.UserRepository.FindAsync(this.GetUserId())).PhotoUrl) 
                 : BadRequest("Unable to upload the photo");
         }
 
-        [Authorize]
+        [Authorize()]
         [HttpPost("photo-to-product")]
         public async Task<ActionResult> AddPhotoToProduct(int productId, IFormFile photo)
         {
-            var user = await _uow.UserRepository.GetUserWithProductsWithPhotosAsync(GetUserId());
+            var user = await _uow.UserRepository.GetUserWithProductsWithPhotosAsync(this.GetUserId());
             var result = await _photoService.AddPhotoToProduct(user, productId, photo);
             await _uow?.ConfirmAsync();
 
             return result 
                 ? Ok() 
                 : BadRequest("Unable to upload the photo");
-        }
-
-        private int GetUserId()
-        {
-            int.TryParse(User.Claims.First(x => x.Type == JwtClaimOptions.AuthorizationNameId).Value, out var id);
-
-            return id;
         }
     }
 }
