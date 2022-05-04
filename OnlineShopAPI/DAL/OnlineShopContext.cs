@@ -60,6 +60,20 @@ namespace DAL
                 .HasMany(pr => pr.Photos)
                 .WithOne(photo => photo.Product)
                 .IsRequired();
+
+            builder
+                .Entity<Product>()
+                .HasMany(p => p.Likes)
+                .WithOne(like => like.Product)
+                .HasForeignKey(like => like.ProductId)
+                .IsRequired();
+
+            builder
+                .Entity<AppUser>()
+                .HasMany(u => u.Likes)
+                .WithOne(like => like.User)
+                .HasForeignKey(like => like.UserId)
+                .IsRequired();
         }
     }
 }
