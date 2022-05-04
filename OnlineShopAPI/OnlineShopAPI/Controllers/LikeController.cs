@@ -45,7 +45,7 @@ namespace OnlineShopAPI.Controllers
 
             return await _uow?.ConfirmAsync() 
                 ? _mapper.Map<ProductDto>(product) 
-                : BadRequest("Unable to like product");
+                : BadRequest("Unable to like the product");
         }
 
         [HttpDelete("{productId}")]
@@ -55,7 +55,7 @@ namespace OnlineShopAPI.Controllers
 
             return await _uow?.ConfirmAsync()
                 ? _mapper.Map<ProductDto>(product)
-                : BadRequest("Unable to like product");
+                : BadRequest("Unable to unlike the product");
         }
     }
 }

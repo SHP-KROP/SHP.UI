@@ -42,7 +42,26 @@ namespace DAL.Repositories
                 .ThenInclude(like => like.Product)
                 .FirstOrDefaultAsync();
 
+            if (user is null)
+            {
+                return null;
+            }
+
             var product = await GetAsync(productId);
+
+            if (product is null)
+            {
+                return null;
+            }
+
+            var existingLike = user.Likes
+                .Where(like => like.UserId == user.Id && like.ProductId == product.Id)
+                .FirstOrDefault();
+
+            if (existingLike is not null)
+            {
+                return null;
+            }
 
             var userLike = new Like
             {
@@ -64,6 +83,11 @@ namespace DAL.Repositories
                 .Include(u => u.Likes)
                 .ThenInclude(like => like.Product)
                 .FirstOrDefaultAsync();
+
+            if (user is null)
+            {
+                return null;
+            }
 
             var product = await GetAsync(productId);
 
