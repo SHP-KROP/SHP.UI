@@ -21,7 +21,9 @@ namespace DAL.Entities
         public ICollection<ProductCategory> ProductCategories { get; set; }
 
         public ICollection<Photo> Photos { get; set; }
-        
+
+        public ICollection<Like> Likes { get; set; }
+
         public AppUser User { get; set; }
     }
 }
