@@ -12,12 +12,12 @@ import { useState } from 'react';
 function Home() {
   const menu = useMenuFilling();
   const productCards = useProductCardFilling();
-  const [cartOpened, setCartOpened] = useState(false);
+  const [isCartOpen, setCartOpened] = useState(() => false);
   return (
     <>
       <div className="MainPage">
         <Feedback />
-        <Basket onClose={() => setCartOpened(false)} opened={cartOpened} />
+        <Basket onClose={() => setCartOpened(false)} opened={isCartOpen} />
         <HeadBlock onClickCart={() => setCartOpened(true)} />
 
         {/* <MenuBoard /> */}

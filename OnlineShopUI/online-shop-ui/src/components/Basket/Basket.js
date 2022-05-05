@@ -1,7 +1,7 @@
 import React from 'react';
 import './Basket.scss';
 import Remove from '../../img/btn-remove.svg';
-import CloseCart from '../../img/btn-close.svg';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Basket = ({ onClose, opened }) => {
   return (
@@ -11,7 +11,7 @@ const Basket = ({ onClose, opened }) => {
           <h2>
             Shopping cart
             <button className="basket__cartClose" onClick={onClose}>
-              <img src={CloseCart} alt="CloseCart" />
+              <CloseIcon style={{ color: 'red' }}></CloseIcon>
             </button>
           </h2>
         </div>
