@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-
-const BASE_URL = "https://localhost:44330/api/user/register/";
+import IdentityServerAPI from "../../../API/IdentityServerAPI";
 
 toast.configure();
 
@@ -31,8 +29,8 @@ const useRegister = () => {
 
     setIsLoading(true);
 
-    axios
-      .post(BASE_URL, {
+    IdentityServerAPI
+      .post("/user/register", {
         userName: name,
         password: pass,
       })

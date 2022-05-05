@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
-const BASE_URL = 'https://localhost:44330/api/user/login/';
+import IdentityAPI from '../../../API/IdentityServerAPI.js';
 
 toast.configure();
 
@@ -33,8 +32,8 @@ const useLogin = () => {
       return;
     }
 
-    axios
-      .post(BASE_URL, {
+    IdentityAPI
+      .post('/user/login', {
         userName: name,
         password: pass,
       })
