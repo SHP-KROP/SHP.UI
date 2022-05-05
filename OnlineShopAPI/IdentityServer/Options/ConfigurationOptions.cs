@@ -2,7 +2,7 @@
 {
     public static class ConfigurationOptions
     {
-        public static string Token = "TokenKey";
-        public static string CorsPolicyName = "CorsPolicyName";
+        public const string Token = "TokenKey";
+        public const string CorsPolicyName = "CorsPolicyName";
     }
 }

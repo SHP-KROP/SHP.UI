@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 
 namespace IdentityServer.Services
 {
@@ -29,11 +28,15 @@ namespace IdentityServer.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtClaimOptions.NameId, user.Id.ToString()),
-                new Claim(JwtClaimOptions.Name, user.UserName),
-                new Claim(JwtClaimOptions.Roles, JsonSerializer.Serialize(roles ?? new List<string>{ })),
-                new Claim(JwtClaimOptions.Email, user.Email ?? string.Empty)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email ?? string.Empty)
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256Signature);
 
