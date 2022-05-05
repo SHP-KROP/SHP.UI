@@ -18,5 +18,7 @@ namespace DAL.Entities
         public ICollection<AppUserRole> UserRoles { get; set; }
 
         public ICollection<Product> Products { get; set; }
+
+        public ICollection<Like> Likes { get; set; }
     }
 }

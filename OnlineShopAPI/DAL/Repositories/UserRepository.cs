@@ -79,5 +79,18 @@ namespace DAL.Repositories
 
             return user;
         }
+
+        public async Task<IEnumerable<Product>> GetProductsLikedByUser(int id)
+        {
+            var user = await _userManager.Users
+                .Where(u => u.Id == id)
+                .Include(u => u.Likes)
+                .ThenInclude(like => like.Product)
+                .FirstOrDefaultAsync();
+
+            var products = user.Likes.Select(like => like.Product);
+
+            return products;
+        }
     }
 }

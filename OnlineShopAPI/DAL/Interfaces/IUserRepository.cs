@@ -24,5 +24,7 @@ namespace DAL.Interfaces
         public Task<ICollection<string>> GetUserRoles(AppUser user);
 
         public Task<AppUser> GetUserWithProductsWithPhotosAsync(int id);
+
+        public Task<IEnumerable<Product>> GetProductsLikedByUser(int id);
     }
 }
