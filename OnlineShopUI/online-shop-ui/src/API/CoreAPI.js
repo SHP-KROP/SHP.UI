@@ -1,10 +1,21 @@
 import axios from "axios";
+import config from "../config.json";
 
-const DEBUG_CORE_API_URL = 'https://localhost:44318/api';
-const DOCKER_CORE_API_URL = 'http://localhost:8081/api';
+let coreApiBaseUrl = '';
+
+switch (config.api.state) {
+    case "docker":
+        coreApiBaseUrl = config.api.docker.core.url;
+        break;
+    case "debug":
+        coreApiBaseUrl = config.api.debug.core.url;
+        break;
+    default:
+        coreApiBaseUrl = config.api.debug.core.url;
+}
 
 const axiosConfig = {
-    baseURL: DOCKER_CORE_API_URL,
+    baseURL: coreApiBaseUrl,
     timeout: 30 * 1000
 };
 

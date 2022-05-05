@@ -1,10 +1,21 @@
 import axios from "axios";
+import config from "../config.json";
 
-const DEBUG_IDENTITY_SERVER_URL = 'https://localhost:44330/api';
-const DOCKER_IDENTITY_SERVER_URL = 'http://localhost:8080/api';
+let identityServerBaseUrl = '';
+
+switch (config.api.state) {
+    case "docker":
+        identityServerBaseUrl = config.api.docker.identityServer.url;
+        break;
+    case "debug":
+        identityServerBaseUrl = config.api.debug.identityServer.url;
+        break;
+    default:
+        identityServerBaseUrl = config.api.debug.identityServer.url;
+}
 
 const axiosConfig = {
-    baseURL: DOCKER_IDENTITY_SERVER_URL,
+    baseURL: identityServerBaseUrl,
     timeout: 30 * 1000
 };
 
