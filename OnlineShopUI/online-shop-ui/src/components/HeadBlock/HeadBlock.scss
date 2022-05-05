@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
 @import '../../Helper/ListColorVariable.scss';
+@import '../../Helper/Mixins.scss';
 
 .search {
   display: flex;
@@ -40,4 +41,7 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+}
+.openCartButton {
+  @include CartButtons;
 }

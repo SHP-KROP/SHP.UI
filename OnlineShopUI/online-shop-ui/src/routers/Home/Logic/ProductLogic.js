@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from 'axios';
-
-const BASE_URL = "https://localhost:44318/api/Product";
+import CoreAPI from "../../../API/CoreAPI";
 
 const useProductCardFilling = () => {
   const [products, setProducts] = useState(() => []);
@@ -11,8 +9,8 @@ const useProductCardFilling = () => {
   }, []);
 
   function getProducts() {
-    axios
-    .get(BASE_URL)
+    CoreAPI
+    .get("/product")
     .then((response) => {
       console.log(response.data)
       setProducts(response.data);

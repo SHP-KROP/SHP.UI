@@ -54,7 +54,7 @@ export default function Login() {
                   }}
                 />
               </div>
-              
+
               <div className="login__pass">
                 <label>Password</label>
                 <input
