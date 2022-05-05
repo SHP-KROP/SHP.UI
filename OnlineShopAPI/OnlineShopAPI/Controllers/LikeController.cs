@@ -1,19 +1,21 @@
 ﻿using AutoMapper;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopAPI.Constants;
 using OnlineShopAPI.DTO.Product;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShopAPI.Controllers
 {
-    [Authorize] //(Roles = Roles.Buyer)
+    [Authorize(Roles = Roles.Buyer)]
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class LikeController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
