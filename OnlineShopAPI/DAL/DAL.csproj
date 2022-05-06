@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>OnlineShop.DataAccessLayer</PackageId>
+    <Authors>RDS</Authors>
+    <Company>RDS</Company>
+    <Product>OnlineShop</Product>
   </PropertyGroup>
 
   <ItemGroup>
