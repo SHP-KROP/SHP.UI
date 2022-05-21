@@ -16,9 +16,11 @@ namespace OnlineShopAPI.Services
         private readonly IUnitOfWork _uow;
         private readonly ICloudinaryService _cloudinaryService;
 
-        public PhotoService(IUnitOfWork uow, IConfiguration configuration)
+        public PhotoService(IUnitOfWork uow, ICloudinaryService cloudinaryService)
         {
             _uow = uow;
+            _cloudinaryService = cloudinaryService;
+            _cloudinaryService.Setup();
         }
 
         public async Task<bool> AddPhotoToProduct(AppUser user, int productId, IFormFile photo)
