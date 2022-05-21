@@ -71,6 +71,13 @@ namespace OnlineShopAPI.Services
                 return false;
             }
 
+            var user = await _uow.UserRepository.FindAsync(userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
             var uploadParams = new ImageUploadParams()
             {
                 File = new FileDescription(Guid.NewGuid().ToString(), photo.OpenReadStream()),
@@ -79,13 +86,6 @@ namespace OnlineShopAPI.Services
             var uploadResult = await _cloudinaryService.UploadAsync(uploadParams);
 
             var linkToPhoto = uploadResult.Url;
-
-            var user = await _uow.UserRepository.FindAsync(userId);
-
-            if (user == null)
-            {
-                return false;
-            }
 
             user.PhotoUrl = linkToPhoto.AbsoluteUri;
 
