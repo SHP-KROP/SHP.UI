@@ -4,7 +4,6 @@ using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using OnlineShopAPI.Options;
 using OnlineShopAPI.Services.Interfaces;
 using System;
 using System.Linq;
@@ -15,15 +14,11 @@ namespace OnlineShopAPI.Services
     public class PhotoService : IPhotoService
     {
         private readonly IUnitOfWork _uow;
-        private readonly IConfiguration _configuration;
-        private Cloudinary _cloudinary;
+        private readonly ICloudinaryService _cloudinaryService;
 
         public PhotoService(IUnitOfWork uow, IConfiguration configuration)
         {
             _uow = uow;
-            _configuration = configuration;
-
-            SetupCloudinaryService();
         }
 
         public async Task<bool> AddPhotoToProduct(AppUser user, int productId, IFormFile photo)
@@ -38,7 +33,7 @@ namespace OnlineShopAPI.Services
                 File = new FileDescription(Guid.NewGuid().ToString(), photo.OpenReadStream()),
             };
 
-            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            var uploadResult = await _cloudinaryService.UploadAsync(uploadParams);
 
             var linkToPhoto = uploadResult.Url;
 
@@ -79,7 +74,7 @@ namespace OnlineShopAPI.Services
                 File = new FileDescription(Guid.NewGuid().ToString(), photo.OpenReadStream()),
             };
 
-            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            var uploadResult = await _cloudinaryService.UploadAsync(uploadParams);
 
             var linkToPhoto = uploadResult.Url;
 
@@ -97,18 +92,6 @@ namespace OnlineShopAPI.Services
             await _uow.ConfirmAsync();
 
             return await Task.FromResult(true);
-        }
-
-        private void SetupCloudinaryService()
-        {
-            var account = new Account
-            {
-                Cloud = _configuration.GetSection(ConfigurationOptions.Cloudinary.CloudName).Value,
-                ApiKey = _configuration.GetSection(ConfigurationOptions.Cloudinary.ApiKey).Value,
-                ApiSecret = _configuration.GetSection(ConfigurationOptions.Cloudinary.ApiSecret).Value
-            };
-
-            _cloudinary = new Cloudinary(account);
         }
     }
 }

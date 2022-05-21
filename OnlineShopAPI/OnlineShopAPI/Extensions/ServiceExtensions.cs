@@ -37,6 +37,10 @@ namespace OnlineShopAPI.Extensions
 
         public static IServiceCollection AddInjectableServices(this IServiceCollection services)
         {
+            // Singleton
+            services.AddSingleton<ICloudinaryService, CloudinaryService>();
+
+            // Scoped
             services.AddScoped<ILogger, Logger<Program>>(); // TODO: Check if loggin works correctly
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPhotoService, PhotoService>();
