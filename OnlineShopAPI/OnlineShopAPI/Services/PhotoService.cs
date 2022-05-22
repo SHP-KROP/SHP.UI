@@ -3,8 +3,6 @@ using CloudinaryDotNet.Actions;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using OnlineShopAPI.Options;
 using OnlineShopAPI.Services.Interfaces;
 using System;
 using System.Linq;
@@ -15,15 +13,13 @@ namespace OnlineShopAPI.Services
     public class PhotoService : IPhotoService
     {
         private readonly IUnitOfWork _uow;
-        private readonly IConfiguration _configuration;
-        private Cloudinary _cloudinary;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public PhotoService(IUnitOfWork uow, IConfiguration configuration)
+        public PhotoService(IUnitOfWork uow, ICloudinaryService cloudinaryService)
         {
             _uow = uow;
-            _configuration = configuration;
-
-            SetupCloudinaryService();
+            _cloudinaryService = cloudinaryService;
+            _cloudinaryService.Setup();
         }
 
         public async Task<bool> AddPhotoToProduct(AppUser user, int productId, IFormFile photo)
@@ -38,7 +34,7 @@ namespace OnlineShopAPI.Services
                 File = new FileDescription(Guid.NewGuid().ToString(), photo.OpenReadStream()),
             };
 
-            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            var uploadResult = await _cloudinaryService.UploadAsync(uploadParams);
 
             var linkToPhoto = uploadResult.Url;
 
@@ -62,6 +58,7 @@ namespace OnlineShopAPI.Services
             product.Photos.Add(photoEntity);
 
             await _uow.UserRepository.UpdateAsync(user);
+            await _uow.ConfirmAsync();
 
             return await Task.FromResult(true);
         }
@@ -73,21 +70,21 @@ namespace OnlineShopAPI.Services
                 return false;
             }
 
-            var uploadParams = new ImageUploadParams()
-            {
-                File = new FileDescription(Guid.NewGuid().ToString(), photo.OpenReadStream()),
-            };
-
-            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
-
-            var linkToPhoto = uploadResult.Url;
-
             var user = await _uow.UserRepository.FindAsync(userId);
 
             if (user == null)
             {
                 return false;
             }
+
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription(Guid.NewGuid().ToString(), photo.OpenReadStream()),
+            };
+
+            var uploadResult = await _cloudinaryService.UploadAsync(uploadParams);
+
+            var linkToPhoto = uploadResult.Url;
 
             user.PhotoUrl = linkToPhoto.AbsoluteUri;
 
@@ -96,18 +93,6 @@ namespace OnlineShopAPI.Services
             await _uow.ConfirmAsync();
 
             return await Task.FromResult(true);
-        }
-
-        private void SetupCloudinaryService()
-        {
-            var account = new Account
-            {
-                Cloud = _configuration.GetSection(ConfigurationOptions.Cloudinary.CloudName).Value,
-                ApiKey = _configuration.GetSection(ConfigurationOptions.Cloudinary.ApiKey).Value,
-                ApiSecret = _configuration.GetSection(ConfigurationOptions.Cloudinary.ApiSecret).Value
-            };
-
-            _cloudinary = new Cloudinary(account);
         }
     }
 }

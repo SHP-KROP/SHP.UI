@@ -36,7 +36,6 @@ namespace OnlineShopAPI.Controllers
         {
             var user = await _uow.UserRepository.GetUserWithProductsWithPhotosAsync(this.GetUserId());
             var result = await _photoService.AddPhotoToProduct(user, productId, photo);
-            await _uow?.ConfirmAsync();
 
             return result 
                 ? Ok() 

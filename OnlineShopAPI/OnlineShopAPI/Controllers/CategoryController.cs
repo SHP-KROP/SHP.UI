@@ -60,7 +60,7 @@ namespace OnlineShopAPI.Controllers
                 return BadRequest(string.Format("Category with name {0} not found", categoryName));
             }
 
-            return _mapper.Map<CategoryDto>(category);
+            return Ok(_mapper.Map<CategoryDto>(category));
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -81,7 +81,7 @@ namespace OnlineShopAPI.Controllers
                 return BadRequest("Unable to create category");
             }
 
-            return _mapper.Map<CategoryDto>(createdCategory);
+            return Ok(_mapper.Map<CategoryDto>(createdCategory));
         }
 
         [ProducesResponseType(StatusCodes.Status204NoContent)]

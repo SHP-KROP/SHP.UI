@@ -10,6 +10,7 @@ using Moq;
 using OnlineShopAPI.Controllers;
 using OnlineShopAPI.DTO.Product;
 using OnlineShopAPI.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -146,6 +147,23 @@ namespace OnlineShopAPI.Tests
         }
 
         [Fact]
+        public async Task CreateProduct_ShouldReturnBadRequest_WhenAddAsyncThrowsException()
+        {
+            _productRepository.Setup(pr => pr.AddAsync(It.IsAny<Product>())).Throws<Exception>();
+
+            var products = await _productController
+                .CreateProduct(GetValidCreateProductDto()) as ActionResult<ProductDto>;
+
+            var result = products.Result as ObjectResult;
+            var value = result?.Value;
+
+            value?.Should().Match<string>(str => str.Contains("Database"))
+                .And.Match<string>(str => str.Contains("error"));
+
+            result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
         public async Task ChangeProduct_ShouldReturnBadRequest_WhenProductWithNameNotFound()
         {
 
@@ -220,6 +238,23 @@ namespace OnlineShopAPI.Tests
             var result = products.Result as StatusCodeResult;
 
             result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
+        }
+
+        [Fact]
+        public async Task DeleteProductByName_ShouldReturnBadRequest_WhenUowThrowsException()
+        {
+            string productName = "SomeProduct";
+            var product = new Product { Name = productName };
+
+            _productRepository
+                .Setup(pr => pr.GetProductByNameAsync(productName))
+                .ReturnsAsync(product);
+
+            _productRepository.Setup(pr => pr.Remove(It.Is<Product>(p => p.Name == productName))).Throws<Exception>();
+
+            var response = await _productController.DeleteProductByName(productName) as ActionResult<string>;
+
+            ((ObjectResult)response.Result).StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
 
         private CreateProductDto GetValidCreateProductDto() => new CreateProductDto
