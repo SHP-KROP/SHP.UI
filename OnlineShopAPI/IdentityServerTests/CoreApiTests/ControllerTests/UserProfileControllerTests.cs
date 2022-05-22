@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OnlineShopAPI.Controllers;
 using OnlineShopAPI.Services.Interfaces;
-using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 

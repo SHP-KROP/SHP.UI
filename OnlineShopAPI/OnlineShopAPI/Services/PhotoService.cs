@@ -3,7 +3,6 @@ using CloudinaryDotNet.Actions;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using OnlineShopAPI.Services.Interfaces;
 using System;
 using System.Linq;
