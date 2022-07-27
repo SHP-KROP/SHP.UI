@@ -18,3 +18,12 @@ services:
     container_name: online-shop-ui
     ports:
       - '8082:3000'
+
+  sql-server-db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: sql-server-17
+    ports:
+      - '2433:1433'
+    environment:
+      SA_PASSWORD: "Pass1234Qq"
+      ACCEPT_EULA: "Y"
