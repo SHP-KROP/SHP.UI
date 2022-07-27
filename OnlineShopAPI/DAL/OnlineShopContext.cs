@@ -75,7 +75,8 @@ namespace DAL
                 .HasMany(u => u.Likes)
                 .WithOne(like => like.User)
                 .HasForeignKey(like => like.UserId)
-                .IsRequired();
+                .IsRequired()
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
