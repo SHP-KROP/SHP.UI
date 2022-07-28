@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import './ProductCard.scss';
 import ProductBg from '../../img/product-img.png';
 

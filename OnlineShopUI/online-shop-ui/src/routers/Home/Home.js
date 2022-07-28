@@ -1,7 +1,6 @@
 import './Home.scss';
 import Feedback from '../../components/FeedbackATop/Feedback';
 import HeadBlock from '../../components/HeadBlock/HeadBlock';
-// import MenuBoard from './components/Menu';
 import ProductCard from '../../components/Card/ProductCard';
 import SideMenuList from '../../components/SideMenuList/SideMenuList';
 import Banner from '../../components/Banner/Banner';
@@ -9,18 +8,29 @@ import useMenuFilling from '../Home/Logic/MenuLogic';
 import useProductCardFilling from '../Home/Logic/ProductLogic';
 import Basket from '../../components/Basket/Basket';
 import { useState } from 'react';
+
 function Home() {
+  const productCards = useProductCardFilling(); // api call for cards
   const menu = useMenuFilling();
-  const productCards = useProductCardFilling();
+  /*
+  const productCardsUpdate = () => {
+    cardInfo.map((card) => (card['addInBasket'] = true));
+  };
+  productCardsUpdate();
+  */
+
   const [isCartOpen, setCartOpened] = useState(() => false);
   return (
     <>
       <div className="MainPage">
         <Feedback />
-        <Basket onClose={() => setCartOpened(false)} opened={isCartOpen} />
+        <Basket
+          onClose={() => setCartOpened(false)}
+          opened={isCartOpen}
+          cardInfo={productCards}
+        />
         <HeadBlock onClickCart={() => setCartOpened(true)} />
 
-        {/* <MenuBoard /> */}
         <div className="blocks">
           <div className="blockSideMenus">
             {menu.map((sideMenuListItem) => (

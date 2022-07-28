@@ -2,8 +2,9 @@ import React from 'react';
 import './Basket.scss';
 import Remove from '../../img/btn-remove.svg';
 import CloseIcon from '@mui/icons-material/Close';
+import removeFromBasketById from '../../routers/Home/Logic/Basket/RemovedFromBasket';
 
-const Basket = ({ onClose, opened }) => {
+const Basket = ({ onClose, opened, cardInfo }) => {
   return (
     <div className={opened ? 'overlay' : 'overlayUnVisible'}>
       <div className="basket">
@@ -16,14 +17,22 @@ const Basket = ({ onClose, opened }) => {
           </h2>
         </div>
         <div className="basket__items">
-          <div className="basket__cartItem">
-            <div className="basket__cartItemPhoto"></div>
-            <div className="basket__itemInfo">
-              <p>Lorem ipsum dolor, sit amet consectetur</p>
-              <b>12 999 usd</b>
-            </div>
-            <img src={Remove} alt="Remove" />
-          </div>
+          {cardInfo.map((card) => {
+            if (card.isInBasket) {
+              return (
+                <div className="basket__cartItem">
+                  <div className="basket__cartItemPhoto"></div>
+                  <div className="basket__itemInfo">
+                    <p>{card.name}</p>
+                    <b>{card.price} usd</b>
+                  </div>
+                  <button onClick={() => removeFromBasketById(card.id)}>
+                    <img src={Remove} alt="Remove" />
+                  </button>
+                </div>
+              );
+            }
+          })}
         </div>
         <div className="basket__price">
           <span>Subtotal</span>
