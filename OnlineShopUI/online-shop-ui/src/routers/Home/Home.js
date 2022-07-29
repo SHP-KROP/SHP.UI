@@ -12,14 +12,15 @@ import { useState } from 'react';
 function Home() {
   const productCards = useProductCardFilling(); // api call for cards
   const menu = useMenuFilling();
-  /*
-  const productCardsUpdate = () => {
-    cardInfo.map((card) => (card['addInBasket'] = true));
-  };
-  productCardsUpdate();
-  */
 
   const [isCartOpen, setCartOpened] = useState(() => false);
+  const [basket, setBasket] = useState([]);
+
+  const handleClickAddInBasket = (card) => {
+    setBasket([...basket, card]);
+  };
+  console.log(basket);
+
   return (
     <>
       <div className="MainPage">
@@ -50,6 +51,9 @@ function Home() {
                 name={productCardItem.name}
                 description={productCardItem.description}
                 price={productCardItem.price}
+                card={productCardItem}
+                handleClick={handleClickAddInBasket}
+                basket={basket}
               />
             ))}
           </div>
