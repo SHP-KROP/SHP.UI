@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using OnlineShopAPI.Controllers;
+using OnlineShopAPI.DTO;
 using OnlineShopAPI.DTO.Product;
 using OnlineShopAPI.Mapping;
 using System;
@@ -79,6 +80,41 @@ namespace OnlineShopAPI.Tests
             value?.Should().Be("There are not any products");
 
             result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task GetProductsInRange_ShouldReturnBadRequest_WhenProductCountIsZero()
+        {
+            _productRepository
+                .Setup(pr => pr.GetProductRangeById(It.IsAny<IEnumerable<int>>()))
+                .ReturnsAsync(null as List<Product>);
+
+            var products = await _productController.GetProductsInRange(new IdRangeModel { Ids = new List<int> { 1 } }) as ActionResult<IEnumerable<ProductDto>>;
+
+            var result = products.Result as ObjectResult;
+            var value = result?.Value as string;
+
+            value?.Should().Be("There are not any products");
+
+            result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+        }
+
+        [Fact]
+        public async Task GetProductsInRange_ShouldReturnOk_WithNotEmptyProducts()
+        {
+            _productRepository
+                .Setup(pr => pr.GetProductRangeById(It.IsAny<IEnumerable<int>>()))
+                .ReturnsAsync(new List<Product> { new Product() });
+
+            var products = await _productController.GetProductsInRange(new IdRangeModel { Ids = new List<int> { 1 } }) as ActionResult<IEnumerable<ProductDto>>;
+
+            var result = products.Result as ObjectResult;
+            var value = result?.Value as IEnumerable<ProductDto>;
+
+            value?.Should().NotBeNull();
+            value?.Count().Should().BeGreaterThan(0);
+
+            result.StatusCode.Should().Be(StatusCodes.Status200OK);
         }
 
         [Fact]

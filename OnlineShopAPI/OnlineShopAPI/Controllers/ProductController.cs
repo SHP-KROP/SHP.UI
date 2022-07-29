@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OnlineShopAPI.Constants;
+using OnlineShopAPI.DTO;
 using OnlineShopAPI.DTO.Product;
 using OnlineShopAPI.Mapping;
 using System.Collections.Generic;
@@ -39,6 +40,23 @@ namespace OnlineShopAPI.Controllers
             var products = await _uow?.ProductRepository.GetAllAsync();
 
             if (products is null || products.Count() == 0)
+            {
+                return BadRequest("There are not any products");
+            }
+
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+        }
+
+        [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPost]
+        [Route("range")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsInRange(IdRangeModel range)
+        {
+            var products = await _uow?.ProductRepository.GetProductRangeById(range.Ids);
+
+            if (products is null)
             {
                 return BadRequest("There are not any products");
             }
