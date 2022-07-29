@@ -17,7 +17,7 @@ namespace OnlineShopAPI.Services
 
         public async Task Seed()
         {
-            if (!_context.Set<Product>().Any())
+            if (_context.Set<Product>().Any())
             {
                 return;
             }
@@ -27,18 +27,21 @@ namespace OnlineShopAPI.Services
                 {
                     Name = "product1",
                     Description = "descr",
-                    Price = 200
+                    Price = 200,
+                    User = new AppUser()
                 },
                 new Product
                 {
                     Name = "product2",
                     Description = "descr",
-                    Price = 300
+                    Price = 300,
+                    User = new AppUser()
                 }, new Product
                 {
                     Name = "product3",
                     Description = "descr",
-                    Price = 400
+                    Price = 400,
+                    User = new AppUser()
                 }
                 );
 
