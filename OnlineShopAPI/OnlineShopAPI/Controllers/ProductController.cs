@@ -33,7 +33,7 @@ namespace OnlineShopAPI.Controllers
 
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
@@ -41,7 +41,7 @@ namespace OnlineShopAPI.Controllers
 
             if (products is null || products.Count() == 0)
             {
-                return BadRequest("There are not any products");
+                return NoContent();
             }
 
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
@@ -49,7 +49,7 @@ namespace OnlineShopAPI.Controllers
 
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpPost]
         [Route("range")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsInRange(IdRangeModel range)
@@ -58,7 +58,7 @@ namespace OnlineShopAPI.Controllers
 
             if (products is null)
             {
-                return BadRequest("There are not any products");
+                return NoContent();
             }
 
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
@@ -66,7 +66,7 @@ namespace OnlineShopAPI.Controllers
 
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpGet("{productName}")]
         public async Task<ActionResult<ProductDto>> GetProductByName(string productName)
         {
@@ -74,7 +74,7 @@ namespace OnlineShopAPI.Controllers
 
             if (product is null)
             {
-                return BadRequest("Product not found");
+                return NoContent();
             }
 
             return Ok(_mapper.Map<ProductDto>(product));

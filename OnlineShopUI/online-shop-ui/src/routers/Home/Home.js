@@ -1,52 +1,29 @@
-import './Home.scss';
-import Feedback from '../../components/FeedbackATop/Feedback';
-import HeadBlock from '../../components/HeadBlock/HeadBlock';
-import ProductCard from '../../components/Card/ProductCard';
-import SideMenuList from '../../components/SideMenuList/SideMenuList';
-import Banner from '../../components/Banner/Banner';
-import useMenuFilling from '../Home/Logic/MenuLogic';
-import useProductCardFilling from '../Home/Logic/ProductLogic';
-import Basket from '../../components/Basket/Basket';
-import { useEffect, useState } from 'react';
-import storeInBasketById from './Logic/Basket/StoreInBasket';
-import increaseCountInBasketById from './Logic/Basket/IncreaseCountInBasketById';
-import decreaseCountInBasketById from './Logic/Basket/DecreaseCountInBasketById';
-import removeFromBasketById from './Logic/Basket/RemovedFromBasket';
+import "./Home.scss";
+import Feedback from "../../components/FeedbackATop/Feedback";
+import HeadBlock from "../../components/HeadBlock/HeadBlock";
+import ProductCard from "../../components/Card/ProductCard";
+import SideMenuList from "../../components/SideMenuList/SideMenuList";
+import Banner from "../../components/Banner/Banner";
+import useMenuFilling from "../Home/Logic/MenuLogic";
+import useProductCardFilling from "../Home/Logic/ProductLogic";
+import Basket from "../../components/Basket/Basket";
+import { useState } from "react";
+import useBasketFilling from "./Logic/Basket/hooks/useBasketFilling";
+import useBasketHandlers from "./Logic/Basket/hooks/useBasketHandlers";
 
 function Home() {
-  const menu = useMenuFilling();
-
   const [isCartOpen, setCartOpened] = useState(() => false);
-  const [basket, setBasket] = useState([]);
-  const productCards = useProductCardFilling(setBasket); // api call for cards
+  const menu = useMenuFilling();
+  const productCards = useProductCardFilling();
 
-  const handleClickAddInBasket = (card) => {
-    console.log(card);
-    if (card.countInBasket === 0) {
-      card.countInBasket = 1;
-      setBasket([...basket, card]);
-    }
-    storeInBasketById(card.id);
-  };
+  const [basket, setBasket] = useBasketFilling();
+  const [
+    handleClickAddInBasket,
+    handleClickRemoveFromBasket,
+    handleClickIncreaseBasketCount,
+    handleClickDecreaseBasketCount,
+  ] = useBasketHandlers({basket, setBasket});
 
-  const handleClickRemoveFromBasket = (card) => {
-    card.countInBasket = 0;
-    setBasket(basket.filter((basketItem) => basketItem.id !== card.id));
-    removeFromBasketById(card.id);
-  };
-
-  const handleClickIncreaseBasketCount = (card) => {
-    increaseCountInBasketById(card.id);
-    card.countInBasket++;
-  };
-
-  const handleClickDecreaseBasketCount = (card) => {
-    decreaseCountInBasketById(card.id);
-    card.countInBasket--;
-    if (card.countInBasket === 0) {
-      setBasket(basket.filter((basketItem) => basketItem.id !== card.id));
-    }
-  };
 
   return (
     <>

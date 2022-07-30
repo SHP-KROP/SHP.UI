@@ -66,7 +66,7 @@ namespace OnlineShopAPI.Tests
         }
 
         [Fact]
-        public async Task GetProducts_ShouldReturnBadRequest_WhenProductCountIsZero()
+        public async Task GetProducts_ShouldReturnNoContent_WhenProductCountIsZero()
         {
             _productRepository
                 .Setup(pr => pr.GetAllAsync())
@@ -74,16 +74,13 @@ namespace OnlineShopAPI.Tests
 
             var products = await _productController.GetProducts() as ActionResult<IEnumerable<ProductDto>>;
 
-            var result = products.Result as ObjectResult;
-            var value = result?.Value as string;
+            var result = products.Result as StatusCodeResult;
 
-            value?.Should().Be("There are not any products");
-
-            result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
-        public async Task GetProductsInRange_ShouldReturnBadRequest_WhenProductCountIsZero()
+        public async Task GetProductsInRange_ShouldReturnNoContent_WhenProductCountIsZero()
         {
             _productRepository
                 .Setup(pr => pr.GetProductRangeById(It.IsAny<IEnumerable<int>>()))
@@ -91,12 +88,9 @@ namespace OnlineShopAPI.Tests
 
             var products = await _productController.GetProductsInRange(new IdRangeModel { Ids = new List<int> { 1 } }) as ActionResult<IEnumerable<ProductDto>>;
 
-            var result = products.Result as ObjectResult;
-            var value = result?.Value as string;
+            var result = products.Result as StatusCodeResult;
 
-            value?.Should().Be("There are not any products");
-
-            result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -137,7 +131,7 @@ namespace OnlineShopAPI.Tests
         }
 
         [Fact]
-        public async Task GetProductByName_ShouldReturnBadRequest_WhenProductNotFound()
+        public async Task GetProductByName_ShouldReturnNoContent_WhenProductNotFound()
         {
             _productRepository
                 .Setup(pr => pr.GetProductByNameAsync("SomeName"))
@@ -145,12 +139,9 @@ namespace OnlineShopAPI.Tests
 
             var products = await _productController.GetProductByName(It.IsAny<string>()) as ActionResult<ProductDto>;
 
-            var result = products.Result as ObjectResult;
-            var value = result?.Value as string;
+            var result = products.Result as StatusCodeResult;
 
-            value?.Should().Be("Product not found");
-
-            result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]

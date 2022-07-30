@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Remove from '../../img/btn-remove.svg';
-import removeFromBasketById from '../../routers/Home/Logic/Basket/RemovedFromBasket';
+import removeFromBasketById from '../../routers/Home/Logic/Basket/functions/RemoveFromBasketById';
 
 export default function CardInBasket({
   card,

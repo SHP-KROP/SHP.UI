@@ -1,7 +1,7 @@
-import removeFromBasketById from './RemovedFromBasket';
+import removeFromBasketById from './RemoveFromBasketById';
 
 export default function decreaseCountInBasketById(id) {
-  let basketModel = JSON.parse(localStorage.getItem('basket')); //{id: 1, countInBasket: 0} or null
+  let basketModel = JSON.parse(localStorage.getItem('basket'));
 
   let basketItem = basketModel.find((basketItem) => basketItem.id === id);
   if (basketItem.countInBasket === 1) {
