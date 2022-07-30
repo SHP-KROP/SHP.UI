@@ -12,7 +12,7 @@ import useBasketFilling from "./Logic/Basket/hooks/useBasketFilling";
 import useBasketHandlers from "./Logic/Basket/hooks/useBasketHandlers";
 
 function Home() {
-  const [isCartOpen, setCartOpened] = useState(() => false);
+  const [isBasketOpen, setBasketOpen] = useState(() => false);
   const menu = useMenuFilling();
   const productCards = useProductCardFilling();
 
@@ -24,20 +24,19 @@ function Home() {
     handleClickDecreaseBasketCount,
   ] = useBasketHandlers({basket, setBasket});
 
-
   return (
     <>
       <div className="MainPage">
         <Feedback />
         <Basket
-          onClose={() => setCartOpened(false)}
-          opened={isCartOpen}
+          onClose={() => setBasketOpen(false)}
+          opened={isBasketOpen}
           basket={basket}
           handleClickIncreaseBasketCount={handleClickIncreaseBasketCount}
           handleClickDecreaseBasketCount={handleClickDecreaseBasketCount}
           handleClickRemoveFromBasket={handleClickRemoveFromBasket}
         />
-        <HeadBlock onClickCart={() => setCartOpened(true)} />
+        <HeadBlock onClickCart={() => setBasketOpen(true)} />
 
         <div className="blocks">
           <div className="blockSideMenus">

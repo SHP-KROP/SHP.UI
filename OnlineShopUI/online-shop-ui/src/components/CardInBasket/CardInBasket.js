@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Remove from '../../img/btn-remove.svg';
 import removeFromBasketById from '../../routers/Home/Logic/Basket/functions/RemoveFromBasketById';
 
@@ -7,8 +7,14 @@ export default function CardInBasket({
   handleClickIncreaseBasketCount,
   handleClickDecreaseBasketCount,
   handleClickRemoveFromBasket,
+  calculateTotal
 }) {
   const [cardCount, setCardCount] = useState(card.countInBasket);
+
+  useEffect(() => {
+    calculateTotal();
+    return calculateTotal;
+  }, [cardCount]);
 
   const onIncreased = () => {
     handleClickIncreaseBasketCount(card);

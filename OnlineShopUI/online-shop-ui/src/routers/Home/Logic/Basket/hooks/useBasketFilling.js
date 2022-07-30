@@ -13,16 +13,16 @@ export default function useBasketFilling() {
   }, []);
 
   function fillBasket() {
-    let basket = JSON.parse(localStorage.getItem("basket")) ?? [];
-
-    const idRangeModel = { ids: basket.map((x) => x.id) };
+    let basketModel = JSON.parse(localStorage.getItem("basket")) ?? [];
+    
+    const idRangeModel = { ids: basketModel.map((x) => x.id) };
 
     CoreAPI.post("/product/range", idRangeModel)
       .then((response) => {
         let productsInBasket = response.data.map((product) => {
           return {
             ...product,
-            countInBasket: basket.find((x) => x.id === product.id)
+            countInBasket: basketModel.find((x) => x.id === product.id)
               .countInBasket,
           };
         });
