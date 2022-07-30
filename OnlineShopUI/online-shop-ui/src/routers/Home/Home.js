@@ -7,19 +7,44 @@ import Banner from '../../components/Banner/Banner';
 import useMenuFilling from '../Home/Logic/MenuLogic';
 import useProductCardFilling from '../Home/Logic/ProductLogic';
 import Basket from '../../components/Basket/Basket';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import storeInBasketById from './Logic/Basket/StoreInBasket';
+import increaseCountInBasketById from './Logic/Basket/IncreaseCountInBasketById';
+import decreaseCountInBasketById from './Logic/Basket/DecreaseCountInBasketById';
+import removeFromBasketById from './Logic/Basket/RemovedFromBasket';
 
 function Home() {
-  const productCards = useProductCardFilling(); // api call for cards
   const menu = useMenuFilling();
 
   const [isCartOpen, setCartOpened] = useState(() => false);
   const [basket, setBasket] = useState([]);
+  const productCards = useProductCardFilling(setBasket); // api call for cards
 
   const handleClickAddInBasket = (card) => {
-    setBasket([...basket, card]);
+    if (card.countInBasket === 0) {
+      card.countInBasket = 1;
+      setBasket([...basket, card]);
+    }
+    storeInBasketById(card.id);
   };
-  console.log(basket);
+
+  const handleClickRemoveFromBasket = (card) => {
+    setBasket(basket.filter((basketItem) => basketItem.id !== card.id));
+    removeFromBasketById(card.id);
+  };
+
+  const handleClickIncreaseBasketCount = (card) => {
+    increaseCountInBasketById(card.id);
+    card.countInBasket++;
+  };
+
+  const handleClickDecreaseBasketCount = (card) => {
+    decreaseCountInBasketById(card.id);
+    card.countInBasket--;
+    if (card.countInBasket === 0) {
+      setBasket(basket.filter((basketItem) => basketItem.id !== card.id));
+    }
+  };
 
   return (
     <>
@@ -28,7 +53,10 @@ function Home() {
         <Basket
           onClose={() => setCartOpened(false)}
           opened={isCartOpen}
-          cardInfo={productCards}
+          basket={basket}
+          handleClickIncreaseBasketCount={handleClickIncreaseBasketCount}
+          handleClickDecreaseBasketCount={handleClickDecreaseBasketCount}
+          handleClickRemoveFromBasket={handleClickRemoveFromBasket}
         />
         <HeadBlock onClickCart={() => setCartOpened(true)} />
 

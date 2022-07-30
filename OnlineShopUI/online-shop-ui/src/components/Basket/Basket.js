@@ -3,7 +3,14 @@ import './Basket.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import CardInBasket from '../CardInBasket/CardInBasket';
 
-const Basket = ({ onClose, opened, cardInfo, basket }) => {
+const Basket = ({
+  onClose,
+  opened,
+  basket,
+  handleClickIncreaseBasketCount,
+  handleClickDecreaseBasketCount,
+  handleClickRemoveFromBasket,
+}) => {
   return (
     <div className={opened ? 'overlay' : 'overlayUnVisible'}>
       <div className="basket">
@@ -16,17 +23,14 @@ const Basket = ({ onClose, opened, cardInfo, basket }) => {
           </h2>
         </div>
         <div className="basket__items">
-          {cardInfo.map((card) => {
-            if (card.isInBasket) {
-              return (
-                <CardInBasket
-                  cardName={card.name}
-                  cardPrice={card.price}
-                  cardId={card.id}
-                />
-              );
-            }
-          })}
+          {basket.map((card) => (
+            <CardInBasket
+              card={card}
+              handleClickIncreaseBasketCount={handleClickIncreaseBasketCount}
+              handleClickDecreaseBasketCount={handleClickDecreaseBasketCount}
+              handleClickRemoveFromBasket={handleClickRemoveFromBasket}
+            />
+          ))}
         </div>
         <div className="basket__price">
           <span>Subtotal</span>

@@ -3,7 +3,15 @@ import { useState } from 'react';
 import './ProductCard.scss';
 import ProductBg from '../../img/product-img.png';
 
-const ProductCard = ({ name, description, price, handleClick, card }) => {
+const ProductCard = ({
+  name,
+  description,
+  price,
+  handleClick,
+  card,
+  basket,
+}) => {
+  const isInBasket = () => basket.find((x) => x.id === card.id);
   return (
     <div className="product-card__body">
       <div className="product-card__img">
@@ -20,7 +28,9 @@ const ProductCard = ({ name, description, price, handleClick, card }) => {
         <button>Buy now</button>
       </div>
       <div>
-        <button onClick={() => handleClick(card)}>In cart</button>
+        <button onClick={() => handleClick(card)}>
+          {isInBasket() ? 'Added to basket' : 'Add to basket'}
+        </button>
       </div>
     </div>
   );

@@ -1,16 +1,17 @@
 export default function storeInBasketById(id) {
-  let basketModel = JSON.parse(localStorage.getItem('basket'));
-  console.log(`Baskete model ${basketModel}`);
+  let basketModel = JSON.parse(localStorage.getItem('basket')); //{id: 1, countInBasket: 0} or null
 
   if (!basketModel) {
-    basketModel = [];
-    basketModel.push(id);
+    basketModel = [{ id: id, countInBasket: 1 }];
     localStorage.setItem('basket', JSON.stringify(basketModel));
     return;
   }
 
-  if (!basketModel.includes(id)) {
-    basketModel.push(id);
+  if (basketModel.find((basket) => basket.id === id)) {
+    let basketItem = basketModel.find((basketItem) => basketItem.id === id);
+    basketItem.countInBasket++;
+  } else {
+    basketModel.push({ id: id, countInBasket: 1 });
   }
 
   localStorage.setItem('basket', JSON.stringify(basketModel));
