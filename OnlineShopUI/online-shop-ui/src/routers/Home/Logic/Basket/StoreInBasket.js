@@ -9,7 +9,7 @@ export default function storeInBasketById(id) {
 
   if (basketModel.find((basket) => basket.id === id)) {
     let basketItem = basketModel.find((basketItem) => basketItem.id === id);
-    basketItem.countInBasket++;
+    basketItem.countInBasket = 1;
   } else {
     basketModel.push({ id: id, countInBasket: 1 });
   }

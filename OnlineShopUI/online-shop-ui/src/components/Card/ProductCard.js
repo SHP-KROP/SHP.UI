@@ -28,7 +28,7 @@ const ProductCard = ({
         <button>Buy now</button>
       </div>
       <div>
-        <button onClick={() => handleClick(card)}>
+        <button disabled={isInBasket()} onClick={() => handleClick(card)}>
           {isInBasket() ? 'Added to basket' : 'Add to basket'}
         </button>
       </div>

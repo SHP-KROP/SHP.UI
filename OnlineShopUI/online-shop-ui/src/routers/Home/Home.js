@@ -21,6 +21,7 @@ function Home() {
   const productCards = useProductCardFilling(setBasket); // api call for cards
 
   const handleClickAddInBasket = (card) => {
+    console.log(card);
     if (card.countInBasket === 0) {
       card.countInBasket = 1;
       setBasket([...basket, card]);
@@ -29,6 +30,7 @@ function Home() {
   };
 
   const handleClickRemoveFromBasket = (card) => {
+    card.countInBasket = 0;
     setBasket(basket.filter((basketItem) => basketItem.id !== card.id));
     removeFromBasketById(card.id);
   };
