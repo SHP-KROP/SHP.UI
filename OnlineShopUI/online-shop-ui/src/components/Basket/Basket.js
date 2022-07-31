@@ -40,8 +40,8 @@ const Basket = ({
           ))}
         </div>
         <div className="basket__price">
-          <span>Subtotal</span>
-          <p className="basket__price">{getTotal()} USD</p>
+          <span>Total price:</span>
+          <p className="basket__price">{getTotal()}$</p>
         </div>
         <hr />
 

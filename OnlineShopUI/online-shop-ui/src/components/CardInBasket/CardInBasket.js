@@ -36,7 +36,7 @@ export default function CardInBasket({
       <div className="basket__cartItemPhoto"></div>
       <div className="basket__itemInfo">
         <p>{card.name}</p>
-        <b>{card.price} USD {(cardCount > 1) && `(${cardCount * card.price})`} </b>
+        <b>{card.price}$ {(cardCount > 1) && `(${cardCount * card.price}$)`} </b>
       </div>
       <div>
         <div
