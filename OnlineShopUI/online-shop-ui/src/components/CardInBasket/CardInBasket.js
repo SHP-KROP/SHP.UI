@@ -43,11 +43,12 @@ export default function CardInBasket({
           style={{ display: 'flex', alignItems: 'center', marginRight: '50%' }}
           className="basket__itemCounter"
         >
+          
+          <RemoveIcon onClick={() => onDecreased()} />
           <div style={{ margin: '10%', fontWeight: 'bold' }}>
             {card.countInBasket}
           </div>
           <AddIcon onClick={() => onIncreased()} />
-          <RemoveIcon onClick={() => onDecreased()} />
           <CancelIcon
             sx={{ fontSize: '35px' }}
             onClick={() => handleClickRemoveFromBasket(card)}
