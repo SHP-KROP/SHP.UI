@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32519.379
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32602.291
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopAPI", "OnlineShopAPI\OnlineShopAPI.csproj", "{21E33EF1-72C0-420A-B407-BD6436F22FBD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{AD357DE4-4256-4AA3-BE04-B0159521938A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopTests", "IdentityServerTests\OnlineShopTests.csproj", "{BF6BB3F9-83A6-4423-BE51-0C39DDD13ABF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SHP.Data", "..\..\SHP.Data\SHP.Data.csproj", "{312E8E94-CA3E-4949-B70F-BBA7A9317357}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		{BF6BB3F9-83A6-4423-BE51-0C39DDD13ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF6BB3F9-83A6-4423-BE51-0C39DDD13ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF6BB3F9-83A6-4423-BE51-0C39DDD13ABF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{312E8E94-CA3E-4949-B70F-BBA7A9317357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{312E8E94-CA3E-4949-B70F-BBA7A9317357}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{312E8E94-CA3E-4949-B70F-BBA7A9317357}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{312E8E94-CA3E-4949-B70F-BBA7A9317357}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
