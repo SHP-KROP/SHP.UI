@@ -42,6 +42,7 @@ namespace OnlineShopAPI.Extensions
             services.AddScoped<ICloudinaryService, CloudinaryService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<Seeder>();
 
             return services;
         }

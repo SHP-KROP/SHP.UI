@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import '../HeadBlock/HeadBlock.scss';
-import Login from '../ModalLogin/Login';
+import React, { useState } from "react";
+import "../HeadBlock/HeadBlock.scss";
+import Login from "../ModalLogin/Login";
+import IconSearch from "../../img/icon-search.png";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
+import Badge from "@mui/material/Badge";
+import Card from "../../img/icon-card.png";
 
-import IconSearch from '../../img/icon-search.png';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Fade from '@mui/material/Fade';
-import Card from '../../img/icon-card.png';
-
-const HeadBlock = (props) => {
+const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount}) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isOpen = !!anchorElement;
 
@@ -27,9 +27,9 @@ const HeadBlock = (props) => {
         <button
           className="search__buttonList"
           id="fade-button"
-          aria-controls={isOpen ? 'fade-menu' : undefined}
+          aria-controls={isOpen ? "fade-menu" : undefined}
           aria-haspopup="true"
-          aria-expanded={isOpen ? 'true' : undefined}
+          aria-expanded={isOpen ? "true" : undefined}
           onClick={handleClick}
         >
           <p className="list">
@@ -39,7 +39,7 @@ const HeadBlock = (props) => {
         <Menu
           id="fade-menu"
           MenuListProps={{
-            'aria-labelledby': 'fade-button',
+            "aria-labelledby": "fade-button",
           }}
           anchorEl={anchorElement}
           open={isOpen}
@@ -55,9 +55,11 @@ const HeadBlock = (props) => {
       </div>
       <div className="profile">
         <Login />
-        <button className="openCartButton" onClick={props.onClickCart}>
+        {!basketOpen && <Badge badgeContent={productsInBasketCount} color="secondary" max={99}>
+        <button className="openCartButton" onClick={onClickCart}>
           <img src={Card} alt="card" />
         </button>
+        </Badge>}
       </div>
     </div>
   );

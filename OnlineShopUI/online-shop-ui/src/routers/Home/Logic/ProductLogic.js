@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import CoreAPI from "../../../API/CoreAPI";
+import { useEffect, useState } from 'react';
+import CoreAPI from '../../../API/CoreAPI';
 
 const useProductCardFilling = () => {
   const [products, setProducts] = useState(() => []);
@@ -9,15 +9,15 @@ const useProductCardFilling = () => {
   }, []);
 
   function getProducts() {
-    CoreAPI
-    .get("/product")
-    .then((response) => {
-      console.log(response.data)
-      setProducts(response.data);
-    })
-    .catch((error) => {
-      console.warn(error);
-    })
+    CoreAPI.get('/product')
+      .then((response) => {
+        setProducts(response.data.map(product => {
+          return {...product, countInBasket: 0};
+        }));
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
   }
 
   return products;
