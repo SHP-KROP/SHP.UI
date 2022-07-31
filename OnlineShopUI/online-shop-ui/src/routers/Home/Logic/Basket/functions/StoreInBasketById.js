@@ -1,5 +1,5 @@
 export default function storeInBasketById(id) {
-  let basketModel = JSON.parse(localStorage.getItem('basket')); //{id: 1, countInBasket: 0} or null
+  let basketModel = JSON.parse(localStorage.getItem('basket'));
 
   if (!basketModel) {
     basketModel = [{ id: id, countInBasket: 1 }];

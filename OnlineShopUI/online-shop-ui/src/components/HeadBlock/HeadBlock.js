@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../HeadBlock/HeadBlock.scss";
 import Login from "../ModalLogin/Login";
-
 import IconSearch from "../../img/icon-search.png";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
