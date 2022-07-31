@@ -1,33 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import Remove from '../../img/btn-remove.svg';
-import removeFromBasketById from '../../routers/Home/Logic/Basket/functions/RemoveFromBasketById';
+import React, { useState } from "react";
+import Remove from "../../img/btn-remove.svg";
+import removeFromBasketById from "../../routers/Home/Logic/Basket/functions/RemoveFromBasketById";
 
 export default function CardInBasket({
   card,
   handleClickIncreaseBasketCount,
   handleClickDecreaseBasketCount,
   handleClickRemoveFromBasket,
-  calculateTotal
+  setTotalChanged,
 }) {
   const [cardCount, setCardCount] = useState(card.countInBasket);
 
-  useEffect(() => {
-    calculateTotal();
-    return calculateTotal;
-  }, [cardCount]);
-
   const onIncreased = () => {
     handleClickIncreaseBasketCount(card);
-    setCardCount(cardCount + 1);
+    setCardCount((cardCount) => cardCount + 1);
+    setTotalChanged((prev) => !prev);
   };
 
   const onDecreased = () => {
     handleClickDecreaseBasketCount(card);
     if (cardCount === 1) {
       removeFromBasketById(card.id);
+      setTotalChanged((prev) => !prev);
+
       return;
     }
     setCardCount(cardCount - 1);
+    setTotalChanged((prev) => !prev);
   };
 
   return (
@@ -39,11 +38,11 @@ export default function CardInBasket({
       </div>
       <div className="basket__itemCounter">
         <label>
-          {cardCount}
-          <button style={{ width: '30px' }} onClick={() => onIncreased()}>
+          {card.countInBasket}
+          <button style={{ width: "30px" }} onClick={() => onIncreased()}>
             +
           </button>
-          <button style={{ width: '30px' }} onClick={() => onDecreased()}>
+          <button style={{ width: "30px" }} onClick={() => onDecreased()}>
             -
           </button>
         </label>

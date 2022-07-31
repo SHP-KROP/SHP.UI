@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './Basket.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import CardInBasket from '../CardInBasket/CardInBasket';
@@ -11,11 +11,10 @@ const Basket = ({
   handleClickDecreaseBasketCount,
   handleClickRemoveFromBasket,
 }) => {
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalChanged, setTotalChanged] = useState(false);
 
-  function calculateTotal() {
-    const sum = basket.map(x => x.price * x.countInBasket).reduce((x, y) => x + y);
-    setTotalPrice(sum);
+  function getTotal() {
+    return basket.map(card => card.countInBasket * card.price).reduce((x, y) => x + y, 0)
   }
 
   return (
@@ -36,13 +35,13 @@ const Basket = ({
               handleClickIncreaseBasketCount={handleClickIncreaseBasketCount}
               handleClickDecreaseBasketCount={handleClickDecreaseBasketCount}
               handleClickRemoveFromBasket={handleClickRemoveFromBasket}
-              calculateTotal={calculateTotal}
+              setTotalChanged={setTotalChanged}
             />
           ))}
         </div>
         <div className="basket__price">
           <span>Subtotal</span>
-          <p className="basket__price">{totalPrice} USD</p>
+          <p className="basket__price">{getTotal()} USD</p>
         </div>
         <hr />
 
