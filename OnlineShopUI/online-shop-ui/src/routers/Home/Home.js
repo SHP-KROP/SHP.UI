@@ -36,7 +36,7 @@ function Home() {
           handleClickDecreaseBasketCount={handleClickDecreaseBasketCount}
           handleClickRemoveFromBasket={handleClickRemoveFromBasket}
         />
-        <HeadBlock onClickCart={() => setBasketOpen(true)} />
+        <HeadBlock productsInBasketCount={basket.length} basketOpen={isBasketOpen} onClickCart={() => setBasketOpen(true)} />
 
         <div className="blocks">
           <div className="blockSideMenus">
