@@ -1,8 +1,7 @@
 import React from 'react';
-import { useState } from 'react';
 import './ProductCard.scss';
 import ProductBg from '../../img/product-img.png';
-
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 const ProductCard = ({
   name,
   description,
@@ -26,11 +25,15 @@ const ProductCard = ({
           <strong>{price} USD</strong>
         </p>
         <button>Buy now</button>
-      </div>
-      <div>
-        <button disabled={isInBasket()} onClick={() => handleClick(card)}>
-          {isInBasket() ? 'Added to basket' : 'Add to basket'}
-        </button>
+        <div>
+          <button
+            style={{ backgroundColor: 'inherit', border: 'none' }}
+            disabled={isInBasket()}
+            onClick={() => handleClick(card)}
+          >
+            <LocalMallIcon />
+          </button>
+        </div>
       </div>
     </div>
   );

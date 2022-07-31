@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import Remove from "../../img/btn-remove.svg";
-import removeFromBasketById from "../../routers/Home/Logic/Basket/functions/RemoveFromBasketById";
+import React, { useState } from 'react';
+import removeFromBasketById from '../../routers/Home/Logic/Basket/functions/RemoveFromBasketById';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export default function CardInBasket({
   card,
@@ -36,21 +38,21 @@ export default function CardInBasket({
         <p>{card.name}</p>
         <b>{card.price} usd</b>
       </div>
-      <div className="basket__itemCounter">
-        <label>
-          {card.countInBasket}
-          <button style={{ width: "30px" }} onClick={() => onIncreased()}>
-            +
-          </button>
-          <button style={{ width: "30px" }} onClick={() => onDecreased()}>
-            -
-          </button>
-        </label>
-      </div>
-      <div className="basket__cartRemove">
-        <button onClick={() => handleClickRemoveFromBasket(card)}>
-          <img src={Remove} alt="Remove" />
-        </button>
+      <div>
+        <div
+          style={{ display: 'flex', alignItems: 'center', marginRight: '50%' }}
+          className="basket__itemCounter"
+        >
+          <div style={{ margin: '10%', fontWeight: 'bold' }}>
+            {card.countInBasket}
+          </div>
+          <AddIcon onClick={() => onIncreased()} />
+          <RemoveIcon onClick={() => onDecreased()} />
+          <CancelIcon
+            sx={{ fontSize: '35px' }}
+            onClick={() => handleClickRemoveFromBasket(card)}
+          />
+        </div>
       </div>
     </div>
   );
