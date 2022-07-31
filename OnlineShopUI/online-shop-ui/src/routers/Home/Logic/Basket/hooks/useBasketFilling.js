@@ -30,6 +30,12 @@ export default function useBasketFilling() {
         setBasket(productsInBasket);
       })
       .catch((error) => {
+        if (!error.response) {
+          toast.error("Internal server error - server is not available", {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+          return
+        }
         if (error?.response?.status >= 400) {
           toast.error("Something went wrong with loading the basket", {
             position: toast.POSITION.BOTTOM_RIGHT,
