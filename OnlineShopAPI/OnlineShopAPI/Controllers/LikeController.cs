@@ -28,13 +28,14 @@ namespace OnlineShopAPI.Controllers
         }
         
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetLikedProductsByUser()
         {
             var products = await _uow?.UserRepository.GetProductsLikedByUser(this.GetUserId());
 
             if (products is null || !products.Any())
             {
-                return BadRequest("There are not liked products");
+                return NoContent();
             }
 
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
