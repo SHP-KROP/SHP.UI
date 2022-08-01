@@ -11,6 +11,29 @@ export default function useLikes() {
   const [likedProducts, setLikedProducts] = useState([]);
   const authHeaders = useAuthHeaders();
 
+  function unlikeProductById(id) {
+    CoreAPI.delete(`/like/${id}`, authHeaders)
+      .then((response) => {
+        setLikedProducts(likedProducts.filter(x => x.id !== response.data.id));
+      })
+      .catch((error) => {
+        if (!error.response) {
+          toast.error('Internal server error - server is not available', {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+          return;
+        }
+        if (error?.response?.status === 400) {
+          toast.error('Unable to unlike the product', {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
   function likeProductById(id) {
     CoreAPI.post(`/like/${id}`, {}, authHeaders)
       .then((response) => {
@@ -63,5 +86,5 @@ export default function useLikes() {
       });
   }
 
-  return [isLoading, likedProducts, likeProductById];
+  return [isLoading, likedProducts, likeProductById, unlikeProductById];
 }
