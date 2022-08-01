@@ -14,13 +14,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="OnlineShop.DataAccessLayer" Version="1.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\SHP.Data\SHP.Data.csproj" />
   </ItemGroup>
 
 </Project>
