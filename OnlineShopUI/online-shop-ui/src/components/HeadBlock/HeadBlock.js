@@ -7,10 +7,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import Badge from "@mui/material/Badge";
 import Card from "../../img/icon-card.png";
+import useAuthMock from "../mock/useAuthMock"
+import Logout from "./Logout/Logout";
 
 const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount}) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isOpen = !!anchorElement;
+  const user = useAuthMock();
 
   const handleClick = (event) => {
     setAnchorElement(event.currentTarget);
@@ -55,6 +58,7 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount}) => {
       </div>
       <div className="profile">
         <Login />
+        {user && <Logout />}
         {!basketOpen && <Badge badgeContent={productsInBasketCount} color="secondary" max={99}>
         <button className="openCartButton" onClick={onClickCart}>
           <img src={Card} alt="card" />
