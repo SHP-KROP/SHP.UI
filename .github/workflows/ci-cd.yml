@@ -12,26 +12,12 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
-    - name: Checkout root
-      run: cd OnlineShopAPI
-    - name: Restore dependencies
-      run: 
-        dotnet restore OnlineShopAPI/OnlineShopAPI.csproj &&
-        dotnet restore IdentityServer/IdentityServer.csproj
+    - name: Restore dependencies for CoreAPI
+      run: dotnet restore OnlineShopAPI/OnlineShopAPI/OnlineShopAPI.csproj
+    - name: Restore dependencies for IdentityServer
+      run: dotnet restore OnlineShopAPI/IdentityServer/IdentityServer.csproj
     - name: Build CoreAPI
-      run: 
-        cd OnlineShopAPI &&
-        dotnet build --no-restore &&
-        cd ..
+      run: dotnet build --no-restore OnlineShopAPI/OnlineShopAPI/OnlineShopAPI.csproj
     - name: Build IdentityServer
-      run: 
-        cd IdentityServer &&
-        dotnet build --no-restore &&
-        cd ..
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()    # run this step even if previous step failed
-      with:
-        name: XUnit Tests            # Name of the check run which will be created
-        path: reports/xUnit-*.xml    # Path to test results
-        reporter: dotnet-trx        # Format of test results
+      run: dotnet build --no-restore OnlineShopAPI/OnlineShopAPI/IdentityServer.csproj
+    
