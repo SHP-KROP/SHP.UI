@@ -11,11 +11,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Checkout root
       run: cd OnlineShopAPI
     - name: Restore dependencies
-      run: dotnet restore OnlineShopAPI.sln
+      run: 
+        dotnet restore OnlineShopAPI/OnlineShopAPI.csproj
+        dotnet restore IdentityServer/IdentityServer.csproj
     - name: Build CoreAPI
       run: 
         cd OnlineShopAPI
