@@ -10,7 +10,12 @@ const ProductCard = ({
   card,
   basket,
 }) => {
-  const isInBasket = () => basket.find((x) => x.id === card.id);
+  const isInBasket = () => {
+    if (!basket) {
+      return false;
+    }
+    return !!basket.find((x) => x.id === card.id);
+  };
   return (
     <div className="product-card__body">
       <div className="product-card__img">
