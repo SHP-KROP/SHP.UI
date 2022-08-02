@@ -1,0 +1,10 @@
+@mixin ErrorValidation {
+  color: red;
+  display: flex;
+  align-items: center;
+  gap: 2%;
+}
+@mixin CartButtons {
+  border: none;
+  background: none;
+}

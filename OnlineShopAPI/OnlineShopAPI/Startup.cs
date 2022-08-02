@@ -1,16 +1,12 @@
+using DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using OnlineShopAPI.Extensions;
+using OnlineShopAPI.Options;
 
 namespace OnlineShopAPI
 {
@@ -26,12 +22,29 @@ namespace OnlineShopAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapping();
+            services.ProvideIdentity();
+            services.AddBearerAuthentication(Configuration);
+
+            services.AddInjectableServices();
+
+            services.AddDbContext<OnlineShopContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DAL"));
+            });
+
+            services.AddNewtonsoftSupport();
+
+            services.AddCors(o =>
+            {
+                o.AddPolicy(name: Configuration[ConfigurationOptions.CorsPolicyName], p =>
+                {
+                    p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+            });
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "OnlineShopAPI", Version = "v1" });
-            });
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +61,11 @@ namespace OnlineShopAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseCors(Configuration[ConfigurationOptions.CorsPolicyName]);
 
             app.UseEndpoints(endpoints =>
             {
