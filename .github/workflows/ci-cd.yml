@@ -12,10 +12,20 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 5.0.x
+    - name: Checkout root
+      run: cd OnlineShopAPI
     - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
+      run: dotnet restore OnlineShopAPI.sln
+    - name: Build CoreAPI
+      run: 
+        cd OnlineShopAPI
+        dotnet build --no-restore
+        cd ..
+    - name: Build IdentityServer
+      run: 
+        cd IdentityServer
+        dotnet build --no-restore
+        cd ..
     - name: Test Report
       uses: dorny/test-reporter@v1
       if: success() || failure()    # run this step even if previous step failed
