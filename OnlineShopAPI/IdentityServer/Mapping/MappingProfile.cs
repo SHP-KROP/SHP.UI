@@ -13,6 +13,9 @@ namespace IdentityServer.Mapping
 
             CreateMap<AppUser, UserDto>();
             CreateMap<UserDto, AppUser>();
+
+            CreateMap<OAuthDto, AppUser>();
+            CreateMap<AppUser, OAuthDto>();
         }
     }
 }

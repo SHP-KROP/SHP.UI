@@ -84,5 +84,43 @@ namespace IdentityServer.Controllers
 
             return Ok(userDto);
         }
+
+        [HttpPost("google-auth")]
+        public async Task<ActionResult<UserDto>> GoogleAuthUser(string token)
+        {
+            var dto = _tokenService.GetOAuthDtoFromToken(token);
+
+            var user = await _uow.UserRepository.GetUserByUsernameAsync(dto.UserName);
+
+            UserDto userDto;
+
+            if (user == null)
+            {
+                var newUser = _mapper.Map<AppUser>(dto);
+
+                var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
+
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.ToErrorsString());
+                }
+
+                await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
+
+                var roles = await _uow.UserRepository.GetUserRoles(newUser);
+
+                userDto = _mapper.Map<UserDto>(newUser);
+                var newToken = _tokenService.CreateToken(newUser, roles);
+                userDto.Token = newToken;
+            }
+            else
+            {
+                var roles = await _uow.UserRepository.GetUserRoles(user);
+                userDto = _mapper.Map<UserDto>(user);
+                userDto.Token = _tokenService.CreateToken(user, roles);
+            }
+
+            return Ok(userDto);
+        }
     }
 }

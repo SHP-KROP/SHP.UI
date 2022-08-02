@@ -1,4 +1,5 @@
 ﻿using DAL.Entities;
+using IdentityServer.DTO;
 using IdentityServer.Options;
 using IdentityServer.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -52,6 +53,36 @@ namespace IdentityServer.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
+        }
+
+        public OAuthDto GetOAuthDtoFromToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var tokenObject = tokenHandler.ReadJwtToken(token);
+
+            var claims = tokenObject.Claims;
+
+            string email = "";
+            string userName;
+
+            foreach (var claim in claims)
+            {
+                if (claim.Type == "email")
+                {
+                    email = claim.Value;
+                }
+            }
+
+            userName = email.Split('@')[0];
+
+            var oauthDto = new OAuthDto
+            {
+                Email = email,
+                UserName = userName
+            };
+
+            return oauthDto;
         }
     }
 }
