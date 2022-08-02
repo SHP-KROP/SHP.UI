@@ -1,4 +1,4 @@
-name: .NET build & test
+name: Application Build and Test
 
 on:
   pull_request:
@@ -29,4 +29,3 @@ jobs:
         name: CoreAPI and IdentityServer Tests # Name of the check run which will be created
         path: OnlineShopAPI/IdentityServerTests/TestResults/test-results.trx    # Path to test results
         reporter: dotnet-trx        # Format of test results
-    
