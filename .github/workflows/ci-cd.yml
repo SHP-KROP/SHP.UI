@@ -16,17 +16,17 @@ jobs:
       run: cd OnlineShopAPI
     - name: Restore dependencies
       run: 
-        dotnet restore OnlineShopAPI/OnlineShopAPI.csproj
+        dotnet restore OnlineShopAPI/OnlineShopAPI.csproj &&
         dotnet restore IdentityServer/IdentityServer.csproj
     - name: Build CoreAPI
       run: 
-        cd OnlineShopAPI
-        dotnet build --no-restore
+        cd OnlineShopAPI &&
+        dotnet build --no-restore &&
         cd ..
     - name: Build IdentityServer
       run: 
-        cd IdentityServer
-        dotnet build --no-restore
+        cd IdentityServer &&
+        dotnet build --no-restore &&
         cd ..
     - name: Test Report
       uses: dorny/test-reporter@v1
