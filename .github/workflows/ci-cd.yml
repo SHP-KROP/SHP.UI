@@ -19,5 +19,5 @@ jobs:
     - name: Build CoreAPI
       run: dotnet build --no-restore OnlineShopAPI/OnlineShopAPI/OnlineShopAPI.csproj
     - name: Build IdentityServer
-      run: dotnet build --no-restore OnlineShopAPI/OnlineShopAPI/IdentityServer.csproj
+      run: dotnet build --no-restore OnlineShopAPI/IdentityServer/IdentityServer.csproj
     
