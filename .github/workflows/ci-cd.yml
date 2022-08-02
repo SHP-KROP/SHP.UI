@@ -11,7 +11,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 5.0.x
     - name: Restore dependencies for CoreAPI
       run: dotnet restore OnlineShopAPI/OnlineShopAPI/OnlineShopAPI.csproj
     - name: Restore dependencies for IdentityServer
@@ -27,6 +27,6 @@ jobs:
       if: success() || failure()    # run this step even if previous step failed
       with:
         name: CoreAPI and IdentityServer Tests # Name of the check run which will be created
-        path: test-results.trx    # Path to test results
+        path: OnlineShopAPI/IdentityServerTests/TestResults/test-results.trx    # Path to test results
         reporter: dotnet-trx        # Format of test results
     
