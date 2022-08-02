@@ -1,4 +1,4 @@
-name: Build application & test report
+name: Application Build and Test
 
 on:
   pull_request:
