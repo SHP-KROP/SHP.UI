@@ -5,6 +5,7 @@ using IdentityServer.DTO;
 using IdentityServer.Extensions;
 using IdentityServer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace IdentityServer.Controllers
@@ -47,14 +48,12 @@ namespace IdentityServer.Controllers
                 return BadRequest(result.ToErrorsString());
             }
 
-            //var createdUser = await _uow.UserRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
-
             await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
 
-            var roles = await _uow.UserRepository.GetUserRoles(newUser); //changed
+            var roles = await _uow.UserRepository.GetUserRoles(newUser);
 
-            var userDto = _mapper.Map<UserDto>(newUser); //changed
-            var token = _tokenService.CreateToken(newUser, roles); //changed
+            var userDto = _mapper.Map<UserDto>(newUser);
+            var token = _tokenService.CreateToken(newUser, roles);
             userDto.Token = token;
 
             return Ok(userDto);
@@ -90,16 +89,15 @@ namespace IdentityServer.Controllers
         {
             var dto = _tokenService.GetOAuthDtoFromToken(token);
 
-            var user = await _uow.UserRepository.GetUserByUsernameAsync(dto.UserName);
-
-            UserDto userDto;
+            var user = await _uow.UserRepository.GetUserByEmailAsync(dto.Email);
 
             if (user != null)
             {
-                return BadRequest("User with this name already exists");
+                return BadRequest("User already exists");
             }
 
             var newUser = _mapper.Map<AppUser>(dto);
+            newUser.UserName = Guid.NewGuid().ToString();
 
             var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
 
@@ -112,7 +110,7 @@ namespace IdentityServer.Controllers
 
             var roles = await _uow.UserRepository.GetUserRoles(newUser);
 
-            userDto = _mapper.Map<UserDto>(newUser);
+            var userDto = _mapper.Map<UserDto>(newUser);
             var newToken = _tokenService.CreateToken(newUser, roles);
             userDto.Token = newToken;
 
@@ -124,17 +122,15 @@ namespace IdentityServer.Controllers
         {
             var dto = _tokenService.GetOAuthDtoFromToken(token);
 
-            var user = await _uow.UserRepository.GetUserByUsernameAsync(dto.UserName);
-
-            UserDto userDto;
+            var user = await _uow.UserRepository.GetUserByEmailAsync(dto.Email);
 
             if (user == null)
             {
-                return Unauthorized($"There is not user with username {dto.UserName}");
+                return Unauthorized($"There is not user with email {dto.Email}");
             }
 
             var roles = await _uow.UserRepository.GetUserRoles(user);
-            userDto = _mapper.Map<UserDto>(user);
+            var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = _tokenService.CreateToken(user, roles);
 
             return Ok(userDto);

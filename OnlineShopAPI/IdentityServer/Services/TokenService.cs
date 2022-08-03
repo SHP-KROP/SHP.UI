@@ -64,7 +64,6 @@ namespace IdentityServer.Services
             var claims = tokenObject.Claims;
 
             string email = "";
-            string userName;
 
             foreach (var claim in claims)
             {
@@ -74,12 +73,9 @@ namespace IdentityServer.Services
                 }
             }
 
-            userName = email.Split('@')[0];
-
             var oauthDto = new OAuthDto
             {
-                Email = email,
-                UserName = userName
+                Email = email
             };
 
             return oauthDto;
