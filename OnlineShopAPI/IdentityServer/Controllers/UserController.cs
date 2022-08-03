@@ -47,14 +47,14 @@ namespace IdentityServer.Controllers
                 return BadRequest(result.ToErrorsString());
             }
 
-            var createdUser = await _uow.UserRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
+            //var createdUser = await _uow.UserRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
 
             await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
 
-            var roles = await _uow.UserRepository.GetUserRoles(createdUser);
+            var roles = await _uow.UserRepository.GetUserRoles(newUser); //changed
 
-            var userDto = _mapper.Map<UserDto>(createdUser);
-            var token = _tokenService.CreateToken(createdUser, roles);
+            var userDto = _mapper.Map<UserDto>(newUser); //changed
+            var token = _tokenService.CreateToken(newUser, roles); //changed
             userDto.Token = token;
 
             return Ok(userDto);
@@ -85,8 +85,42 @@ namespace IdentityServer.Controllers
             return Ok(userDto);
         }
 
-        [HttpPost("google-auth")]
-        public async Task<ActionResult<UserDto>> GoogleAuthUser(string token)
+        [HttpPost("google-register")]
+        public async Task<ActionResult<UserDto>> GoogleRegisterUser(string token)
+        {
+            var dto = _tokenService.GetOAuthDtoFromToken(token);
+
+            var user = await _uow.UserRepository.GetUserByUsernameAsync(dto.UserName);
+
+            UserDto userDto;
+
+            if (user != null)
+            {
+                return BadRequest("User with this name already exists");
+            }
+
+            var newUser = _mapper.Map<AppUser>(dto);
+
+            var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.ToErrorsString());
+            }
+
+            await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
+
+            var roles = await _uow.UserRepository.GetUserRoles(newUser);
+
+            userDto = _mapper.Map<UserDto>(newUser);
+            var newToken = _tokenService.CreateToken(newUser, roles);
+            userDto.Token = newToken;
+
+            return Ok(userDto);
+        }
+
+        [HttpPost("google-login")]
+        public async Task<ActionResult<UserDto>> GoogleLoginUser(string token)
         {
             var dto = _tokenService.GetOAuthDtoFromToken(token);
 
@@ -96,29 +130,12 @@ namespace IdentityServer.Controllers
 
             if (user == null)
             {
-                var newUser = _mapper.Map<AppUser>(dto);
-
-                var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
-
-                if (!result.Succeeded)
-                {
-                    return BadRequest(result.ToErrorsString());
-                }
-
-                await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
-
-                var roles = await _uow.UserRepository.GetUserRoles(newUser);
-
-                userDto = _mapper.Map<UserDto>(newUser);
-                var newToken = _tokenService.CreateToken(newUser, roles);
-                userDto.Token = newToken;
+                return Unauthorized($"There is not user with username {dto.UserName}");
             }
-            else
-            {
-                var roles = await _uow.UserRepository.GetUserRoles(user);
-                userDto = _mapper.Map<UserDto>(user);
-                userDto.Token = _tokenService.CreateToken(user, roles);
-            }
+
+            var roles = await _uow.UserRepository.GetUserRoles(user);
+            userDto = _mapper.Map<UserDto>(user);
+            userDto.Token = _tokenService.CreateToken(user, roles);
 
             return Ok(userDto);
         }
