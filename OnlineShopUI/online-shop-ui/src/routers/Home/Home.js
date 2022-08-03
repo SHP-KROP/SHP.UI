@@ -10,6 +10,8 @@ import Basket from '../../components/Basket/Basket';
 import { useState } from 'react';
 import useBasketFilling from './Logic/Basket/hooks/useBasketFilling';
 import useBasketHandlers from './Logic/Basket/hooks/useBasketHandlers';
+import useLikes from '../LikesPage/hooks/useLikes';
+import { useEffect } from 'react';
 
 function Home() {
   const [isBasketOpen, setBasketOpen] = useState(() => false);
@@ -57,9 +59,6 @@ function Home() {
           <div className="blockCards">
             {productCards.map((productCardItem) => (
               <ProductCard
-                name={productCardItem.name}
-                description={productCardItem.description}
-                price={productCardItem.price}
                 card={productCardItem}
                 handleClick={handleClickAddInBasket}
                 basket={basket}

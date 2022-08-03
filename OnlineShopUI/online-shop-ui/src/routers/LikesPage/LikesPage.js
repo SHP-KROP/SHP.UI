@@ -9,7 +9,8 @@ import HeadBlock from '../../components/HeadBlock/HeadBlock';
 import ProductCard from '../../components/Card/ProductCard';
 
 export default function LikesPage() {
-  const [isLoading, likedProducts] = useLikes();
+  const [isLoading, likedProducts, likeProductById, unlikeProductById] =
+    useLikes();
   const [isBasketOpen, setBasketOpen] = useState(() => false);
   const [basket, setBasket] = useBasketFilling();
   const [
@@ -44,9 +45,8 @@ export default function LikesPage() {
               likedProducts.map((product) => (
                 <div className="likeproduct">
                   <ProductCard
-                    name={product.name}
-                    description={product.description}
-                    price={product.price}
+                    card={product}
+                    initialLiked={true}
                     handleClick={handleClickAddInBasket}
                     basket={basket}
                   />
