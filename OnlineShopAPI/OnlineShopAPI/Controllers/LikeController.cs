@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopAPI.Constants;
 using OnlineShopAPI.DTO.Product;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +31,7 @@ namespace OnlineShopAPI.Controllers
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetLikedProductsByUser()
         {
             var products = await _uow?.UserRepository.GetProductsLikedByUser(this.GetUserId());
@@ -39,6 +42,33 @@ namespace OnlineShopAPI.Controllers
             }
 
             return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+        }
+
+        [HttpGet("product")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsWithLikes()
+        {
+            var likedProducts = await _uow?.UserRepository.GetProductsLikedByUser(this.GetUserId());
+
+            if (likedProducts is null || !likedProducts.Any())
+            {
+                return NoContent();
+            }
+
+            var products = await _uow?.ProductRepository.GetAllAsync();
+
+            Func<Product, ProductDto> productAndSetIsLiked = (product) =>
+            {
+                var productDto = _mapper.Map<ProductDto>(product);
+                productDto.IsLiked = likedProducts.Contains(product);
+
+                return productDto;
+            };
+
+            var productsWithLikeInfo = products.Select(productAndSetIsLiked);
+
+            return Ok(productsWithLikeInfo);
         }
 
         [HttpPost("{productId}")]
