@@ -14,7 +14,9 @@ export default function useLikes() {
   function unlikeProductById(id) {
     CoreAPI.delete(`/like/${id}`, authHeaders)
       .then((response) => {
-        setLikedProducts(likedProducts.filter(x => x.id !== response.data.id));
+        setLikedProducts(
+          likedProducts.filter((x) => x.id !== response.data.id)
+        );
       })
       .catch((error) => {
         if (!error.response) {

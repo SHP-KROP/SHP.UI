@@ -1,15 +1,15 @@
-import "./Home.scss";
-import Feedback from "../../components/FeedbackATop/Feedback";
-import HeadBlock from "../../components/HeadBlock/HeadBlock";
-import ProductCard from "../../components/Card/ProductCard";
-import SideMenuList from "../../components/SideMenuList/SideMenuList";
-import Banner from "../../components/Banner/Banner";
-import useMenuFilling from "../Home/Logic/MenuLogic";
-import useProductCardFilling from "../Home/Logic/ProductLogic";
-import Basket from "../../components/Basket/Basket";
-import { useState } from "react";
-import useBasketFilling from "./Logic/Basket/hooks/useBasketFilling";
-import useBasketHandlers from "./Logic/Basket/hooks/useBasketHandlers";
+import './Home.scss';
+import Feedback from '../../components/FeedbackATop/Feedback';
+import HeadBlock from '../../components/HeadBlock/HeadBlock';
+import ProductCard from '../../components/Card/ProductCard';
+import SideMenuList from '../../components/SideMenuList/SideMenuList';
+import Banner from '../../components/Banner/Banner';
+import useMenuFilling from '../Home/Logic/MenuLogic';
+import useProductCardFilling from '../Home/Logic/ProductLogic';
+import Basket from '../../components/Basket/Basket';
+import { useState } from 'react';
+import useBasketFilling from './Logic/Basket/hooks/useBasketFilling';
+import useBasketHandlers from './Logic/Basket/hooks/useBasketHandlers';
 
 function Home() {
   const [isBasketOpen, setBasketOpen] = useState(() => false);
@@ -22,7 +22,7 @@ function Home() {
     handleClickRemoveFromBasket,
     handleClickIncreaseBasketCount,
     handleClickDecreaseBasketCount,
-  ] = useBasketHandlers({basket, setBasket});
+  ] = useBasketHandlers({ basket, setBasket });
 
   return (
     <>
@@ -36,8 +36,11 @@ function Home() {
           handleClickDecreaseBasketCount={handleClickDecreaseBasketCount}
           handleClickRemoveFromBasket={handleClickRemoveFromBasket}
         />
-        <HeadBlock productsInBasketCount={basket.length} basketOpen={isBasketOpen} onClickCart={() => setBasketOpen(true)} />
-
+        <HeadBlock
+          productsInBasketCount={basket.length}
+          basketOpen={isBasketOpen}
+          onClickCart={() => setBasketOpen(true)}
+        />
         <div className="blocks">
           <div className="blockSideMenus">
             {menu.map((sideMenuListItem) => (
