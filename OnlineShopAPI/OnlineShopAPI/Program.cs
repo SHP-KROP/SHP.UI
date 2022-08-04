@@ -9,23 +9,9 @@ namespace OnlineShopAPI
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            var build = CreateHostBuilder(args).Build();
-
-            using (var scope = build.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-
-                var context = services.GetRequiredService<OnlineShopContext>();
-                context.Database.EnsureCreated();
-
-                var seeder = services.GetRequiredService<Seeder>();
-
-                await seeder.Seed();
-            }
-
-            build.Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
