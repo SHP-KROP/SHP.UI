@@ -4,6 +4,7 @@ using DAL.Interfaces;
 using IdentityServer.DTO;
 using IdentityServer.Extensions;
 using IdentityServer.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -85,36 +86,40 @@ namespace IdentityServer.Controllers
         }
 
         [HttpPost("google-register")]
-        public async Task<ActionResult<UserDto>> GoogleRegisterUser(string token)
+        public async Task<ActionResult<UserDto>> GoogleRegisterUser(string code)
         {
-            var dto = _tokenService.GetOAuthDtoFromToken(token);
 
-            var user = await _uow.UserRepository.GetUserByEmailAsync(dto.Email);
+            var tokenResult = await _tokenService.ExchangeCodeOnTokenAsync(code, "https://localhost:44318");
 
-            if (user != null)
-            {
-                return BadRequest("User already exists");
-            }
 
-            var newUser = _mapper.Map<AppUser>(dto);
-            newUser.UserName = Guid.NewGuid().ToString();
+            //var dto = _tokenService.GetOAuthDtoFromToken(tokenResult);
 
-            var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
+            //var user = await _uow.UserRepository.GetUserByEmailAsync(dto.Email);
 
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.ToErrorsString());
-            }
+            //if (user != null)
+            //{
+            //    return BadRequest("User already exists");
+            //}
 
-            await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
+            //var newUser = _mapper.Map<AppUser>(dto);
+            //newUser.UserName = Guid.NewGuid().ToString();
 
-            var roles = await _uow.UserRepository.GetUserRoles(newUser);
+            //var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
 
-            var userDto = _mapper.Map<UserDto>(newUser);
-            var newToken = _tokenService.CreateToken(newUser, roles);
-            userDto.Token = newToken;
+            //if (!result.Succeeded)
+            //{
+            //    return BadRequest(result.ToErrorsString());
+            //}
 
-            return Ok(userDto);
+            //await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
+
+            //var roles = await _uow.UserRepository.GetUserRoles(newUser);
+
+            //var userDto = _mapper.Map<UserDto>(newUser);
+            //var newToken = _tokenService.CreateToken(newUser, roles);
+            //userDto.Token = newToken;
+
+            return Ok(tokenResult);
         }
 
         [HttpPost("google-login")]
