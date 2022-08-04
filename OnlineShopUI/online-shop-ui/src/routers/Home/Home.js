@@ -10,8 +10,6 @@ import Basket from '../../components/Basket/Basket';
 import { useState } from 'react';
 import useBasketFilling from './Logic/Basket/hooks/useBasketFilling';
 import useBasketHandlers from './Logic/Basket/hooks/useBasketHandlers';
-import useLikes from '../LikesPage/hooks/useLikes';
-import { useEffect } from 'react';
 
 function Home() {
   const [isBasketOpen, setBasketOpen] = useState(() => false);
