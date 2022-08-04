@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace IdentityServer.Controllers
 {
@@ -8,6 +9,15 @@ namespace IdentityServer.Controllers
     [ApiController]
     public class ModeratorController : ControllerBase
     {
+        public ModeratorController()
+        {
 
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetUsers()
+        {
+            return Ok();
+        }
     }
 }
