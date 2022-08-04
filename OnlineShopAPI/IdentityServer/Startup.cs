@@ -27,7 +27,7 @@ namespace IdentityServer
         {
             services.AddDbContext<OnlineShopContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("DAL"));
+                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("SHP.Data"));
             });
 
             services.AddCors(o =>
