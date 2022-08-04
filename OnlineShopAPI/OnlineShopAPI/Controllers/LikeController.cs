@@ -41,7 +41,10 @@ namespace OnlineShopAPI.Controllers
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+            var productDtos = _mapper.Map<IEnumerable<ProductDto>>(products);
+            productDtos.ToList().ForEach(pr => pr.IsLiked = true);
+
+            return Ok(productDtos);
         }
 
         [HttpGet("product")]
@@ -50,13 +53,12 @@ namespace OnlineShopAPI.Controllers
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProductsWithLikes()
         {
             var likedProducts = await _uow?.UserRepository.GetProductsLikedByUser(this.GetUserId());
+            var products = await _uow?.ProductRepository.GetAllAsync();
 
-            if (likedProducts is null || !likedProducts.Any())
+            if (products is null || !products.Any())
             {
                 return NoContent();
             }
-
-            var products = await _uow?.ProductRepository.GetAllAsync();
 
             Func<Product, ProductDto> productAndSetIsLiked = (product) =>
             {
