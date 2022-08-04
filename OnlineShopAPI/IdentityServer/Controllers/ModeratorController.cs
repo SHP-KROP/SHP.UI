@@ -35,14 +35,46 @@ namespace IdentityServer.Controllers
 
             if (users is null || !users.Any())
             {
-                _logger.LogInformation("There were not any users. No content 204 returned");
+                _logger.LogInformation("There were not any users");
                 return NoContent();
             }
 
             var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
 
-            _logger.LogInformation("Usere have been found and mapped. Returned Ok 200");
+            _logger.LogInformation("Usere have been found and mapped");
             return Ok(userDtos);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            _logger.LogInformation("DeleteUser start executing");
+
+            var user = await _uow.UserRepository.FindAsync(id);
+
+            if (user is null)
+            {
+                _logger.LogInformation($"There is not user with id {id}");
+                return NotFound();
+            }
+
+            var roles = await _uow.UserRepository.GetUserRoles(user);
+
+            if (roles.Where(r => r == Roles.Admin || r == Roles.Moder).Any())
+            {
+                return BadRequest("Unable to delete user with site-managing role");
+            }
+
+            _uow.UserRepository.RemoveUserById(id);
+
+            if (await _uow.ConfirmAsync())
+            {
+                _logger.LogInformation($"There with id {id} has been deleted");
+                return NoContent();
+            }
+
+            _logger.LogInformation("User with id {id} not found");
+            return BadRequest($"Unable to delete. User with id {id} not found");
         }
     }
 }
