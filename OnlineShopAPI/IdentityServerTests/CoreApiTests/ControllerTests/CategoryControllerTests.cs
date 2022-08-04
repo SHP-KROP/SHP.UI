@@ -41,20 +41,17 @@ namespace OnlineShopAPI.Tests
         }
 
         [Fact]
-        public async Task GetCategories_ShouldReturnBadRequest_WhenCategoriesNotFound()
+        public async Task GetCategories_ShouldReturnNoContent_WhenCategoriesNotFound()
         {
             _categoryRepository
                 .Setup(cr => cr.GetAllAsync())
                 .ReturnsAsync(new List<Category>());
 
-            var response = await _categoryController.GetCategories() as ActionResult<IEnumerable<CategoryDto>>;
+            var response = await _categoryController.GetCategories();
 
-            var result = response.Result as ObjectResult;
-            var value = result?.Value as string;
+            var result = response.Result as StatusCodeResult;
 
-            result?.Value.Should().Be("There are not any categories");
-
-            result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -74,19 +71,17 @@ namespace OnlineShopAPI.Tests
         }
 
         [Fact]
-        public async Task GetCategoryByName_ShouldReturnBadRequest_WhenCategoryNotFound()
+        public async Task GetCategoryByName_ShouldReturnNoContent_WhenCategoryNotFound()
         {
             _categoryRepository
                 .Setup(cr => cr.GetCategoryByName(It.IsAny<string>()))
                 .ReturnsAsync(null as Category);
 
-            var response = await _categoryController.GetCategoryByName("name") as ActionResult<CategoryDto>;
+            var response = await _categoryController.GetCategoryByName("name");
 
-            var result = response.Result as ObjectResult;
-            var value = result.Value as string;
+            var result = response.Result as StatusCodeResult;
 
-            value.ToLower().Should().Match<string>(s => s.Contains("not found"));
-            result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            result.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]
