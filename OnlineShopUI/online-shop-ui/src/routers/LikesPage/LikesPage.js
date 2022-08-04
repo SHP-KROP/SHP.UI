@@ -46,7 +46,6 @@ export default function LikesPage() {
                 <div className="likeproduct">
                   <ProductCard
                     card={product}
-                    initialLiked={true}
                     handleClick={handleClickAddInBasket}
                     basket={basket}
                   />

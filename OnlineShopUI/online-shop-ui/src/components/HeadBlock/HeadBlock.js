@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../HeadBlock/HeadBlock.scss';
 import Login from '../ModalLogin/Login';
-import IconSearch from '../../img/icon-search.png';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Fade from '@mui/material/Fade';
@@ -53,7 +52,6 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
           <MenuItem onClick={handleClose}>Product</MenuItem>
         </Menu>
         <input type="text" placeholder="Search Products, categories ..." />
-        <img src={IconSearch} alt="search" />
       </div>
       <div className="profile">
         <Login />

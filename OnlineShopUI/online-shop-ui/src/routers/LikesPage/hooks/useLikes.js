@@ -12,6 +12,7 @@ export default function useLikes() {
   const authHeaders = useAuthHeaders();
 
   function unlikeProductById(id) {
+    if (!authHeaders?.headers?.Authorization) return;
     CoreAPI.delete(`/like/${id}`, authHeaders)
       .then((response) => {
         setLikedProducts(
@@ -37,6 +38,7 @@ export default function useLikes() {
   }
 
   function likeProductById(id) {
+    if (!authHeaders?.headers?.Authorization) return;
     CoreAPI.post(`/like/${id}`, {}, authHeaders)
       .then((response) => {
         setLikedProducts([...likedProducts, response.data]);
@@ -65,7 +67,10 @@ export default function useLikes() {
 
   function getLikedProducts() {
     setLoading(true);
-
+    if (!authHeaders?.headers?.Authorization) {
+      setLoading(false);
+      return;
+    }
     CoreAPI.get('/like', authHeaders)
       .then((response) => {
         setLikedProducts(response.data);

@@ -4,11 +4,15 @@ import ProductBg from '../../img/product-img.png';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import useLikes from '../../routers/LikesPage/hooks/useLikes';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import useAuthHeaders from '../../routers/LikesPage/hooks/useAuthHeaders';
 
 const ProductCard = ({ handleClick, card, basket }) => {
   const [isLoading, likedProducts, likeProductById, unlikeProductById] =
     useLikes();
   const [isLiked, setIsLiked] = useState(card.isLiked);
+  const authHeaders = useAuthHeaders();
+
   const isInBasket = () => {
     if (!basket) {
       return false;
@@ -17,28 +21,37 @@ const ProductCard = ({ handleClick, card, basket }) => {
   };
 
   const onLikeClicked = () => {
+    if (!authHeaders?.headers?.Authorization) return;
     isLiked ? unlikeProductById(card.id) : likeProductById(card.id);
     setIsLiked((prev) => !prev);
   };
 
-  // const setStateLike = () => {
-  //   if (isLiked) {
-  //     setIsLiked(!isLiked);
-  //     unlikeProductById(1);
-  //     return;
-  //   }
-  //   likeProductById(1);
-  //   setIsLiked(isLiked);
-  // };
-
+  const handleDoubleClick = (event) => {
+    if (event.detail === 2) {
+      onLikeClicked();
+    }
+  };
   return (
-    <div className="product-card__body" id="product-card__body">
+    <div
+      style={{
+        background: isLiked ? ' rgb(241,252,164)' : 'white',
+        transition: '0.15s ease-in-out',
+      }}
+      onClick={handleDoubleClick}
+      className="product-card__body"
+    >
       <div className="product-card__img">
         <img src={ProductBg} alt="img" />
         <div className="product-card__img-buttons">
-          <button onClick={onLikeClicked}>
-            <FavoriteIcon sx={{ fill: isLiked ? 'red' : 'blue' }} />
-          </button>
+          {authHeaders?.headers?.Authorization && (
+            <button onClick={onLikeClicked}>
+              {isLiked ? (
+                <FavoriteIcon sx={{ fill: 'red' }} />
+              ) : (
+                <FavoriteBorderIcon />
+              )}
+            </button>
+          )}
         </div>
       </div>
       <div className="product-card__info">
