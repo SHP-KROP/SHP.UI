@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import useLikes from './hooks/useLikes';
-import './LikesPage.scss';
-import Feedback from '../../components/FeedbackATop/Feedback';
-import Basket from '../../components/Basket/Basket';
-import useBasketFilling from '../Home/Logic/Basket/hooks/useBasketFilling';
-import useBasketHandlers from '../Home/Logic/Basket/hooks/useBasketHandlers';
-import HeadBlock from '../../components/HeadBlock/HeadBlock';
-import ProductCard from '../../components/Card/ProductCard';
+import React, { useState } from "react";
+import useLikes from "./hooks/useLikes";
+import "./LikesPage.scss";
+import Feedback from "../../components/FeedbackATop/Feedback";
+import Basket from "../../components/Basket/Basket";
+import useBasketFilling from "../Home/Logic/Basket/hooks/useBasketFilling";
+import useBasketHandlers from "../Home/Logic/Basket/hooks/useBasketHandlers";
+import HeadBlock from "../../components/HeadBlock/HeadBlock";
+import ProductCard from "../../components/Card/ProductCard";
 
 export default function LikesPage() {
   const [isLoading, likedProducts, likeProductById, unlikeProductById] =
@@ -43,13 +43,11 @@ export default function LikesPage() {
           <>
             {likedProducts &&
               likedProducts.map((product) => (
-                <div className="likeproduct">
-                  <ProductCard
-                    card={product}
-                    handleClick={handleClickAddInBasket}
-                    basket={basket}
-                  />
-                </div>
+                <ProductCard
+                  card={product}
+                  handleClick={handleClickAddInBasket}
+                  basket={basket}
+                />
               ))}
           </>
         )}
