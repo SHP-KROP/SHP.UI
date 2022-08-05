@@ -64,10 +64,9 @@ namespace OnlineShopTests.CoreApiTests.ControllerTests
                 .ReturnsAsync(new List<Product>());
 
             var result = await _likeController.GetLikedProductsByUser();
-            var objResult = result.Result as StatusCodeResult;
+            var statusCodeResult = (result.Result as StatusCodeResult);
 
-            objResult.StatusCode.Should().Be(StatusCodes.Status204NoContent);
-
+            statusCodeResult.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]

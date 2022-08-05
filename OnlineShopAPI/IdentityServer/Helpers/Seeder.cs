@@ -40,8 +40,31 @@ namespace IdentityServer.Helpers
 
             var admin = new AppUser { UserName = "admin" };
             var moder = new AppUser { UserName = "moder" };
-            var seller = new AppUser { UserName = "seller" };
+            var seller = new AppUser { UserName = "seller", Products = new List<Product>() };
             var buyer = new AppUser { UserName = "buyer" };
+
+            seller.Products.Add(
+                new Product
+                {
+                    Name = "product1",
+                    Description = "descr",
+                    Price = 200,
+                });
+            seller.Products.Add(
+                new Product
+                {
+                    Name = "product3",
+                    Description = "descr",
+                    Price = 400,
+                });
+            seller.Products.Add(
+                new Product
+                {
+                    Name = "product2",
+                    Description = "descr",
+                    Price = 300,
+                });
+                 
 
             await _userManager.CreateAsync(admin, "Pa$$w0rd");
             await _userManager.CreateAsync(moder, "Pa$$w0rd");
