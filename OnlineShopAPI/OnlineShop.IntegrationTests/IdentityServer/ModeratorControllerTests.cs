@@ -1,18 +1,13 @@
 using DAL;
 using DAL.Entities;
-using DAL.Interfaces;
 using FluentAssertions;
 using IdentityServer;
 using IdentityServer.Helpers;
 using IdentityServer.Services;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -21,8 +16,8 @@ namespace OnlineShop.IntegrationTests.IdentityServer
     public class ModeratorControllerTests
     {
         private const string DefaultRoute = "/api/moderator";
-        private CustomWebApplicationFactory<Program> _webFactory;
-        private HttpClient _httpClient;
+        private readonly CustomWebApplicationFactory<Program> _webFactory;
+        private readonly HttpClient _httpClient;
 
         public ModeratorControllerTests()
         {
@@ -36,6 +31,8 @@ namespace OnlineShop.IntegrationTests.IdentityServer
             UserName = "Denis",
             Email = "some@mail.com"
         };
+
+        #region Get
 
         [Fact]
         public async void Get_ShouldReturnUnauthorized_WhenUserWithoutToken()
@@ -64,6 +61,48 @@ namespace OnlineShop.IntegrationTests.IdentityServer
             var response = await _httpClient.GetAsync(DefaultRoute);
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
+
+        #endregion
+
+        #region Delete
+
+        [Fact]
+        public async void Delete_ShouldReturnNotFound_WhenUserNotFound()
+        {
+            AddBearerToken();
+            await PrepareDb();
+
+            var response = await _httpClient.DeleteAsync($"{DefaultRoute}/-1");
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        public async void Delete_ShouldReturnBadRequest_WhenUserHasSiteManagingRole(int id)
+        {
+            AddBearerToken();
+            await PrepareDb();
+
+            var response = await _httpClient.DeleteAsync($"{DefaultRoute}/{id}");
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Theory]
+        [InlineData(3)]
+        [InlineData(4)]
+        public async void Delete_ShouldReturnNoContent_WhenUserSuccessfullyDeleted(int id)
+        {
+            AddBearerToken();
+            await PrepareDb();
+
+            var response = await _httpClient.DeleteAsync($"{DefaultRoute}/{id}");
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        #endregion
+
+        #region Helper methods
 
         private void AddBearerToken()
         {
@@ -97,5 +136,8 @@ namespace OnlineShop.IntegrationTests.IdentityServer
                 dbContext.SaveChanges();
             }
         }
+
+        #endregion
+
     }
 }

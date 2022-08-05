@@ -76,6 +76,7 @@ namespace IdentityServer.Helpers
                 await _userManager.AddToRoleAsync(seller, "seller");
                 await _userManager.AddToRoleAsync(buyer, "buyer");
             }
+
         }
     }
 }
