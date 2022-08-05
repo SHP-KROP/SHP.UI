@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopTests", "IdentityServerTests\OnlineShopTests.csproj", "{BF6BB3F9-83A6-4423-BE51-0C39DDD13ABF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.IntegrationTests", "OnlineShop.IntegrationTests\OnlineShop.IntegrationTests.csproj", "{DA1DA49D-8BF5-4010-871B-9A9CAD7AD624}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BF6BB3F9-83A6-4423-BE51-0C39DDD13ABF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF6BB3F9-83A6-4423-BE51-0C39DDD13ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF6BB3F9-83A6-4423-BE51-0C39DDD13ABF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA1DA49D-8BF5-4010-871B-9A9CAD7AD624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA1DA49D-8BF5-4010-871B-9A9CAD7AD624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA1DA49D-8BF5-4010-871B-9A9CAD7AD624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA1DA49D-8BF5-4010-871B-9A9CAD7AD624}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
