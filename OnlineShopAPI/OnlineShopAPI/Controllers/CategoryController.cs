@@ -1,5 +1,4 @@
-﻿//using Microsoft.AspNetCore.Authorization;
-using AutoMapper;
+﻿using AutoMapper;
 using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +32,7 @@ namespace OnlineShopAPI.Controllers
 
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
         {
@@ -41,7 +40,7 @@ namespace OnlineShopAPI.Controllers
 
             if (categories is null || categories.Count() == 0)
             {
-                return BadRequest("There are not any categories");
+                return NoContent();
             }
 
             return Ok(_mapper.Map<IEnumerable<CategoryDto>>(categories));
@@ -49,7 +48,7 @@ namespace OnlineShopAPI.Controllers
 
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpGet("{categoryName}")]
         public async Task<ActionResult<CategoryDto>> GetCategoryByName(string categoryName)
         {
@@ -57,7 +56,7 @@ namespace OnlineShopAPI.Controllers
 
             if (category is null)
             {
-                return BadRequest(string.Format("Category with name {0} not found", categoryName));
+                return NoContent();
             }
 
             return Ok(_mapper.Map<CategoryDto>(category));
