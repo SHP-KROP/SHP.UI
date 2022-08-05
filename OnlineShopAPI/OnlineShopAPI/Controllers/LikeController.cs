@@ -16,8 +16,6 @@ namespace OnlineShopAPI.Controllers
     [Authorize(Roles = Roles.Buyer)]
     [Route("api/[controller]")]
     [ApiController]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class LikeController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
@@ -28,7 +26,9 @@ namespace OnlineShopAPI.Controllers
             _uow = uow;
             _mapper = mapper;
         }
-        
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -73,6 +73,8 @@ namespace OnlineShopAPI.Controllers
             return Ok(productsWithLikeInfo);
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("{productId}")]
         public async Task<ActionResult<ProductDto>> LikeProduct(int productId)
         {
@@ -83,6 +85,8 @@ namespace OnlineShopAPI.Controllers
                 : BadRequest("Unable to like the product");
         }
 
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpDelete("{productId}")]
         public async Task<ActionResult<ProductDto>> UnlikeProduct(int productId)
         {
