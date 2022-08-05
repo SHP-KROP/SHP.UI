@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using IdentityServer.DTO;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -41,7 +42,6 @@ namespace IdentityServer.Controllers
 
             var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
 
-            _logger.LogInformation("Usere have been found and mapped");
             return Ok(userDtos);
         }
 
@@ -69,12 +69,11 @@ namespace IdentityServer.Controllers
 
             if (await _uow.ConfirmAsync())
             {
-                _logger.LogInformation($"There with id {id} has been deleted");
                 return NoContent();
             }
 
-            _logger.LogInformation("User with id {id} not found");
-            return BadRequest($"Unable to delete. User with id {id} not found");
+            _logger.LogInformation("Unable to save changes after deletion");
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
     }
 }
