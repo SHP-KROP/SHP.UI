@@ -1,16 +1,20 @@
-import { useState, useEffect, useRef } from "react";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import IdentityServerAPI from "../../../API/IdentityServerAPI";
+import { useState, useEffect, useRef } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import IdentityServerAPI from '../../../API/IdentityServerAPI';
+import useAuth from '../../../Helper/hook/useAuth';
 
 toast.configure();
 
 const useRegister = () => {
-  let [name, setName] = useState(() => "");
-  let [pass, setPass] = useState(() => "");
+  let [name, setName] = useState(() => '');
+  let [pass, setPass] = useState(() => '');
   let [flag, setFlag] = useState(() => false);
   let [isLoading, setIsLoading] = useState(() => false);
   let [isRedirect, setIsRedirect] = useState(() => false);
+
+  const { setUser } = useAuth();
+
   let initialRender = useRef(true);
 
   useEffect(() => {
@@ -20,7 +24,7 @@ const useRegister = () => {
     }
 
     if (!(name && pass)) {
-      toast.warn("Name and password cannot be empty", {
+      toast.warn('Name and password cannot be empty', {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
 
@@ -29,25 +33,24 @@ const useRegister = () => {
 
     setIsLoading(true);
 
-    IdentityServerAPI
-      .post("/user/register", {
-        userName: name,
-        password: pass,
-      })
+    IdentityServerAPI.post('/user/register', {
+      userName: name,
+      password: pass,
+    })
       .then((response) => {
         proceedResponse(response.data);
       })
       .catch((error) => {
         console.warn(error?.response);
         try {
-          if (typeof error.response.data !== "object") {
+          if (typeof error.response.data !== 'object') {
             toast.error(`${error.response.data}`, {
               position: toast.POSITION.BOTTOM_RIGHT,
             });
             return;
           }
         } catch {
-          toast.error("Something went wrong", {
+          toast.error('Something went wrong', {
             position: toast.POSITION.BOTTOM_RIGHT,
           });
         }
@@ -62,7 +65,7 @@ const useRegister = () => {
       toast.success(`Welcome ${response.userName}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      localStorage.setItem("token", response.token);
+      setUser(response);
       setIsRedirect(true);
     } catch (ex) {
       console.warn(ex);

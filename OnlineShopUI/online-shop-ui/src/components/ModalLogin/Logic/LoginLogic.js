@@ -10,7 +10,7 @@ const useLogin = () => {
   const [pass, setPassword] = useState(() => '');
   const [flag, setFlag] = useState(() => true);
 
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
 
   let initialRender = useRef(true);
   useEffect(() => {
