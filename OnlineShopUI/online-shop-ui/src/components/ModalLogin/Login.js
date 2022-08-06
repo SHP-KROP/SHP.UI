@@ -12,10 +12,9 @@ import useLogin from './Logic/LoginLogic';
 import UseHandlers from '../../Helper/Handlers';
 import useAuth from '../../Helper/hook/useAuth';
 export default function Login() {
-  const [setUsername, setPassword, flag, setFlag, pass, name] = useLogin();
+  const [setUsername, setPassword, flag, setFlag] = useLogin();
 
   const [handleModalClose, handleModalOpen, isOpen] = UseHandlers();
-  const { user, setUser } = useContext(useAuth);
   return (
     <div>
       <a href="#">
