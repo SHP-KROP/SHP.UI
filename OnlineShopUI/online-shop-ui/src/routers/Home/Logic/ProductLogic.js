@@ -13,6 +13,10 @@ const useProductCardFilling = () => {
     user ? getProductsWithLikes() : getProducts();
   }, []);
 
+  useEffect(() => {
+    user ? getProductsWithLikes() : getProducts();
+  }, [JSON.stringify(user)]);
+
   function getProductsWithLikes() {
     CoreAPI.get('/like/product', authHeaders)
       .then((response) => {

@@ -52,7 +52,8 @@ const useLogin = () => {
       })
       .catch((error) => {
         try {
-          console.warn(error?.response);
+          console.log('ERROOOOOOR');
+          console.log(error);
           if (typeof error.response.data !== 'object') {
             toast.error(`${error.response.data}`, {
               position: toast.POSITION.BOTTOM_RIGHT,
@@ -74,9 +75,7 @@ const useLogin = () => {
       });
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
-      console.success('Success, window need to be closed!');
     } catch (ex) {
-      console.warn(ex);
       toast.error(`${ex.error}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });

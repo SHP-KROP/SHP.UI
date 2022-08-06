@@ -35,7 +35,7 @@ const ProductCard = ({ handleClick, card, basket }) => {
   return (
     <div
       style={{
-        background: isLiked ? ' rgb(241,252,164)' : 'white',
+        background: user && isLiked ? ' rgb(241,252,164)' : 'white',
         transition: '0.15s ease-in-out',
       }}
       onClick={handleDoubleClick}

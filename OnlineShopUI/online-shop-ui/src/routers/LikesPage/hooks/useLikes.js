@@ -69,6 +69,10 @@ export default function useLikes() {
     getLikedProducts();
   }, []);
 
+  useEffect(() => {
+    getLikedProducts();
+  }, [JSON.stringify(user)]);
+
   function getLikedProducts() {
     setLoading(true);
     if (!user) {
