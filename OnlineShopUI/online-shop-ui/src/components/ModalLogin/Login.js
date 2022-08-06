@@ -12,7 +12,6 @@ import UseHandlers from '../../Helper/Handlers';
 
 export default function Login() {
   const [setUsername, setPassword, flag, setFlag] = useLogin();
-
   const [handleModalClose, handleModalOpen, isOpen] = UseHandlers();
 
   return (

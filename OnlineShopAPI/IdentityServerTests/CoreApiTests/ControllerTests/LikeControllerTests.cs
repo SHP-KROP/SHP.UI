@@ -57,17 +57,16 @@ namespace OnlineShopTests.CoreApiTests.ControllerTests
         }
 
         [Fact]
-        public async Task GetLikedProductsByUser_ShouldReturnBadRequest_WhenLikedProductsAreNotPresent()
+        public async Task GetLikedProductsByUser_ShouldReturnNoContent_WhenLikedProductsAreNotPresent()
         {
             _userRepository
                 .Setup(p => p.GetProductsLikedByUser(It.IsAny<int>()))
                 .ReturnsAsync(new List<Product>());
 
             var result = await _likeController.GetLikedProductsByUser();
-            var objResult = (result.Result as ObjectResult);
+            var statusCodeResult = (result.Result as StatusCodeResult);
 
-            objResult.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
-            objResult.Value.Should().Be("There are not liked products");
+            statusCodeResult.StatusCode.Should().Be(StatusCodes.Status204NoContent);
         }
 
         [Fact]

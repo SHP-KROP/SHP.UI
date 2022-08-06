@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 const UseHandlers = () => {
   const [isOpen, setOpen] = useState(() => false);
   const handleModalOpen = () => setOpen(true);
