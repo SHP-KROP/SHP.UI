@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import "../HeadBlock/HeadBlock.scss";
-import Login from "../ModalLogin/Login";
-import IconSearch from "../../img/icon-search.png";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Fade from "@mui/material/Fade";
-import Badge from "@mui/material/Badge";
-import Card from "../../img/icon-card.png";
-import useAuthMock from "../mock/useAuthMock"
-import Logout from "./Logout/Logout";
+import React, { useState } from 'react';
+import '../HeadBlock/HeadBlock.scss';
+import Login from '../ModalLogin/Login';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Fade from '@mui/material/Fade';
+import Badge from '@mui/material/Badge';
+import Card from '../../img/icon-card.png';
+import { Link } from 'react-router-dom';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount}) => {
+const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isOpen = !!anchorElement;
 
@@ -20,6 +20,7 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount}) => {
   const handleClose = () => {
     setAnchorElement(null);
   };
+
   return (
     <div className="search">
       <div className="name-shop">
@@ -29,9 +30,9 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount}) => {
         <button
           className="search__buttonList"
           id="fade-button"
-          aria-controls={isOpen ? "fade-menu" : undefined}
+          aria-controls={isOpen ? 'fade-menu' : undefined}
           aria-haspopup="true"
-          aria-expanded={isOpen ? "true" : undefined}
+          aria-expanded={isOpen ? 'true' : undefined}
           onClick={handleClick}
         >
           <p className="list">
@@ -41,7 +42,7 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount}) => {
         <Menu
           id="fade-menu"
           MenuListProps={{
-            "aria-labelledby": "fade-button",
+            'aria-labelledby': 'fade-button',
           }}
           anchorEl={anchorElement}
           open={isOpen}
@@ -53,16 +54,32 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount}) => {
           <MenuItem onClick={handleClose}>Product</MenuItem>
         </Menu>
         <input type="text" placeholder="Search Products, categories ..." />
-        <img src={IconSearch} alt="search" />
       </div>
       <div className="profile">
         <Login />
-        <Logout />
-        {!basketOpen && <Badge badgeContent={productsInBasketCount} color="secondary" max={99}>
-        <button className="openCartButton" onClick={onClickCart}>
-          <img src={Card} alt="card" />
-        </button>
-        </Badge>}
+        {!basketOpen && (
+          <Badge
+            badgeContent={productsInBasketCount}
+            color="secondary"
+            max={99}
+          >
+            <button className="openCartButton" onClick={onClickCart}>
+              <img src={Card} alt="card" />
+            </button>
+          </Badge>
+        )}
+        <Link to="/likes">
+          <BookmarkBorderIcon sx={{ fill: 'black' }} />
+        </Link>
+        <div className="logout">
+          <LogoutIcon />
+          {/* <button
+            onClick={() => {
+              setUser(null);
+            }}
+          >
+          </button> */}
+        </div>
       </div>
     </div>
   );
