@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
 import IdentityAPI from '../../../API/IdentityServerAPI.js';
+import useAuth from '../../../Helper/hook/useAuth';
 
 toast.configure();
 
@@ -8,6 +9,8 @@ const useLogin = () => {
   const [name, setUsername] = useState(() => '');
   const [pass, setPassword] = useState(() => '');
   const [flag, setFlag] = useState(() => true);
+
+  const { user, setUser } = useAuth();
 
   let initialRender = useRef(true);
   useEffect(() => {
@@ -69,7 +72,7 @@ const useLogin = () => {
       toast.success(`Welcome ${response.userName}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      localStorage.setItem('token', response.token);
+      setUser(response);
       console.success('Success, window need to be closed!');
     } catch (ex) {
       console.warn(ex);
