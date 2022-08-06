@@ -52,8 +52,6 @@ const useLogin = () => {
       })
       .catch((error) => {
         try {
-          console.log('ERROOOOOOR');
-          console.log(error);
           if (typeof error.response.data !== 'object') {
             toast.error(`${error.response.data}`, {
               position: toast.POSITION.BOTTOM_RIGHT,
