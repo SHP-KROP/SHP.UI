@@ -3,10 +3,15 @@ using DAL.Entities;
 using DAL.Interfaces;
 using IdentityServer.DTO;
 using IdentityServer.Extensions;
+using IdentityServer.Services;
 using IdentityServer.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace IdentityServer.Controllers
@@ -85,11 +90,64 @@ namespace IdentityServer.Controllers
             return Ok(userDto);
         }
 
-        [HttpPost("google-register")]
-        public async Task<ActionResult<UserDto>> GoogleRegisterUser(string code)
+
+        [HttpPost("redirect-to-auth")]
+        public ActionResult<string> RedirectOnOAuthServer()
+        { 
+            var scope = "https://www.googleapis.com/auth/userinfo.email";
+            var redirectUrl = Request.Host.ToString();
+
+            Code.Init();
+
+            var url = _tokenService.GenerateOAuthRequestUrl(scope, redirectUrl, Code.CodeChallenge);
+            return Ok(url);
+        }
+
+        public class Code
         {
 
-            var tokenResult = await _tokenService.ExchangeCodeOnTokenAsync(code, "https://localhost:44318");
+            public static string CodeVerifier;
+
+            public static string CodeChallenge;
+
+            public static void Init()
+            {
+                CodeVerifier = GenerateNonce();
+                CodeChallenge = GenerateCodeChallenge(CodeVerifier);
+            }
+
+            private static string GenerateNonce()
+            {
+                const string chars = "SecretString";
+                var random = new Random();
+                var nonce = new char[128];
+                for (int i = 0; i < nonce.Length; i++)
+                {
+                    nonce[i] = chars[random.Next(chars.Length)];
+                }
+
+                return new string(nonce);
+            }
+
+            private static string GenerateCodeChallenge(string codeVerifier)
+            {
+                using var sha256 = SHA256.Create();
+                var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
+                var b64Hash = Convert.ToBase64String(hash);
+                var code = Regex.Replace(b64Hash, "\\+", "-");
+                code = Regex.Replace(code, "\\/", "_");
+                code = Regex.Replace(code, "=+$", "");
+                return code;
+            }
+        }
+
+        [HttpPost("google-register")]
+        public async Task<ActionResult<TokenResult>> GoogleRegisterUser(string code)
+        {
+            var redirectUrl = HttpContext.Request.Host.ToUriComponent();
+            var codeVerifier = Code.CodeVerifier;
+
+            var tokenResult = await _tokenService.ExchangeCodeOnTokenAsync(code, codeVerifier, redirectUrl);
 
 
             //var dto = _tokenService.GetOAuthDtoFromToken(tokenResult);
@@ -122,24 +180,24 @@ namespace IdentityServer.Controllers
             return Ok(tokenResult);
         }
 
-        [HttpPost("google-login")]
-        public async Task<ActionResult<UserDto>> GoogleLoginUser(string token)
-        {
-            var dto = _tokenService.GetOAuthDtoFromToken(token);
+        //[HttpPost("google-login")]
+        //public async Task<ActionResult<UserDto>> GoogleLoginUser(string token)
+        //{
+        //    var dto = _tokenService.GetOAuthDtoFromToken(token);
 
-            var user = await _uow.UserRepository.GetUserByEmailAsync(dto.Email);
+        //    var user = await _uow.UserRepository.GetUserByEmailAsync(dto.Email);
 
-            if (user == null)
-            {
-                return Unauthorized($"There is not user with email {dto.Email}");
-            }
+        //    if (user == null)
+        //    {
+        //        return Unauthorized($"There is not user with email {dto.Email}");
+        //    }
 
-            var roles = await _uow.UserRepository.GetUserRoles(user);
-            var userDto = _mapper.Map<UserDto>(user);
-            userDto.Token = _tokenService.CreateToken(user, roles);
+        //    var roles = await _uow.UserRepository.GetUserRoles(user);
+        //    var userDto = _mapper.Map<UserDto>(user);
+        //    userDto.Token = _tokenService.CreateToken(user, roles);
 
-            return Ok(userDto);
-        }
+        //    return Ok(userDto);
+        //}
 
         [HttpPost("revoke-token")]
         public async Task<ActionResult> Revoke()

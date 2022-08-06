@@ -11,6 +11,8 @@ namespace IdentityServer.Services.Interfaces
 
         OAuthDto GetOAuthDtoFromToken(string token);
 
-        Task<TokenResult> ExchangeCodeOnTokenAsync(string code, string redirectUrl);
+        Task<TokenResult> ExchangeCodeOnTokenAsync(string code, string codeVerifier, string redirectUrl);
+
+        string GenerateOAuthRequestUrl(string scope, string redirectUrl, string codeChallenge);
     }
 }

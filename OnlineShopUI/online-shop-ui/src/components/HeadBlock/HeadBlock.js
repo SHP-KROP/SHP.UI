@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../HeadBlock/HeadBlock.scss';
 import Login from '../ModalLogin/Login';
 import Menu from '@mui/material/Menu';
@@ -10,11 +10,22 @@ import { Link } from 'react-router-dom';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import LogoutIcon from '@mui/icons-material/Logout';
 import useLogout from '../../hooks/useLogout';
-import useAuth from '../../hooks/useAuth';
+import IdentityAPI from '../../API/IdentityServerAPI';
 
 const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isOpen = !!anchorElement;
+  const [authUrl, setAuthUrl] = useState("");
+
+  useEffect(() => {
+    IdentityAPI.post('/user/redirect-to-auth')
+          .then(response => {
+            setAuthUrl(response.data);
+            console.log(response.data);
+          }).catch(error => {
+            console.warn(error);
+          })
+        }, []);
 
   const handleClick = (event) => {
     setAnchorElement(event.currentTarget);
@@ -78,6 +89,11 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
           <button onClick={logOut}>
             <LogoutIcon />
           </button>
+        </div>
+        <div>
+          <Link to={authUrl}>
+                  AUTH 2.0
+                </Link>
         </div>
       </div>
     </div>

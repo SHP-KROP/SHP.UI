@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace IdentityServer.Services
 {
@@ -79,7 +80,29 @@ namespace IdentityServer.Services
             return oauthDto;
         }
 
-        public async Task<TokenResult> ExchangeCodeOnTokenAsync(string code, string redirectUrl)
+        public string GenerateOAuthRequestUrl(string scope, string redirectUrl, string codeChallenge)
+        {
+            var url = "https://accounts.google.com/o/oauth2/v2/auth?";
+
+            var queryParams = new Dictionary<string, string>
+            {
+                { "client_id", ClientId },
+                { "redirect_uri", redirectUrl },
+                { "response_type", "code" },
+                { "scope", scope },
+                { "code_challenge", codeChallenge },
+                { "code_challenge_method", "S256" }
+            };
+
+            foreach (var qp in queryParams)
+            {
+                url += $"{qp.Key}={qp.Value}&";
+            }
+
+            return url.Substring(0, url.Length - 1);
+        }
+
+        public async Task<TokenResult> ExchangeCodeOnTokenAsync(string code, string codeVerifier, string redirectUrl)
         {
             var url = "https://oauth2.googleapis.com/token";
 
@@ -88,6 +111,7 @@ namespace IdentityServer.Services
                 { "client_id", ClientId },
                 { "client_secret", ClientSecret },
                 { "code", code },
+                { "code_verifier", codeVerifier },
                 { "grant_type", "authorization_code" },
                 { "redirect_uri", redirectUrl }
             };
