@@ -1,5 +1,7 @@
-export default function useAuthHeaders() {
-  let token = localStorage.getItem('token');
+import useAuth from '../../../Helper/hook/useAuth';
 
-  return { headers: { Authorization: token ? `Bearer ${token}` : null } };
+export default function useAuthHeaders() {
+  const { user } = useAuth();
+
+  return { headers: { Authorization: user ? `Bearer ${user.token}` : null } };
 }

@@ -66,6 +66,7 @@ const useRegister = () => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       setUser(response);
+      localStorage.setItem('user', JSON.stringify(response));
       setIsRedirect(true);
     } catch (ex) {
       console.warn(ex);

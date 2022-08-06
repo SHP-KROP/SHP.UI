@@ -3,16 +3,20 @@ import CoreAPI from '../../../API/CoreAPI';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useAuthHeaders from './useAuthHeaders';
+import useAuth from '../../../Helper/hook/useAuth';
 
 toast.configure();
 
 export default function useLikes() {
   const [isLoading, setLoading] = useState(false);
   const [likedProducts, setLikedProducts] = useState([]);
+
+  const { user } = useAuth();
+
   const authHeaders = useAuthHeaders();
 
   function unlikeProductById(id) {
-    if (!authHeaders?.headers?.Authorization) return;
+    if (!user) return;
     CoreAPI.delete(`/like/${id}`, authHeaders)
       .then((response) => {
         setLikedProducts(
@@ -38,7 +42,7 @@ export default function useLikes() {
   }
 
   function likeProductById(id) {
-    if (!authHeaders?.headers?.Authorization) return;
+    if (!user) return;
     CoreAPI.post(`/like/${id}`, {}, authHeaders)
       .then((response) => {
         setLikedProducts([...likedProducts, response.data]);
@@ -67,7 +71,7 @@ export default function useLikes() {
 
   function getLikedProducts() {
     setLoading(true);
-    if (!authHeaders?.headers?.Authorization) {
+    if (!user) {
       setLoading(false);
       return;
     }

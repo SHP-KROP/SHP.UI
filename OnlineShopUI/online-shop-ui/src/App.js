@@ -2,16 +2,15 @@ import { Route, Routes } from 'react-router-dom';
 import Register from './routers/Registration/Register';
 import Home from './routers/Home/Home';
 import LikesPage from './routers/LikesPage/LikesPage';
-import { useState } from 'react';
-import { useMemo } from 'react';
 import { UserContext } from './Helper/hook/UserContext';
+import useAuthProvider from './hooks/useAuthProvider';
+
 function App() {
-  const [user, setUser] = useState(null);
-  const prodiverUser = useMemo(() => ({ user, setUser }), [user, setUser]);
+  const userProvider = useAuthProvider();
 
   return (
     <>
-      <UserContext.Provider value={prodiverUser}>
+      <UserContext.Provider value={userProvider}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />}></Route>

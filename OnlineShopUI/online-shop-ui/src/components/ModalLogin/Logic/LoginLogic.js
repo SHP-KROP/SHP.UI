@@ -10,7 +10,7 @@ const useLogin = () => {
   const [pass, setPassword] = useState(() => '');
   const [flag, setFlag] = useState(() => true);
 
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
 
   let initialRender = useRef(true);
   useEffect(() => {
@@ -19,7 +19,7 @@ const useLogin = () => {
       return;
     }
 
-    if (localStorage.getItem('token')) {
+    if (user) {
       toast.warn('You are already logged in!', {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
@@ -73,6 +73,7 @@ const useLogin = () => {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       setUser(response);
+      localStorage.setItem('user', JSON.stringify(response));
       console.success('Success, window need to be closed!');
     } catch (ex) {
       console.warn(ex);
