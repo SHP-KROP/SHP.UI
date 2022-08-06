@@ -92,14 +92,13 @@ namespace IdentityServer.Controllers
 
 
         [HttpPost("redirect-to-auth")]
-        public ActionResult<string> RedirectOnOAuthServer()
+        public ActionResult<string> RedirectOnOAuthServer(OAuthModel model)
         { 
             var scope = "https://www.googleapis.com/auth/userinfo.email";
-            var redirectUrl = Request.Host.ToString();
 
             Code.Init();
 
-            var url = _tokenService.GenerateOAuthRequestUrl(scope, redirectUrl, Code.CodeChallenge);
+            var url = _tokenService.GenerateOAuthRequestUrl(scope, model.RedirectUrl, Code.CodeChallenge);
             return Ok(url);
         }
 

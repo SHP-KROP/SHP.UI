@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import '../HeadBlock/HeadBlock.scss';
-import Login from '../ModalLogin/Login';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Fade from '@mui/material/Fade';
-import Badge from '@mui/material/Badge';
-import Card from '../../img/icon-card.png';
-import { Link } from 'react-router-dom';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import LogoutIcon from '@mui/icons-material/Logout';
-import useLogout from '../../hooks/useLogout';
-import IdentityAPI from '../../API/IdentityServerAPI';
+import React, { useEffect, useState } from "react";
+import "../HeadBlock/HeadBlock.scss";
+import Login from "../ModalLogin/Login";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Fade from "@mui/material/Fade";
+import Badge from "@mui/material/Badge";
+import Card from "../../img/icon-card.png";
+import { Link } from "react-router-dom";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import LogoutIcon from "@mui/icons-material/Logout";
+import useLogout from "../../hooks/useLogout";
+import IdentityAPI from "../../API/IdentityServerAPI";
 
 const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const [anchorElement, setAnchorElement] = useState(null);
@@ -18,14 +18,17 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const [authUrl, setAuthUrl] = useState("");
 
   useEffect(() => {
-    IdentityAPI.post('/user/redirect-to-auth')
-          .then(response => {
-            setAuthUrl(response.data);
-            console.log(response.data);
-          }).catch(error => {
-            console.warn(error);
-          })
-        }, []);
+    IdentityAPI.post("/user/redirect-to-auth", {
+      redirectUrl: window.location.href,
+    })
+      .then((response) => {
+        setAuthUrl(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }, []);
 
   const handleClick = (event) => {
     setAnchorElement(event.currentTarget);
@@ -44,9 +47,9 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
         <button
           className="search__buttonList"
           id="fade-button"
-          aria-controls={isOpen ? 'fade-menu' : undefined}
+          aria-controls={isOpen ? "fade-menu" : undefined}
           aria-haspopup="true"
-          aria-expanded={isOpen ? 'true' : undefined}
+          aria-expanded={isOpen ? "true" : undefined}
           onClick={handleClick}
         >
           <p className="list">
@@ -56,7 +59,7 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
         <Menu
           id="fade-menu"
           MenuListProps={{
-            'aria-labelledby': 'fade-button',
+            "aria-labelledby": "fade-button",
           }}
           anchorEl={anchorElement}
           open={isOpen}
@@ -83,7 +86,7 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
           </Badge>
         )}
         <Link to="/likes">
-          <BookmarkBorderIcon sx={{ fill: 'black' }} />
+          <BookmarkBorderIcon sx={{ fill: "black" }} />
         </Link>
         <div className="logout">
           <button onClick={logOut}>
@@ -91,9 +94,13 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
           </button>
         </div>
         <div>
-          <Link to={authUrl}>
-                  AUTH 2.0
-                </Link>
+          <button
+            onClick={() => {
+              window.location.href = authUrl;
+            }}
+          >
+            AUTH 2.0
+          </button>
         </div>
       </div>
     </div>
