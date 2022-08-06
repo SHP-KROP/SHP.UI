@@ -84,5 +84,11 @@ namespace IdentityServer.Controllers
 
             return Ok(userDto);
         }
+
+        [HttpPost("revoke-token")]
+        public async Task<ActionResult> Revoke()
+        {
+            return Ok();
+        }
     }
 }
