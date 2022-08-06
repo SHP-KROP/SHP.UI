@@ -9,6 +9,8 @@ import Card from '../../img/icon-card.png';
 import { Link } from 'react-router-dom';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import LogoutIcon from '@mui/icons-material/Logout';
+import useLogout from '../../hooks/useLogout';
+import useAuth from '../../hooks/useAuth';
 
 const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const [anchorElement, setAnchorElement] = useState(null);
@@ -20,6 +22,7 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const handleClose = () => {
     setAnchorElement(null);
   };
+  const logOut = useLogout();
 
   return (
     <div className="search">
@@ -72,13 +75,9 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
           <BookmarkBorderIcon sx={{ fill: 'black' }} />
         </Link>
         <div className="logout">
-          <LogoutIcon />
-          {/* <button
-            onClick={() => {
-              setUser(null);
-            }}
-          >
-          </button> */}
+          <button onClick={logOut}>
+            <LogoutIcon />
+          </button>
         </div>
       </div>
     </div>
