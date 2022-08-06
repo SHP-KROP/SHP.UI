@@ -31,6 +31,7 @@ const ProductCard = ({ handleClick, card, basket }) => {
       onLikeClicked();
     }
   };
+
   return (
     <div
       style={{

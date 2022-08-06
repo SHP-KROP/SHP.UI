@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import './Home.scss';
 import Feedback from '../../components/FeedbackATop/Feedback';
 import HeadBlock from '../../components/HeadBlock/HeadBlock';

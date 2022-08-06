@@ -8,8 +8,8 @@ const useLogin = () => {
   const [name, setUsername] = useState(() => '');
   const [pass, setPassword] = useState(() => '');
   const [flag, setFlag] = useState(() => true);
-  let initialRender = useRef(true);
 
+  let initialRender = useRef(true);
   useEffect(() => {
     if (initialRender.current) {
       initialRender.current = false;
@@ -32,11 +32,10 @@ const useLogin = () => {
       return;
     }
 
-    IdentityAPI
-      .post('/user/login', {
-        userName: name,
-        password: pass,
-      })
+    IdentityAPI.post('/user/login', {
+      userName: name,
+      password: pass,
+    })
       .then((response) => {
         if (response) {
           proceedResponse(response?.data);

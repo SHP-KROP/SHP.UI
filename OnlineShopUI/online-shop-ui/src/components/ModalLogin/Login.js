@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
@@ -9,12 +10,12 @@ import User from '../../img/icon-user.png';
 import { Link } from 'react-router-dom';
 import useLogin from './Logic/LoginLogic';
 import UseHandlers from '../../Helper/Handlers';
-
+import useAuth from '../../Helper/hook/useAuth';
 export default function Login() {
-  const [setUsername, setPassword, flag, setFlag] = useLogin();
+  const [setUsername, setPassword, flag, setFlag, pass, name] = useLogin();
 
   const [handleModalClose, handleModalOpen, isOpen] = UseHandlers();
-
+  const { user, setUser } = useContext(useAuth);
   return (
     <div>
       <a href="#">
