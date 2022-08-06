@@ -5,13 +5,13 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import useLikes from '../../routers/LikesPage/hooks/useLikes';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import useAuthHeaders from '../../routers/LikesPage/hooks/useAuthHeaders';
+import useAuth from '../../hooks/useAuth';
 
 const ProductCard = ({ handleClick, card, basket }) => {
   const [isLoading, likedProducts, likeProductById, unlikeProductById] =
     useLikes();
   const [isLiked, setIsLiked] = useState(card.isLiked);
-  const authHeaders = useAuthHeaders();
+  const { user } = useAuth();
 
   const isInBasket = () => {
     if (!basket) {
@@ -21,7 +21,7 @@ const ProductCard = ({ handleClick, card, basket }) => {
   };
 
   const onLikeClicked = () => {
-    if (!authHeaders?.headers?.Authorization) return;
+    if (!user) return;
     isLiked ? unlikeProductById(card.id) : likeProductById(card.id);
     setIsLiked((prev) => !prev);
   };
@@ -31,6 +31,7 @@ const ProductCard = ({ handleClick, card, basket }) => {
       onLikeClicked();
     }
   };
+
   return (
     <div
       style={{
@@ -43,7 +44,7 @@ const ProductCard = ({ handleClick, card, basket }) => {
       <div className="product-card__img">
         <img src={ProductBg} alt="img" />
         <div className="product-card__img-buttons">
-          {authHeaders?.headers?.Authorization && (
+          {user && (
             <button onClick={onLikeClicked}>
               {isLiked ? (
                 <FavoriteIcon sx={{ fill: 'red' }} />

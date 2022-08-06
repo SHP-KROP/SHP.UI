@@ -8,6 +8,7 @@ import Badge from '@mui/material/Badge';
 import Card from '../../img/icon-card.png';
 import { Link } from 'react-router-dom';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const [anchorElement, setAnchorElement] = useState(null);
@@ -19,6 +20,7 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const handleClose = () => {
     setAnchorElement(null);
   };
+
   return (
     <div className="search">
       <div className="name-shop">
@@ -69,6 +71,15 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
         <Link to="/likes">
           <BookmarkBorderIcon sx={{ fill: 'black' }} />
         </Link>
+        <div className="logout">
+          <LogoutIcon />
+          {/* <button
+            onClick={() => {
+              setUser(null);
+            }}
+          >
+          </button> */}
+        </div>
       </div>
     </div>
   );

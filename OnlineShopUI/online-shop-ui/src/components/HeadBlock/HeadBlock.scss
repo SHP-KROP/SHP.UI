@@ -35,6 +35,12 @@
     }
   }
 }
+.logout {
+  > button {
+    background: inherit;
+    border: none;
+  }
+}
 .profile {
   display: flex;
   align-items: center;

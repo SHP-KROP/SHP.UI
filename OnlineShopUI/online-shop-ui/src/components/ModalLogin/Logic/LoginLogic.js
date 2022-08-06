@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
 import IdentityAPI from '../../../API/IdentityServerAPI.js';
+import useAuth from '../../../hooks/useAuth';
 
 toast.configure();
 
@@ -8,15 +9,17 @@ const useLogin = () => {
   const [name, setUsername] = useState(() => '');
   const [pass, setPassword] = useState(() => '');
   const [flag, setFlag] = useState(() => true);
-  let initialRender = useRef(true);
 
+  const { user, setUser } = useAuth();
+
+  let initialRender = useRef(true);
   useEffect(() => {
     if (initialRender.current) {
       initialRender.current = false;
       return;
     }
 
-    if (localStorage.getItem('token')) {
+    if (user) {
       toast.warn('You are already logged in!', {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
@@ -32,11 +35,10 @@ const useLogin = () => {
       return;
     }
 
-    IdentityAPI
-      .post('/user/login', {
-        userName: name,
-        password: pass,
-      })
+    IdentityAPI.post('/user/login', {
+      userName: name,
+      password: pass,
+    })
       .then((response) => {
         if (response) {
           proceedResponse(response?.data);
@@ -70,7 +72,8 @@ const useLogin = () => {
       toast.success(`Welcome ${response.userName}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      localStorage.setItem('token', response.token);
+      setUser(response);
+      localStorage.setItem('user', JSON.stringify(response));
       console.success('Success, window need to be closed!');
     } catch (ex) {
       console.warn(ex);
