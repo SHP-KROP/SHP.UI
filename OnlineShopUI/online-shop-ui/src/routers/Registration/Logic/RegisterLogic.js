@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import IdentityServerAPI from '../../../API/IdentityServerAPI';
-import useAuth from '../../../Helper/hook/useAuth';
-
+import useAuth from '../../../hooks/useAuth';
 toast.configure();
 
 const useRegister = () => {

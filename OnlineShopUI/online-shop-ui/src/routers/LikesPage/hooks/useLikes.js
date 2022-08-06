@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import CoreAPI from '../../../API/CoreAPI';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import useAuthHeaders from './useAuthHeaders';
-import useAuth from '../../../Helper/hook/useAuth';
+import useAuth from '../../../hooks/useAuth';
+import useAuthHeaders from '../../../hooks/useAuthHeaders';
 
 toast.configure();
 

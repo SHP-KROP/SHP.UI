@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Register from './routers/Registration/Register';
 import Home from './routers/Home/Home';
 import LikesPage from './routers/LikesPage/LikesPage';
-import { UserContext } from './Helper/hook/UserContext';
+import { UserContext } from './Contexts/UserContext';
 import useAuthProvider from './hooks/useAuthProvider';
 
 function App() {

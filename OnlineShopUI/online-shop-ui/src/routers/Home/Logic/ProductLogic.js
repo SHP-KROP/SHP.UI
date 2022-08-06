@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import CoreAPI from '../../../API/CoreAPI';
-import useAuth from '../../../Helper/hook/useAuth';
-import useAuthHeaders from '../../LikesPage/hooks/useAuthHeaders';
+import useAuth from '../../../hooks/useAuth';
+import useAuthHeaders from '../../../hooks/useAuthHeaders';
 
 const useProductCardFilling = () => {
   const [products, setProducts] = useState(() => []);

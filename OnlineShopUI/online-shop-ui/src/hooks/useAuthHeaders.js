@@ -1,4 +1,4 @@
-import useAuth from '../../../Helper/hook/useAuth';
+import useAuth from './useAuth';
 
 export default function useAuthHeaders() {
   const { user } = useAuth();

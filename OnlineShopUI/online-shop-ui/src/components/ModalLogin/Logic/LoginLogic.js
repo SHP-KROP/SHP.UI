@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
 import IdentityAPI from '../../../API/IdentityServerAPI.js';
-import useAuth from '../../../Helper/hook/useAuth';
+import useAuth from '../../../hooks/useAuth';
 
 toast.configure();
 
