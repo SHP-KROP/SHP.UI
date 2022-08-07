@@ -43,6 +43,7 @@ namespace IdentityServer
             services.ProvideIdentity();
             services.AddAutoMapping();
             services.AddControllers();
+            services.AddOAuthServices();
 
             services.AddSwaggerGen(c =>
             {

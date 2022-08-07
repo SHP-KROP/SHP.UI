@@ -9,10 +9,28 @@ import User from '../../img/icon-user.png';
 import { Link } from 'react-router-dom';
 import useLogin from './Logic/LoginLogic';
 import UseHandlers from '../../Helper/Handlers';
+import { useEffect } from 'react';
+import { gapi } from 'gapi-script';
+import LoginGoogle from '../GoogleAuth/LoginGoogle';
+import LogoutGoogle from '../GoogleAuth/LogoutGoogle';
 
 export default function Login() {
   const [setUsername, setPassword, flag, setFlag] = useLogin();
   const [handleModalClose, handleModalOpen, isOpen] = UseHandlers();
+
+  const clientId =
+  "930917656503-gqbc3li3obv7munodub7le5gon26s1r9.apps.googleusercontent.com";
+
+  useEffect(() => {
+    function initClient() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: ""
+      })
+    }
+
+    gapi.load('client:auth2', initClient);
+  })
 
   return (
     <div>
@@ -87,6 +105,8 @@ export default function Login() {
                 </Link>
               </div>
             </div>
+            <LoginGoogle/>
+            <LogoutGoogle/>
           </div>
         </Box>
       </Modal>
