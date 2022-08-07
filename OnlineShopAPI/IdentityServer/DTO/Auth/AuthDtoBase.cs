@@ -1,6 +1,6 @@
-﻿namespace IdentityServer.DTO
+﻿namespace IdentityServer.DTO.Auth
 {
-    public class OAuthDto
+    public abstract class AuthDtoBase
     {
         public string Email { get; set; }
 

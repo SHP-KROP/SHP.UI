@@ -1,17 +1,13 @@
 ﻿using AutoMapper;
 using DAL.Entities;
 using DAL.Interfaces;
+using IdentityServer.Constants;
 using IdentityServer.DTO;
+using IdentityServer.DTO.Google;
 using IdentityServer.Extensions;
-using IdentityServer.Services;
 using IdentityServer.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace IdentityServer.Controllers
@@ -23,16 +19,19 @@ namespace IdentityServer.Controllers
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _uow;
+        private readonly IAuthService<GoogleOAuthDto> _googleAuthService;
 
         public UserController(
             IMapper mapper,
             ITokenService tokenService,
-            IUnitOfWork uow
+            IUnitOfWork uow,
+            IAuthService<GoogleOAuthDto> googleAuthService
             )
         {
             _mapper = mapper;
             _tokenService = tokenService;
             _uow = uow;
+            _googleAuthService = googleAuthService;
         }
 
         [HttpPost("register")]
@@ -93,7 +92,7 @@ namespace IdentityServer.Controllers
         [HttpPost("google-auth")]
         public async Task<ActionResult<UserDto>> GoogleAuthUser([FromQuery] string tokenId)
         {
-            var oAuthDto = _tokenService.GetOAuthDtoFromToken(tokenId);
+            var oAuthDto = _googleAuthService.GetAuthDtoFromTokenId(tokenId);
             var user = await _uow.UserRepository.GetUserByEmailAsync(oAuthDto.Email);
 
             UserDto userDto;
@@ -112,7 +111,7 @@ namespace IdentityServer.Controllers
                 Email = oAuthDto.Email
             };
 
-            var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
+            var result = await _uow.UserRepository.CreateUserAsync(newUser, UserDefaultConstants.Password);
 
             if (!result.Succeeded)
             {
