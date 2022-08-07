@@ -67,13 +67,13 @@ namespace OnlineShop.IntegrationTests.IdentityServer
         #region Delete
 
         [Fact]
-        public async void Delete_ShouldReturnNotFound_WhenUserNotFound()
+        public async void Delete_ShouldReturnNoContent_WhenUserNotFound()
         {
             AddBearerToken();
             await PrepareDb();
 
             var response = await _httpClient.DeleteAsync($"{DefaultRoute}/-1");
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
         [Theory]
@@ -91,13 +91,13 @@ namespace OnlineShop.IntegrationTests.IdentityServer
         [Theory]
         [InlineData(3)]
         [InlineData(4)]
-        public async void Delete_ShouldReturnNoContent_WhenUserSuccessfullyDeleted(int id)
+        public async void Delete_ShouldReturnOk_WhenUserSuccessfullyDeleted(int id)
         {
             AddBearerToken();
             await PrepareDb();
 
             var response = await _httpClient.DeleteAsync($"{DefaultRoute}/{id}");
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
         #endregion

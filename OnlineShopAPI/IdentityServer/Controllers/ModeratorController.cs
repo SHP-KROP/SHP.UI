@@ -28,6 +28,8 @@ namespace IdentityServer.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
         {
             _logger.LogInformation("GetAllUsers start executing");
@@ -46,6 +48,8 @@ namespace IdentityServer.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> DeleteUser(int id)
         {
             _logger.LogInformation("DeleteUser start executing");
@@ -55,7 +59,7 @@ namespace IdentityServer.Controllers
             if (user is null)
             {
                 _logger.LogInformation($"There is not user with id {id}");
-                return NotFound();
+                return NoContent();
             }
 
             var roles = await _uow.UserRepository.GetUserRoles(user);
@@ -69,7 +73,7 @@ namespace IdentityServer.Controllers
 
             if (await _uow.ConfirmAsync())
             {
-                return NoContent();
+                return Ok();
             }
 
             _logger.LogInformation("Unable to save changes after deletion");
