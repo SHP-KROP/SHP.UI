@@ -22,8 +22,10 @@ namespace IdentityServer.Services
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
 
-        private const string ClientId = "211105299474-e1e6i4h683dlo69c3kko34cd2o4cct7d.apps.googleusercontent.com";
-        private const string ClientSecret = "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";
+        //private const string ClientId = "211105299474-e1e6i4h683dlo69c3kko34cd2o4cct7d.apps.googleusercontent.com";
+        //private const string ClientSecret = "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";
+        private const string ClientId = "930917656503-gqbc3li3obv7munodub7le5gon26s1r9.apps.googleusercontent.com";
+        private const string ClientSecret = "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";
         const double HoursOfTokenExpiration = 12;
 
         public TokenService(IConfiguration configuration)

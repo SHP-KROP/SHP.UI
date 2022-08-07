@@ -90,113 +90,42 @@ namespace IdentityServer.Controllers
             return Ok(userDto);
         }
 
-
-        [HttpPost("redirect-to-auth")]
-        public ActionResult<string> RedirectOnOAuthServer(OAuthModel model)
-        { 
-            var scope = "https://www.googleapis.com/auth/userinfo.email";
-
-            Code.Init();
-
-            var url = _tokenService.GenerateOAuthRequestUrl(scope, model.RedirectUrl, Code.CodeChallenge);
-            return Ok(url);
-        }
-
-        public class Code
+        [HttpPost("google-auth")]
+        public async Task<ActionResult<UserDto>> GoogleAuthUser([FromQuery] string tokenId)
         {
+            var oAuthDto = _tokenService.GetOAuthDtoFromToken(tokenId);
+            var user = await _uow.UserRepository.GetUserByEmailAsync(oAuthDto.Email);
 
-            public static string CodeVerifier;
+            UserDto userDto;
 
-            public static string CodeChallenge;
-
-            public static void Init()
+            if (user != null)
             {
-                CodeVerifier = GenerateNonce();
-                CodeChallenge = GenerateCodeChallenge(CodeVerifier);
+                userDto = _mapper.Map<UserDto>(user);
+                userDto.Token = _tokenService.CreateToken(user, await _uow.UserRepository.GetUserRoles(user));
+
+                return Ok(userDto);
             }
 
-            private static string GenerateNonce()
+            var newUser = new AppUser
             {
-                const string chars = "SecretString";
-                var random = new Random();
-                var nonce = new char[128];
-                for (int i = 0; i < nonce.Length; i++)
-                {
-                    nonce[i] = chars[random.Next(chars.Length)];
-                }
+                UserName = Guid.NewGuid().ToString(),
+                Email = oAuthDto.Email
+            };
 
-                return new string(nonce);
+            var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.ToErrorsString());
             }
 
-            private static string GenerateCodeChallenge(string codeVerifier)
-            {
-                using var sha256 = SHA256.Create();
-                var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
-                var b64Hash = Convert.ToBase64String(hash);
-                var code = Regex.Replace(b64Hash, "\\+", "-");
-                code = Regex.Replace(code, "\\/", "_");
-                code = Regex.Replace(code, "=+$", "");
-                return code;
-            }
+            await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
+            userDto = _mapper.Map<UserDto>(newUser);
+
+            userDto.Token = _tokenService.CreateToken(newUser, await _uow.UserRepository.GetUserRoles(newUser));
+
+            return Ok(userDto);
         }
-
-        [HttpPost("google-register")]
-        public async Task<ActionResult<TokenResult>> GoogleRegisterUser(string code)
-        {
-            var redirectUrl = HttpContext.Request.Host.ToUriComponent();
-            var codeVerifier = Code.CodeVerifier;
-
-            var tokenResult = await _tokenService.ExchangeCodeOnTokenAsync(code, codeVerifier, redirectUrl);
-
-
-            //var dto = _tokenService.GetOAuthDtoFromToken(tokenResult);
-
-            //var user = await _uow.UserRepository.GetUserByEmailAsync(dto.Email);
-
-            //if (user != null)
-            //{
-            //    return BadRequest("User already exists");
-            //}
-
-            //var newUser = _mapper.Map<AppUser>(dto);
-            //newUser.UserName = Guid.NewGuid().ToString();
-
-            //var result = await _uow.UserRepository.CreateUserAsync(newUser, "pas$worD123456789426734683275235382");
-
-            //if (!result.Succeeded)
-            //{
-            //    return BadRequest(result.ToErrorsString());
-            //}
-
-            //await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
-
-            //var roles = await _uow.UserRepository.GetUserRoles(newUser);
-
-            //var userDto = _mapper.Map<UserDto>(newUser);
-            //var newToken = _tokenService.CreateToken(newUser, roles);
-            //userDto.Token = newToken;
-
-            return Ok(tokenResult);
-        }
-
-        //[HttpPost("google-login")]
-        //public async Task<ActionResult<UserDto>> GoogleLoginUser(string token)
-        //{
-        //    var dto = _tokenService.GetOAuthDtoFromToken(token);
-
-        //    var user = await _uow.UserRepository.GetUserByEmailAsync(dto.Email);
-
-        //    if (user == null)
-        //    {
-        //        return Unauthorized($"There is not user with email {dto.Email}");
-        //    }
-
-        //    var roles = await _uow.UserRepository.GetUserRoles(user);
-        //    var userDto = _mapper.Map<UserDto>(user);
-        //    userDto.Token = _tokenService.CreateToken(user, roles);
-
-        //    return Ok(userDto);
-        //}
 
         [HttpPost("revoke-token")]
         public async Task<ActionResult> Revoke()
