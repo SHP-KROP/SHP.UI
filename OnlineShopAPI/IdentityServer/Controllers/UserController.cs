@@ -6,6 +6,7 @@ using IdentityServer.DTO;
 using IdentityServer.DTO.Google;
 using IdentityServer.Extensions;
 using IdentityServer.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -35,13 +36,15 @@ namespace IdentityServer.Controllers
         }
 
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<UserDto>> RegisterUser([FromBody] UserRegisterDto userRegisterDto)
         {
             var existingUser = await _uow.UserRepository.GetUserByUsernameAsync(userRegisterDto.UserName);
 
             if (existingUser != null)
             {
-                return BadRequest("User with this name already exists");
+                return Unauthorized("User with this name already exists");
             }
 
             var newUser = _mapper.Map<AppUser>(userRegisterDto);
@@ -50,7 +53,7 @@ namespace IdentityServer.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(result.ToErrorsString());
+                return Unauthorized(result.ToErrorsString());
             }
 
             await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
@@ -65,6 +68,8 @@ namespace IdentityServer.Controllers
         }
 
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<UserDto>> LogIn([FromBody] UserLogInDto userLogInDto)
         {
             var user = await _uow.UserRepository.GetUserByUsernameAsync(userLogInDto.UserName);
@@ -90,6 +95,8 @@ namespace IdentityServer.Controllers
         }
 
         [HttpPost("google-auth")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<UserDto>> GoogleAuthUser([FromQuery] string tokenId)
         {
             var oAuthDto = _googleAuthService.GetAuthDtoFromTokenId(tokenId);
@@ -115,7 +122,7 @@ namespace IdentityServer.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(result.ToErrorsString());
+                return Unauthorized(result.ToErrorsString());
             }
 
             await _uow.UserRepository.AddToRoleAsync(newUser, "buyer");
