@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using IdentityServer.DTO.Google;
 using IdentityServer.Helpers;
 using IdentityServer.Mapping;
 using IdentityServer.Options;
@@ -35,6 +36,13 @@ namespace IdentityServer.Extensions
                 .AddEntityFrameworkStores<OnlineShopContext>();
 
             services.AddAuthentication();
+
+            return services;
+        }
+
+        public static IServiceCollection AddOAuthServices(this IServiceCollection services)
+        {
+            services.AddSingleton<IAuthService<GoogleOAuthDto>, GoogleAuthService>();
 
             return services;
         }

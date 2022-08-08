@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
 import CoreAPI from '../../../API/CoreAPI';
-import useAuthHeaders from '../../LikesPage/hooks/useAuthHeaders';
-import useLikes from '../../LikesPage/hooks/useLikes';
+import useAuth from '../../../hooks/useAuth';
+import useAuthHeaders from '../../../hooks/useAuthHeaders';
 
 const useProductCardFilling = () => {
   const [products, setProducts] = useState(() => []);
-  const [isLoading, likedProducts, likeProductById, unlikeProductById] =
-    useLikes();
+
+  const { user } = useAuth();
   const authHeaders = useAuthHeaders();
 
   useEffect(() => {
-    authHeaders?.headers?.Authorization
-      ? getProductsWithLikes()
-      : getProducts();
+    user ? getProductsWithLikes() : getProducts();
   }, []);
+
+  useEffect(() => {
+    user ? getProductsWithLikes() : getProducts();
+  }, [JSON.stringify(user)]);
 
   function getProductsWithLikes() {
     CoreAPI.get('/like/product', authHeaders)

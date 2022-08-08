@@ -4,6 +4,7 @@ using DAL.Interfaces;
 using FluentAssertions;
 using IdentityServer.Controllers;
 using IdentityServer.DTO;
+using IdentityServer.DTO.Google;
 using IdentityServer.Services.Interfaces;
 using IdentityServerTests.Helpers;
 using Microsoft.AspNetCore.Http;
@@ -29,19 +30,19 @@ namespace IdentityServerTests
             _tokenService = new Mock<ITokenService>();
 
             _uow = new Mock<IUnitOfWork>();
-
             _mockUserRepository = new Mock<IUserRepository>();
-
             _mockSignInManager = new Mock<ISignInManager>();
 
             _uow.SetupGet(u => u.UserRepository).Returns(_mockUserRepository.Object);
 
             _uow.SetupGet(u => u.SignInManager).Returns(_mockSignInManager.Object);
 
+
             _userController = new UserController(
                 _mapper.Object,
                 _tokenService.Object,
-                _uow.Object
+                _uow.Object,
+                new Mock<IAuthService<GoogleOAuthDto>>().Object
             );
 
             _tokenService.Setup(ut => ut.CreateToken(It.IsAny<AppUser>(), new List<string>())).Returns("Great");
@@ -160,7 +161,7 @@ namespace IdentityServerTests
 
 
         [Fact]
-        public async void RegisterUser_ShouldReturnBadRequest_WhenUserAlreadyExists()
+        public async void RegisterUser_ShouldReturnUnauthorized_WhenUserAlreadyExists()
         {
             var userDto = new UserRegisterDto { UserName = "Tomass", Password = "dd800Z" };
 
@@ -178,7 +179,7 @@ namespace IdentityServerTests
             var parsedResponse = new Response<UserDto>(response);
 
             parsedResponse.Value.Should().BeNull();
-            parsedResponse.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
         }
 
         [Fact]
@@ -212,7 +213,7 @@ namespace IdentityServerTests
         }
 
         [Fact]
-        public async void RegisterUser_ShouldReturnBadRequest_WhenUserCannotBeRegistered()
+        public async void RegisterUser_ShouldReturnUnauthorized_WhenUserCannotBeRegistered()
         {
             var userDto = new UserRegisterDto { UserName = "ADDDS7", Password = "Zalp" };
 
@@ -232,7 +233,7 @@ namespace IdentityServerTests
             var parsedResponse = new Response<UserDto>(response);
 
             parsedResponse.Value.Should().BeNull();
-            parsedResponse.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            parsedResponse.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
         }
     }
 }
