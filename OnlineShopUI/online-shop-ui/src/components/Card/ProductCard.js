@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import "./ProductCard.scss";
-import ProductBg from "../../img/product-img.png";
-import LocalMallIcon from "@mui/icons-material/LocalMall";
-import useLikes from "../../routers/LikesPage/hooks/useLikes";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import useAuth from "../../hooks/useAuth";
+import React, { useState } from 'react';
+import './ProductCard.scss';
+import ProductBg from '../../img/product-img.png';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import useLikes from '../../routers/LikesPage/hooks/useLikes';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import useAuth from '../../hooks/useAuth';
 
 const ProductCard = ({ handleClick, card, basket }) => {
   const [isLoading, likedProducts, likeProductById, unlikeProductById] =
@@ -35,8 +35,8 @@ const ProductCard = ({ handleClick, card, basket }) => {
   return (
     <div
       style={{
-        background: user && isLiked ? " rgb(241,252,164)" : "white",
-        transition: "0.15s ease-in-out",
+        background: user && isLiked ? ' rgb(241,252,164)' : 'white',
+        transition: '0.15s ease-in-out',
       }}
       onClick={handleDoubleClick}
       className="product-card__body"
@@ -48,11 +48,11 @@ const ProductCard = ({ handleClick, card, basket }) => {
             <div>
               {isLiked ? (
                 <FavoriteIcon
-                  sx={{ visibility: user ? "visible" : "hidden", fill: "red" }}
+                  sx={{ visibility: user ? 'visible' : 'hidden', fill: 'red' }}
                 />
               ) : (
                 <FavoriteBorderIcon
-                  sx={{ visibility: user ? "visible" : "hidden" }}
+                  sx={{ visibility: user ? 'visible' : 'hidden' }}
                 />
               )}
             </div>
@@ -70,7 +70,7 @@ const ProductCard = ({ handleClick, card, basket }) => {
         <button>Buy now</button>
         <div className="product-card__addtobasket">
           <button
-            style={{ backgroundColor: "inherit", border: "none" }}
+            style={{ backgroundColor: 'inherit', border: 'none' }}
             disabled={isInBasket()}
             onClick={() => handleClick(card)}
           >
