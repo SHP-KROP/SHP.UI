@@ -44,15 +44,19 @@ const ProductCard = ({ handleClick, card, basket }) => {
       <div className="product-card__img">
         <img src={ProductBg} alt="img" />
         <div className="product-card__img-buttons">
-          {user && (
-            <button onClick={onLikeClicked}>
+          <button onClick={onLikeClicked}>
+            <div>
               {isLiked ? (
-                <FavoriteIcon sx={{ fill: 'red' }} />
+                <FavoriteIcon
+                  sx={{ visibility: user ? 'visible' : 'hidden', fill: 'red' }}
+                />
               ) : (
-                <FavoriteBorderIcon />
+                <FavoriteBorderIcon
+                  sx={{ visibility: user ? 'visible' : 'hidden' }}
+                />
               )}
-            </button>
-          )}
+            </div>
+          </button>
         </div>
       </div>
       <div className="product-card__info">
