@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+.seller {
+  form {
+    padding: 1%;
+    > div {
+      padding: 2%;
+    }
+  }
+
+  &__form {
+    border-radius: 12px;
+  }
+  &__products {
+    padding: 0 4%;
+  }
+  &__amountAndPrice {
+    display: flex;
+    gap: 17%;
+  }
+  &__addproduct {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

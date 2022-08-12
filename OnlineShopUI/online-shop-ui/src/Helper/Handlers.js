@@ -5,6 +5,6 @@ const UseHandlers = () => {
   const handleModalOpen = () => setOpen(true);
   const handleModalClose = () => setOpen(false);
 
-  return [handleModalClose, handleModalOpen, isOpen];
+  return [handleModalClose, handleModalOpen, isOpen, setOpen];
 };
 export default UseHandlers;
