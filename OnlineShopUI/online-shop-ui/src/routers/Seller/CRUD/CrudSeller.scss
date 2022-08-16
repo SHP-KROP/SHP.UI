@@ -11,22 +11,34 @@ table {
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 .seller {
-  form {
-    padding: 1%;
-    > div {
-      padding: 2%;
-    }
-  }
-
   &__form {
     border-radius: 12px;
+    height: 95%;
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    margin: 1% auto;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+      rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+      rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    border: 1px solid #1976d2;
+    > form {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+      margin: 0 auto;
+      > div {
+        margin: 2%;
+      }
+    }
   }
   &__products {
     padding: 0 4%;
   }
   &__amountAndPrice {
     display: flex;
-    gap: 17%;
+    justify-content: space-between;
   }
   &__addproduct {
     display: flex;

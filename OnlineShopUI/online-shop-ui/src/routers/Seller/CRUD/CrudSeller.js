@@ -8,12 +8,17 @@ import TableProducts from '../TableProducts/TableProducts';
 import SellerForm from '../SellerForm/SellerForm';
 export default function CrudSeller() {
   const [isOpen, setOpen] = UseHandlers();
-
   return (
-    <>
+    <div className="sellerPage">
       <Header />
       <div className="seller">
         <div className="seller__products">
+          <SellerForm onClose={() => setOpen(false)} isFormOpen={isOpen} />
+          <TableProducts
+            onClickChange={() => setOpen(true)}
+            isFormOpen={isOpen}
+          />
+
           <div className="seller__rowfunc">
             <TextField
               label="Search"
@@ -28,12 +33,9 @@ export default function CrudSeller() {
                 ),
               }}
             />
-            <TableProducts open={isOpen} onClick={() => setOpen(true)} />
-
-            <SellerForm onClose={() => setOpen(false)} opened={isOpen} />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

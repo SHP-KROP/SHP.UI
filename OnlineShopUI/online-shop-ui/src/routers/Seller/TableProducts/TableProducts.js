@@ -35,11 +35,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-export default function TableProducts() {
+export default function TableProducts({ onClickChange, isFormOpen }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const [handleModalOpen] = UseHandlers();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -98,7 +96,8 @@ export default function TableProducts() {
                     <IconButton
                       color="primary"
                       component="label"
-                      onClick={handleModalOpen}
+                      open={isFormOpen}
+                      onClick={onClickChange}
                     >
                       <EditIcon />
                     </IconButton>
