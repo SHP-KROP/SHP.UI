@@ -18,6 +18,8 @@ export default function LoginGoogle() {
       });
       setUser(response.data);
       localStorage.setItem('user', JSON.stringify(response.data));
+      localStorage.setItem('jwt', response.data.token);
+      localStorage.setItem('refreshToken', response.data.refreshToken);
     }).catch(error => {
       toast.error('Internal server error during Google authorization process', {
         position: toast.POSITION.BOTTOM_RIGHT,

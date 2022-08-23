@@ -66,6 +66,8 @@ const useRegister = () => {
       });
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem('jwt', response.token);
+      localStorage.setItem('refreshToken', response.refreshToken);
       setIsRedirect(true);
     } catch (ex) {
       console.warn(ex);
