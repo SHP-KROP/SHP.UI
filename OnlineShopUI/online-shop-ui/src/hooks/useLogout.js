@@ -13,6 +13,8 @@ export default function useLogout() {
   function logOut() {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('refreshToken');
 
     IdentityAPI.post('/user/revoke-token', {}, authHeaders)
       .then()
