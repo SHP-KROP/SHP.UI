@@ -15,7 +15,6 @@ function Home() {
   const [isBasketOpen, setBasketOpen] = useState(() => false);
   const menu = useMenuFilling();
   const productCards = useProductCardFilling();
-
   const [basket, setBasket] = useBasketFilling();
   const [
     handleClickAddInBasket,

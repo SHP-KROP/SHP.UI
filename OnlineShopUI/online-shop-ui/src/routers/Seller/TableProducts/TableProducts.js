@@ -3,7 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import { cardInfo, columnsTable } from '../../../components/mock/data';
+import { columnsTable } from '../../../components/mock/data';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,8 +13,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { styled } from '@mui/material/styles';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import UseHandlers from '../../../Helper/Handlers';
 import '../CRUD/CrudSeller.scss';
+import useSellerProduct from '../useSellerProduct/useSellerProduct';
+import useDeleteProduct from './TableFunctional/DeleteProduct';
+import AddProduct from './TableFunctional/AddProduct';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -25,7 +27,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 15,
   },
 }));
-
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
@@ -35,9 +36,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-export default function TableProducts({ onClickChange, isFormOpen }) {
+
+export default function TableProducts({ isShowing, setIsShowing }) {
   const [page, setPage] = useState(0);
+  const [sellerProducts, setSellerProducts] = useSellerProduct();
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const deleteProduct = useDeleteProduct();
+
+  const onDeleteProduct = (name) => {
+    deleteProduct(name);
+    setSellerProducts(sellerProducts.filter((x) => x.name !== name));
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -47,6 +57,8 @@ export default function TableProducts({ onClickChange, isFormOpen }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  console.log(sellerProducts);
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 500 }}>
@@ -67,14 +79,19 @@ export default function TableProducts({ onClickChange, isFormOpen }) {
                 style={{ padding: 0 }}
                 size="small"
               >
-                <Button fullWidth variant="contained" sx={{ padding: '8%' }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ padding: '8%' }}
+                  onClick={setIsShowing}
+                >
                   Add a product
                 </Button>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {cardInfo.map((card) => {
+            {sellerProducts.map((card) => {
               return (
                 <StyledTableRow
                   hover
@@ -96,12 +113,15 @@ export default function TableProducts({ onClickChange, isFormOpen }) {
                     <IconButton
                       color="primary"
                       component="label"
-                      open={isFormOpen}
-                      onClick={onClickChange}
+                      onClick={setIsShowing}
                     >
                       <EditIcon />
                     </IconButton>
-                    <IconButton color="primary" component="label">
+                    <IconButton
+                      color="primary"
+                      component="label"
+                      onClick={() => onDeleteProduct(card.name)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </div>

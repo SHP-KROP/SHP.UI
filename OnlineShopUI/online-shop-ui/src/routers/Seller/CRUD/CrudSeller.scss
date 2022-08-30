@@ -13,12 +13,11 @@ table {
 .seller {
   &__form {
     border-radius: 12px;
-    height: 95%;
-    width: 95%;
-    margin: 0 auto;
+    height: 60%;
+    width: 55%;
+    margin: 10% auto;
     display: flex;
     align-items: center;
-    margin: 1% auto;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
       rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
       rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -26,7 +25,7 @@ table {
     > form {
       display: flex;
       flex-direction: column;
-      width: 50%;
+      width: 55%;
       margin: 0 auto;
       > div {
         margin: 2%;

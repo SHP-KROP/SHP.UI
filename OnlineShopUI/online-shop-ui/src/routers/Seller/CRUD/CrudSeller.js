@@ -1,24 +1,22 @@
 import React from 'react';
 import Header from '../../../components/HeaderFunctionality/Header';
-import UseHandlers from '../../../Helper/Handlers';
 import { TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import TableProducts from '../TableProducts/TableProducts';
 import SellerForm from '../SellerForm/SellerForm';
+import useModal from '../SellerForm/useModal/useModal';
+
 export default function CrudSeller() {
-  const [isOpen, setOpen] = UseHandlers();
+  const { isShowing, toggle } = useModal();
   return (
-    <div className="sellerPage">
+    <div
+      className="sellerPage"
+      style={{ filter: isShowing ? 'blur(4px)' : 'none' }}
+    >
       <Header />
       <div className="seller">
         <div className="seller__products">
-          <SellerForm onClose={() => setOpen(false)} isFormOpen={isOpen} />
-          <TableProducts
-            onClickChange={() => setOpen(true)}
-            isFormOpen={isOpen}
-          />
-
           <div className="seller__rowfunc">
             <TextField
               label="Search"
@@ -34,6 +32,8 @@ export default function CrudSeller() {
               }}
             />
           </div>
+          <SellerForm onClose={toggle} isShowing={isShowing} />
+          <TableProducts setIsShowing={toggle} isShowing={isShowing} />
         </div>
       </div>
     </div>
