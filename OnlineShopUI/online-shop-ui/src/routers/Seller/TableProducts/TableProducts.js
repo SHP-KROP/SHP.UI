@@ -16,7 +16,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import '../CRUD/CrudSeller.scss';
 import useSellerProduct from '../useSellerProduct/useSellerProduct';
 import useDeleteProduct from './TableFunctional/DeleteProduct';
-import AddProduct from './TableFunctional/AddProduct';
+import useAddProduct from './TableFunctional/AddProduct';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,6 +43,7 @@ export default function TableProducts({ isShowing, setIsShowing }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const deleteProduct = useDeleteProduct();
+  const addProduct = useAddProduct();
 
   const onDeleteProduct = (name) => {
     deleteProduct(name);

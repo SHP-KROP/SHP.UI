@@ -25,5 +25,8 @@
   > p {
     margin-bottom: 10px;
     font-size: 20px;
+    display: flex;
+    align-items: last baseline;
+    gap: 2%;
   }
 }

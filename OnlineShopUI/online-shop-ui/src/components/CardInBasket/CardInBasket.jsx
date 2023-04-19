@@ -33,17 +33,20 @@ export default function CardInBasket({
 
   return (
     <div className="basket__cartItem">
-      <div className="basket__cartItemPhoto"></div>
+      <div className="basket__cartItemPhoto">
+        <img src={card.photoUrl} alt="logo" />
+      </div>
       <div className="basket__itemInfo">
         <p>{card.name}</p>
-        <b>{card.price}$ {(cardCount > 1) && `(${cardCount * card.price}$)`} </b>
+        <b>
+          {card.price}$ {cardCount > 1 && `(${cardCount * card.price}$)`}{' '}
+        </b>
       </div>
       <div>
         <div
           style={{ display: 'flex', alignItems: 'center', marginRight: '50%' }}
           className="basket__itemCounter"
         >
-          
           <RemoveIcon onClick={() => onDecreased()} />
           <div style={{ margin: '10%', fontWeight: 'bold' }}>
             {card.countInBasket}

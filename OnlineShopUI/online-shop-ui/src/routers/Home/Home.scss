@@ -11,37 +11,54 @@ ul {
 }
 a {
   text-decoration: none;
-  color: $linkcolor;
-}
-.blockBanners {
-  display: flex;
-  gap: 30px;
-  padding: 0 30px 0 0;
 }
 .blocks {
-  display: grid;
-  grid-template-columns: 1fr 4fr;
-  grid-template-areas:
-    'sidemenu banner'
-    'sidemenu card'
-    'sidemenu card';
-  gap: 20px;
-}
-.blockSideMenus {
-  grid-area: sidemenu;
-}
-.blockBanners {
-  grid-area: banner;
+  display: flex;
 }
 .blockCards {
-  grid-area: card;
+  width: 80%;
+}
+.cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
-  justify-content: space-between;
-  padding: 0 30px 0 0;
+}
+.blockSideMenus {
+  width: 20%;
 }
 button:active {
   transform: scale(0.8);
   transition: all 0.4s linear;
+}
+.pagination {
+  display: flex;
+  margin: 1%;
+  justify-content: center;
+  > li {
+    text-align: center;
+    border-radius: 12px;
+    padding: 2%;
+    cursor: pointer;
+    width: 50px;
+  }
+}
+.active {
+  background-color: #f4768d;
+  > a {
+    color: white;
+    width: 100%;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .blockSideMenus {
+    display: none;
+  }
+  .blocks {
+    justify-content: flex-start;
+  }
+  .blockCards {
+    width: 100%;
+  }
+  .cards {
+    justify-content: center;
+  }
 }

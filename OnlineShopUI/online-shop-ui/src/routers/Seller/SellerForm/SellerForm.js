@@ -20,7 +20,7 @@ const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
 export default function SellerForm({ onClose, isShowing }) {
   const { register, getValues } = useForm();
   const onAddProduct = (value) => {
-    AddProduct(JSON.stringify(value));
+    console.log(JSON.stringify(value));
   };
   return isShowing ? (
     <div className="sellerPage">

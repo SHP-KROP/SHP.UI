@@ -1,19 +1,19 @@
 import './Home.scss';
-import Feedback from '../../components/FeedbackATop/Feedback';
 import HeadBlock from '../../components/HeadBlock/HeadBlock';
 import ProductCard from '../../components/Card/ProductCard';
 import SideMenuList from '../../components/SideMenuList/SideMenuList';
-import Banner from '../../components/Banner/Banner';
-import useMenuFilling from '../Home/Logic/MenuLogic';
-import useProductCardFilling from '../Home/Logic/ProductLogic';
+import useMenuFilling from './Logic/MenuLogic';
+import useProductCardFilling from './Logic/ProductLogic';
 import Basket from '../../components/Basket/Basket';
 import { useState } from 'react';
 import useBasketFilling from './Logic/Basket/hooks/useBasketFilling';
 import useBasketHandlers from './Logic/Basket/hooks/useBasketHandlers';
+import ReactPaginate from 'react-paginate';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 
 function Home() {
   const [isBasketOpen, setBasketOpen] = useState(() => false);
-  const menu = useMenuFilling();
   const productCards = useProductCardFilling();
   const [basket, setBasket] = useBasketFilling();
   const [
@@ -22,11 +22,23 @@ function Home() {
     handleClickIncreaseBasketCount,
     handleClickDecreaseBasketCount,
   ] = useBasketHandlers({ basket, setBasket });
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+  const productPerPage = 4;
+  const pageCount = Math.ceil(productCards.length / productPerPage);
+  const offset = currentPage * productPerPage;
+
+  const currentPageProducts = productCards.slice(
+    offset,
+    offset + productPerPage
+  );
 
   return (
     <>
       <div className="MainPage">
-        <Feedback />
         <Basket
           onClose={() => setBasketOpen(false)}
           opened={isBasketOpen}
@@ -40,27 +52,35 @@ function Home() {
           basketOpen={isBasketOpen}
           onClickCart={() => setBasketOpen(true)}
         />
+
         <div className="blocks">
           <div className="blockSideMenus">
-            {menu.map((sideMenuListItem) => (
-              <SideMenuList
-                nameCategory={sideMenuListItem.nameCategory}
-                subCategories={sideMenuListItem.subCategories}
-              />
-            ))}
-          </div>
-          <div className="blockBanners">
-            <Banner />
-            <Banner />
+            <SideMenuList />
           </div>
           <div className="blockCards">
-            {productCards.map((productCardItem) => (
-              <ProductCard
-                card={productCardItem}
-                handleClick={handleClickAddInBasket}
-                basket={basket}
+            <div className="pagination">
+              <ReactPaginate
+                previousLabel={<SkipPreviousIcon />}
+                nextLabel={<SkipNextIcon />}
+                breakLabel={'...'}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
               />
-            ))}
+            </div>
+            <div className="cards">
+              {currentPageProducts.map((productCardItem) => (
+                <ProductCard
+                  key={productCardItem.id}
+                  card={productCardItem}
+                  handleClick={handleClickAddInBasket}
+                  basket={basket}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

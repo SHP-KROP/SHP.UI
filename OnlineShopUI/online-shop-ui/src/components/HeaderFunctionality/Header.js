@@ -15,7 +15,6 @@ export default function Header() {
   ] = useBasketHandlers({ basket, setBasket });
   return (
     <>
-      <Feedback />
       <Basket
         onClose={() => setBasketOpen(false)}
         opened={isBasketOpen}

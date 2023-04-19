@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from "react";
-import "../HeadBlock/HeadBlock.scss";
-import Login from "../ModalLogin/Login";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Fade from "@mui/material/Fade";
-import Badge from "@mui/material/Badge";
-import Card from "../../img/icon-card.png";
-import { Link } from "react-router-dom";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import LogoutIcon from "@mui/icons-material/Logout";
-import useLogout from "../../hooks/useLogout";
-import IdentityAPI from "../../API/IdentityServerAPI";
+import React, { useEffect, useState } from 'react';
+import '../HeadBlock/HeadBlock.scss';
+import Login from '../ModalLogin/Login';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Fade from '@mui/material/Fade';
+import Badge from '@mui/material/Badge';
+import Card from '../../img/icon-card.png';
+import { Link } from 'react-router-dom';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import LogoutIcon from '@mui/icons-material/Logout';
+import useLogout from '../../hooks/useLogout';
+import IdentityAPI from '../../API/IdentityServerAPI';
+import GoogleIcon from '@mui/icons-material/Google';
+import useAuth from '../../hooks/useAuth';
+import useMenuFilling from '../../routers/Home/Logic/MenuLogic';
 
 const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isOpen = !!anchorElement;
-  const [authUrl, setAuthUrl] = useState("");
-
+  const [authUrl, setAuthUrl] = useState('');
+  const { user } = useAuth();
+  const menu = useMenuFilling();
   useEffect(() => {
-    IdentityAPI.post("/user/redirect-to-auth", {
+    IdentityAPI.post('/user/redirect-to-auth', {
       redirectUrl: window.location.href,
     })
       .then((response) => {
@@ -43,36 +47,9 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
       <div className="name-shop">
         <h1>NameShop</h1>
       </div>
-      <div className="search__input">
-        <button
-          className="search__buttonList"
-          id="fade-button"
-          aria-controls={isOpen ? "fade-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={isOpen ? "true" : undefined}
-          onClick={handleClick}
-        >
-          <p className="list">
-            All categories <p className="arrow">&#11167;</p>
-          </p>
-        </button>
-        <Menu
-          id="fade-menu"
-          MenuListProps={{
-            "aria-labelledby": "fade-button",
-          }}
-          anchorEl={anchorElement}
-          open={isOpen}
-          onClose={handleClose}
-          TransitionComponent={Fade}
-        >
-          <MenuItem onClick={handleClose}>Product</MenuItem>
-          <MenuItem onClick={handleClose}>Product</MenuItem>
-          <MenuItem onClick={handleClose}>Product</MenuItem>
-        </Menu>
-        <input type="text" placeholder="Search Products, categories ..." />
-      </div>
+
       <div className="profile">
+        {/* {user ? null : <Login />} */}
         <Login />
         {!basketOpen && (
           <Badge
@@ -86,7 +63,7 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
           </Badge>
         )}
         <Link to="/likes">
-          <BookmarkBorderIcon sx={{ fill: "black" }} />
+          <BookmarkBorderIcon sx={{ fill: 'black' }} />
         </Link>
         <div className="logout">
           <button onClick={logOut}>
@@ -98,8 +75,9 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
             onClick={() => {
               window.location.href = authUrl;
             }}
+            style={{ backgroundColor: 'inherit', border: 'none' }}
           >
-            AUTH 2.0
+            <GoogleIcon />
           </button>
         </div>
       </div>
