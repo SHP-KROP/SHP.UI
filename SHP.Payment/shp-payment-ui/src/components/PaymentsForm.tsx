@@ -30,7 +30,7 @@ interface Props {
 
 const PaymentsForm: FC<Props> = ({ onSubmit }) => {
   const classes = useStyles();
-
+  const basket = localStorage.getItem('basket');
   return (
     <Formik
       initialValues={{
@@ -40,7 +40,7 @@ const PaymentsForm: FC<Props> = ({ onSubmit }) => {
           expirationYear: '',
           cvc: '',
         },
-        productsInBasket: [],
+        productsInBasket: basket ? JSON.parse(basket) : [],
       }}
       validationSchema={Yup.object().shape({
         creditCard: Yup.object().shape({

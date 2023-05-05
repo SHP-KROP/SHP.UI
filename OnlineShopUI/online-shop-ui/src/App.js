@@ -6,7 +6,6 @@ import { UserContext } from './Contexts/UserContext';
 import useAuthProvider from './hooks/useAuthProvider';
 import CrudSeller from './routers/Seller/CRUD/CrudSeller';
 import ProductInfo from './routers/Product/ProductInfo';
-import Payments from './routers/Payments/Payments';
 function App() {
   const userProvider = useAuthProvider();
 
