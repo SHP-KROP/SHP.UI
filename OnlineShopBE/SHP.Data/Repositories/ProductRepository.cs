@@ -1,4 +1,5 @@
-﻿using DAL.Entities;
+﻿using System;
+using DAL.Entities;
 using GenericRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -28,6 +29,15 @@ namespace DAL.Repositories
 
         }
 
+        public async Task<IEnumerable<Product>> GetUserProducts(int userId)
+        {
+            var products = _context.Users
+                .Where(x => x.Id == userId)
+                .Include(x => x.Products)
+                .SelectMany(x => x.Products);
+
+            return products;
+        }
         public async Task<Product> GetProductByNameAsync(string name)
         {
             var query = await FindAsync(pr => pr.Name == name);
@@ -68,8 +78,7 @@ namespace DAL.Repositories
             }
 
             var existingLike = user.Likes
-                .Where(like => like.UserId == user.Id && like.ProductId == product.Id)
-                .FirstOrDefault();
+                .FirstOrDefault(like => like.UserId == user.Id && like.ProductId == product.Id);
 
             if (existingLike is not null)
             {
@@ -105,8 +114,7 @@ namespace DAL.Repositories
             var product = await GetAsync(productId);
 
             var like = user.Likes
-                .Where(like => like.ProductId == product.Id && like.UserId == user.Id)
-                .FirstOrDefault();
+                .FirstOrDefault(like => like.ProductId == product.Id && like.UserId == user.Id);
 
             if (like is null)
             {

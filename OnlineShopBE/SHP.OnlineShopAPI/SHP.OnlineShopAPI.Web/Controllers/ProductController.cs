@@ -82,6 +82,17 @@ namespace SHP.OnlineShopAPI.Web.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpGet("my-products")]
+        public async Task<IActionResult> GetUserProducts()
+        {
+            _logger.LogInformation("Started getting products for user with id {@Id}", this.GetUserId());
+            var products = await _uow.ProductRepository.GetUserProducts(this.GetUserId());
+            
+            return Ok(_mapper.Map<IEnumerable<ProductDto>>(products));
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
         public async Task<ActionResult<ProductDto>> CreateProduct([FromBody] CreateProductDto createProductDto)
         {
