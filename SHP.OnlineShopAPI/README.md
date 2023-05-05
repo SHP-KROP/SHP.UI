@@ -1,1 +1,0 @@
-Online shop core API
