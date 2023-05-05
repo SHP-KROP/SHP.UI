@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32602.291
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SHP.OnlineShopAPI.Web", "SHP.OnlineShopAPI.Web\SHP.OnlineShopAPI.Web.csproj", "{2D2E8674-D5FA-4EC6-9616-9AAFF4F8F612}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SHP.OnlineShopAPI.Tests", "SHP.OnlineShopAPI.Tests\SHP.OnlineShopAPI.Tests.csproj", "{67CFF102-E4CD-44F8-9913-C51D01AB5668}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D2E8674-D5FA-4EC6-9616-9AAFF4F8F612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D2E8674-D5FA-4EC6-9616-9AAFF4F8F612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D2E8674-D5FA-4EC6-9616-9AAFF4F8F612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D2E8674-D5FA-4EC6-9616-9AAFF4F8F612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67CFF102-E4CD-44F8-9913-C51D01AB5668}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67CFF102-E4CD-44F8-9913-C51D01AB5668}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67CFF102-E4CD-44F8-9913-C51D01AB5668}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67CFF102-E4CD-44F8-9913-C51D01AB5668}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38810ABE-98F0-4F81-A6FA-4468435F6F6D}
+	EndGlobalSection
+EndGlobal
