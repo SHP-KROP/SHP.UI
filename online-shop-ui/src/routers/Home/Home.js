@@ -3,9 +3,7 @@ import Feedback from '../../components/FeedbackATop/Feedback';
 import HeadBlock from '../../components/HeadBlock/HeadBlock';
 import ProductCard from '../../components/Card/ProductCard';
 import SideMenuList from '../../components/SideMenuList/SideMenuList';
-import Banner from '../../components/Banner/Banner';
-import useMenuFilling from '../Home/Logic/MenuLogic';
-import useProductCardFilling from '../Home/Logic/ProductLogic';
+import useProductCardFilling from './Logic/ProductLogic';
 import Basket from '../../components/Basket/Basket';
 import { useState } from 'react';
 import useBasketFilling from './Logic/Basket/hooks/useBasketFilling';
@@ -23,6 +21,20 @@ function Home() {
     handleClickIncreaseBasketCount,
     handleClickDecreaseBasketCount,
   ] = useBasketHandlers({ basket, setBasket });
+  console.log(basket);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+  const productPerPage = 6;
+  const pageCount = Math.ceil(productCards.length / productPerPage);
+  const offset = currentPage * productPerPage;
+
+  const currentPageProducts = productCards.slice(
+    offset,
+    offset + productPerPage
+  );
 
   return (
     <>
