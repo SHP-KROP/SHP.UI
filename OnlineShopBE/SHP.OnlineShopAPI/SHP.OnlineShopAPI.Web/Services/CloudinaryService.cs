@@ -1,0 +1,46 @@
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using Microsoft.Extensions.Configuration;
+using SHP.OnlineShopAPI.Web.Options;
+using SHP.OnlineShopAPI.Web.Services.Interfaces;
+using System.Threading.Tasks;
+
+namespace SHP.OnlineShopAPI.Web.Services
+{
+    public class CloudinaryService : ICloudinaryService
+    {
+        private readonly IConfiguration _configuration;
+        private Cloudinary _cloudinary;
+
+        public CloudinaryService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public bool Setup()
+        {
+            try
+            {
+                var account = new Account
+                {
+                    Cloud = _configuration.GetSection(ConfigurationOptions.Cloudinary.CloudName).Value,
+                    ApiKey = _configuration.GetSection(ConfigurationOptions.Cloudinary.ApiKey).Value,
+                    ApiSecret = _configuration.GetSection(ConfigurationOptions.Cloudinary.ApiSecret).Value
+                };
+
+                _cloudinary = new Cloudinary(account);
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public Task<ImageUploadResult> UploadAsync(ImageUploadParams parameters)
+        {
+            return _cloudinary.UploadAsync(parameters);
+        }
+    }
+}
