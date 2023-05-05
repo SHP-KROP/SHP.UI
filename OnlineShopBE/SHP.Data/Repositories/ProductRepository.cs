@@ -31,17 +31,12 @@ namespace DAL.Repositories
 
         public async Task<IEnumerable<Product>> GetUserProducts(int userId)
         {
-            var user = await _context.Users
-                .AsNoTracking()
+            var products = _context.Users
+                .Where(x => x.Id == userId)
                 .Include(x => x.Products)
-                .FirstOrDefaultAsync(x => x.Id == userId);
+                .SelectMany(x => x.Products);
 
-            if (user is null)
-            {
-                return Enumerable.Empty<Product>();
-            }
-
-            return user.Products;
+            return products;
         }
         public async Task<Product> GetProductByNameAsync(string name)
         {
