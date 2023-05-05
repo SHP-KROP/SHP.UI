@@ -27,7 +27,8 @@ function Home() {
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
   };
-  const productPerPage = 4;
+
+  const productPerPage = 6;
   const pageCount = Math.ceil(productCards.length / productPerPage);
   const offset = currentPage * productPerPage;
 

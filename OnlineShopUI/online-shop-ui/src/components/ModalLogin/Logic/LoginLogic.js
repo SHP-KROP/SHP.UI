@@ -73,6 +73,8 @@ const useLogin = () => {
       });
       setUser(response);
       localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem('jwt', response.token);
+      localStorage.setItem('refreshToken', response.refreshToken);
     } catch (ex) {
       toast.error(`${ex.error}`, {
         position: toast.POSITION.BOTTOM_RIGHT,

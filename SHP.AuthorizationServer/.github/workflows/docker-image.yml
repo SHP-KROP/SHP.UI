@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+    - release/*
+    - dev
+
+jobs:
+  Docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Log in Docker
+      run: docker login -u "oleksandrbondarenko777" -p "${{ secrets.DOCKER_PASS }}"
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag oleksandrbondarenko777/identity-server:latest
+    - name: Docker push
+      run: docker push oleksandrbondarenko777/identity-server
