@@ -14,5 +14,7 @@ namespace DAL.Repositories
         Task<Product> UnlikeProductByUser(int userId, int productId);
 
         Task<IEnumerable<Product>> GetProductRangeById(IEnumerable<int> ids);
+
+        Task<IEnumerable<Product>> GetUserProducts(int userId);
     }
 }
