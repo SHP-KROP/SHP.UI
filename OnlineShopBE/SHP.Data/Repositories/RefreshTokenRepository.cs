@@ -5,24 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using DAL;
 
 namespace SHP.Data.Repositories
 {
     public class RefreshTokenRepository : DataRepository<RefreshToken>, IRefreshTokenRepository
     {
-        public RefreshTokenRepository(
-            IdentityDbContext
-        <
-        AppUser,
-        AppRole,
-        int,
-        IdentityUserClaim<int>,
-        AppUserRole,
-        IdentityUserLogin<int>,
-        IdentityRoleClaim<int>,
-        IdentityUserToken<int>
-        > context
-            ) : base(context)
+        public RefreshTokenRepository(OnlineShopContext context) : base(context)
         {
 
         }

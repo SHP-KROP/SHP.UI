@@ -38,7 +38,7 @@ namespace SHP.OnlineShopAPI.Web.Controllers
         {
             var categories = await _uow?.CategoryRepository.GetAllAsync();
 
-            if (categories is null || categories.Count() == 0)
+            if (categories is null || !categories.Any())
             {
                 return NoContent();
             }

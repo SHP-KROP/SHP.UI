@@ -36,7 +36,9 @@ namespace DAL.Repositories
                 return await Task.FromResult(null as AppUser);
             }
 
-            return await _userManager.Users.FirstOrDefaultAsync(u => u.UserName.ToUpper() == username.ToUpper());
+            return await _userManager.Users
+                .Include(x => x.Products)
+                .FirstOrDefaultAsync(u => u.UserName.ToUpper() == username.ToUpper());
         }
 
         public async Task<AppUser> GetUserByEmailAsync(string email)

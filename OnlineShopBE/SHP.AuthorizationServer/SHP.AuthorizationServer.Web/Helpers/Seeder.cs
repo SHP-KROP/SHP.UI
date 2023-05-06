@@ -24,10 +24,10 @@ namespace SHP.AuthorizationServer.Web.Helpers
             {
                 var roles = new List<AppRole>
                 {
-                    new AppRole { Name = "admin" },
-                    new AppRole { Name = "moderator" },
-                    new AppRole { Name = "seller" },
-                    new AppRole { Name = "buyer" }
+                    new() { Name = "admin" },
+                    new() { Name = "moderator" },
+                    new() { Name = "seller" },
+                    new() { Name = "buyer" }
                 };
 
                 foreach (AppRole role in roles)
@@ -40,31 +40,8 @@ namespace SHP.AuthorizationServer.Web.Helpers
             {
                 var admin = new AppUser { UserName = "admin" };
                 var moder = new AppUser { UserName = "moder" };
-                var seller = new AppUser { UserName = "seller", Products = new List<Product>() };
+                var seller = new AppUser { UserName = "seller" };
                 var buyer = new AppUser { UserName = "buyer" };
-
-                seller.Products.Add(
-                    new Product
-                    {
-                        Name = "product1",
-                        Description = "descr",
-                        Price = 200,
-                    });
-                seller.Products.Add(
-                    new Product
-                    {
-                        Name = "product3",
-                        Description = "descr",
-                        Price = 400,
-                    });
-                seller.Products.Add(
-                    new Product
-                    {
-                        Name = "product2",
-                        Description = "descr",
-                        Price = 300,
-                    });
-
 
                 await _userManager.CreateAsync(admin, "Pa$$w0rd");
                 await _userManager.CreateAsync(moder, "Pa$$w0rd");
