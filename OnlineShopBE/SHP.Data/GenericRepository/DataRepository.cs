@@ -7,36 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using DAL;
 
 namespace GenericRepository
 {
     public class DataRepository<T> : IDataRepository<T> where T : class
     {
-        protected readonly IdentityDbContext
-        <
-        AppUser,
-        AppRole,
-        int,
-        IdentityUserClaim<int>,
-        AppUserRole,
-        IdentityUserLogin<int>,
-        IdentityRoleClaim<int>,
-        IdentityUserToken<int>
-        > _context;
+        protected readonly OnlineShopContext _context;
 
-        public DataRepository(
-            IdentityDbContext
-        <
-        AppUser,
-        AppRole,
-        int,
-        IdentityUserClaim<int>,
-        AppUserRole,
-        IdentityUserLogin<int>,
-        IdentityRoleClaim<int>,
-        IdentityUserToken<int>
-        > context
-            )
+        public DataRepository(OnlineShopContext context)
         {
             _context = context;
         }
