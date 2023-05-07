@@ -1,25 +1,16 @@
-﻿using DAL.Entities;
+﻿using System;
+using DAL.Entities;
 using GenericRepository;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
     public class CategoryRepository : DataRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(IdentityDbContext
-        <
-        AppUser,
-        AppRole,
-        int,
-        IdentityUserClaim<int>,
-        AppUserRole,
-        IdentityUserLogin<int>,
-        IdentityRoleClaim<int>,
-        IdentityUserToken<int>
-        > context) : base(context)
+        public CategoryRepository(OnlineShopContext context) : base(context)
         {
 
         }
@@ -30,5 +21,8 @@ namespace DAL.Repositories
 
             return category.FirstOrDefault();
         }
+
+        public async Task<bool> AnyAsync(Expression<Func<Category, bool>> predicate) 
+            => await _context.Categories.AnyAsync(predicate);
     }
 }

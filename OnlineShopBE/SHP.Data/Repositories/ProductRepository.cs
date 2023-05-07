@@ -12,19 +12,7 @@ namespace DAL.Repositories
 {
     public class ProductRepository : DataRepository<Product>, IProductRepository
     {
-        public ProductRepository(
-            IdentityDbContext
-        <
-        AppUser,
-        AppRole,
-        int,
-        IdentityUserClaim<int>,
-        AppUserRole,
-        IdentityUserLogin<int>,
-        IdentityRoleClaim<int>,
-        IdentityUserToken<int>
-        > context
-            ) : base(context)
+        public ProductRepository(OnlineShopContext context) : base(context)
         {
 
         }
