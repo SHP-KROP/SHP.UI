@@ -8,7 +8,6 @@ import CrudSeller from './routers/Seller/CRUD/CrudSeller';
 import ProductInfo from './routers/Product/ProductInfo';
 function App() {
   const userProvider = useAuthProvider();
-
   return (
     <>
       <UserContext.Provider value={userProvider}>
@@ -19,7 +18,6 @@ function App() {
           <Route path="/likes" element={<LikesPage />}></Route>
           <Route path="/seller" element={<CrudSeller />}></Route>
           <Route path="/product/:productName" element={<ProductInfo />}></Route>
-          <Route path="http://localhost:3001/"></Route>
         </Routes>
       </UserContext.Provider>
     </>
