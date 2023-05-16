@@ -67,7 +67,7 @@ const ProductCard = ({ handleClick, card, basket }) => {
         <p>
           <strong>{card.price} USD</strong>
         </p>
-        <Link to={`/product/${card.name}`}>Buy now</Link>
+        <Link to={`/product/${card.name}`}>Details</Link>
         <div className="product-card__addtobasket">
           <button
             style={{ backgroundColor: 'inherit', border: 'none' }}

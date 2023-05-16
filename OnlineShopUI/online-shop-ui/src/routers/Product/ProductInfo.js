@@ -13,9 +13,7 @@ export default function ProductInfo() {
   const params = useParams();
   const [product, setProduct] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  function handleClick() {
-    window.location.href = 'http://localhost:3001';
-  }
+
   useEffect(() => {
     setIsLoading(true);
     const fetchProduct = async () => {
@@ -67,15 +65,6 @@ export default function ProductInfo() {
                 </div>
               </div>
               <div className="product__functionality">
-                <div className="product__button-buy">
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    onClick={handleClick}
-                  >
-                    Buy
-                  </Button>
-                </div>
                 <div className="product__counter">
                   <Box
                     component="form"
@@ -105,6 +94,7 @@ export default function ProductInfo() {
                   </Button>
                 </div>
               </div>
+              <Link to={`/`}>Back</Link>
             </div>
           </div>
         </div>

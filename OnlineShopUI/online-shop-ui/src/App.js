@@ -6,18 +6,22 @@ import { UserContext } from './Contexts/UserContext';
 import useAuthProvider from './hooks/useAuthProvider';
 import CrudSeller from './routers/Seller/CRUD/CrudSeller';
 import ProductInfo from './routers/Product/ProductInfo';
+import PaymentForm from './routers/Payment/PaymentForm.tsx';
+import HeadBlock from './components/HeadBlock/HeadBlock';
 function App() {
   const userProvider = useAuthProvider();
+
   return (
     <>
+      <HeadBlock />
       <UserContext.Provider value={userProvider}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/home" element={<Home />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/likes" element={<LikesPage />}></Route>
           <Route path="/seller" element={<CrudSeller />}></Route>
           <Route path="/product/:productName" element={<ProductInfo />}></Route>
+          <Route path="/payment" element={<PaymentForm />}></Route>
         </Routes>
       </UserContext.Provider>
     </>

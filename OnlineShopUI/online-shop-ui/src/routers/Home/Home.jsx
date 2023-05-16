@@ -2,7 +2,6 @@ import './Home.scss';
 import HeadBlock from '../../components/HeadBlock/HeadBlock';
 import ProductCard from '../../components/Card/ProductCard';
 import SideMenuList from '../../components/SideMenuList/SideMenuList';
-import useMenuFilling from './Logic/MenuLogic';
 import useProductCardFilling from './Logic/ProductLogic';
 import Basket from '../../components/Basket/Basket';
 import { useState } from 'react';
