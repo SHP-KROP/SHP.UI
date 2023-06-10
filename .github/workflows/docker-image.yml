@@ -11,17 +11,17 @@ on:
   workflow_dispatch:
     inputs:
       build_ui:
-        description: 'UI image needed?'
+        description: 'UI image needed? y/n'
         required: true
-        default: false
+        default: y
       build_core_api:
-        description: 'Core API image needed?'
+        description: 'Core API image needed? y/n'
         required: true
-        default: false
+        default: y
       build_identity_server:
-        description: 'Identity Server image needed?'
+        description: 'Identity Server image needed? y/n'
         required: true
-        default: false
+        default: y
 
 jobs:
   Docker:
@@ -34,28 +34,28 @@ jobs:
         run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASS }}"
       
       - name: Docker Build Online Shop UI
-        if: ${{ github.event.inputs.build_ui == 'true' }}
+        if: ${{ github.event.inputs.build_ui == 'y' }}
         working-directory: ${{ env.FRONTEND_DIRECTORY }}
         run: docker build . --tag "${{ secrets.DOCKER_USERNAME }}/online-shop-ui:latest"
       
       - name: Docker push Online Shop UI
-        if: ${{ github.event.inputs.build_ui == 'true' }}
+        if: ${{ github.event.inputs.build_ui == 'y' }}
         run: docker push "${{ secrets.DOCKER_USERNAME }}/online-shop-ui"
       
       - name: Docker Build Core API
-        if: ${{ github.event.inputs.build_core_api == 'true' }}
+        if: ${{ github.event.inputs.build_core_api == 'y' }}
         working-directory: ${{ env.BACKEND_DIRECTORY }}
         run: docker build --file DockerfileCore . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
       
       - name: Docker push Core API
-        if: ${{ github.event.inputs.build_core_api == 'true' }}
+        if: ${{ github.event.inputs.build_core_api == 'y' }}
         run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
       
       - name: Docker Build Authorization Server
-        if: ${{ github.event.inputs.build_identity_server == 'true' }}
+        if: ${{ github.event.inputs.build_identity_server == 'y' }}
         working-directory: ${{ env.BACKEND_DIRECTORY }}
         run: docker build --file DockerfileAuth . --tag "${{ secrets.DOCKER_USERNAME }}/identity-server:latest"
       
       - name: Docker push Authorization Server
-        if: ${{ github.event.inputs.build_identity_server == 'true' }}
+        if: ${{ github.event.inputs.build_identity_server == 'y' }}
         run: docker push "${{ secrets.DOCKER_USERNAME }}/identity-server"
