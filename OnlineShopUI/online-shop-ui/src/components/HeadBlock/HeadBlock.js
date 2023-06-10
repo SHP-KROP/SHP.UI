@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react";
-import "../HeadBlock/HeadBlock.scss";
-import Login from "../ModalLogin/Login";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Fade from "@mui/material/Fade";
-import Badge from "@mui/material/Badge";
-import Card from "../../img/icon-card.png";
-import { Link } from "react-router-dom";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import LogoutIcon from "@mui/icons-material/Logout";
-import useLogout from "../../hooks/useLogout";
-import IdentityAPI from "../../API/IdentityServerAPI";
+import React, { useEffect, useState } from 'react';
+import '../HeadBlock/HeadBlock.scss';
+import Login from '../ModalLogin/Login';
+import Badge from '@mui/material/Badge';
+import Card from '../../img/icon-card.png';
+import { Link } from 'react-router-dom';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import LogoutIcon from '@mui/icons-material/Logout';
+import useLogout from '../../hooks/useLogout';
+import IdentityAPI from '../../API/IdentityServerAPI';
+import GoogleIcon from '@mui/icons-material/Google';
+import useAuth from '../../hooks/useAuth';
 
-const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
-  const [anchorElement, setAnchorElement] = useState(null);
-  const isOpen = !!anchorElement;
-  const [authUrl, setAuthUrl] = useState("");
+const HeadBlock = ({ onClickCart, basketOpen, basket }) => {
+  const [authUrl, setAuthUrl] = useState('');
+  const { user } = useAuth();
+  const [productsInBasketCount, setProductsInBasketCount] = useState(0);
 
   useEffect(() => {
-    IdentityAPI.post("/user/redirect-to-auth", {
+    IdentityAPI.post('/user/redirect-to-auth', {
       redirectUrl: window.location.href,
     })
       .then((response) => {
@@ -30,63 +29,33 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
       });
   }, []);
 
-  const handleClick = (event) => {
-    setAnchorElement(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorElement(null);
-  };
+  useEffect(() => {
+    const count = basket.reduce(
+      (count, product) => count + product.countInBasket,
+      0
+    );
+    setProductsInBasketCount(count);
+  }, [basket]);
+
   const logOut = useLogout();
 
   return (
     <div className="search">
       <div className="name-shop">
-        <h1>NameShop</h1>
+        <h1>FashionShop</h1>
       </div>
-      <div className="search__input">
-        <button
-          className="search__buttonList"
-          id="fade-button"
-          aria-controls={isOpen ? "fade-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={isOpen ? "true" : undefined}
-          onClick={handleClick}
-        >
-          <p className="list">
-            All categories <p className="arrow">&#11167;</p>
-          </p>
-        </button>
-        <Menu
-          id="fade-menu"
-          MenuListProps={{
-            "aria-labelledby": "fade-button",
-          }}
-          anchorEl={anchorElement}
-          open={isOpen}
-          onClose={handleClose}
-          TransitionComponent={Fade}
-        >
-          <MenuItem onClick={handleClose}>Product</MenuItem>
-          <MenuItem onClick={handleClose}>Product</MenuItem>
-          <MenuItem onClick={handleClose}>Product</MenuItem>
-        </Menu>
-        <input type="text" placeholder="Search Products, categories ..." />
-      </div>
+
       <div className="profile">
         <Login />
         {!basketOpen && (
-          <Badge
-            badgeContent={productsInBasketCount}
-            color="secondary"
-            max={99}
-          >
+          <Badge badgeContent={basket.length} color="secondary" max={99}>
             <button className="openCartButton" onClick={onClickCart}>
               <img src={Card} alt="card" />
             </button>
           </Badge>
         )}
         <Link to="/likes">
-          <BookmarkBorderIcon sx={{ fill: "black" }} />
+          <BookmarkBorderIcon sx={{ fill: 'black' }} />
         </Link>
         <div className="logout">
           <button onClick={logOut}>
@@ -98,8 +67,9 @@ const HeadBlock = ({ onClickCart, basketOpen, productsInBasketCount }) => {
             onClick={() => {
               window.location.href = authUrl;
             }}
+            style={{ backgroundColor: 'inherit', border: 'none' }}
           >
-            AUTH 2.0
+            <GoogleIcon />
           </button>
         </div>
       </div>

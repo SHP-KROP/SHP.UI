@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Basket.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import CardInBasket from '../CardInBasket/CardInBasket';
+import { Link } from 'react-router-dom';
 
 const Basket = ({
   onClose,
   opened,
   basket,
+  handleClickAddInBasket,
   handleClickIncreaseBasketCount,
   handleClickDecreaseBasketCount,
-  handleClickRemoveFromBasket,
+  handleRemoveFromBasket,
 }) => {
-  const [totalChanged, setTotalChanged] = useState(false);
-
   function getTotal() {
-    return basket.map(card => card.countInBasket * card.price).reduce((x, y) => x + y, 0)
+    return basket
+      .map((card) => card.countInBasket * card.price)
+      .reduce((x, y) => x + y, 0);
   }
 
   return (
@@ -31,11 +33,11 @@ const Basket = ({
         <div className="basket__items">
           {basket.map((card) => (
             <CardInBasket
+              key={card.id}
               card={card}
               handleClickIncreaseBasketCount={handleClickIncreaseBasketCount}
               handleClickDecreaseBasketCount={handleClickDecreaseBasketCount}
-              handleClickRemoveFromBasket={handleClickRemoveFromBasket}
-              setTotalChanged={setTotalChanged}
+              handleRemoveFromBasket={handleRemoveFromBasket}
             />
           ))}
         </div>
@@ -47,7 +49,7 @@ const Basket = ({
 
         <div className="basket__btn">
           <span>Continue shopping</span>
-          <button>Go to Checkout</button>
+          <Link to={'/payment'}>Go to Checkout</Link>
         </div>
       </div>
     </div>

@@ -67,7 +67,10 @@
   }
 
   &__cartItemPhoto {
-    background-image: url('../../img/test.png');
+    > img {
+      width: 100%;
+      border-radius: 12px;
+    }
     height: 70px;
     width: 70px;
     background-size: contain;

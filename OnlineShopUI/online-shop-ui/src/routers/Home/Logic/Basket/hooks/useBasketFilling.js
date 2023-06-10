@@ -11,7 +11,6 @@ export default function useBasketFilling() {
   useEffect(() => {
     fillBasket();
   }, []);
-
   function fillBasket() {
     let basketModel = JSON.parse(localStorage.getItem('basket')) ?? [];
 
@@ -22,10 +21,14 @@ export default function useBasketFilling() {
         if (response.data.length === 0) return;
 
         let productsInBasket = response.data.map((product) => {
+          const existingProduct = basketModel.find((x) => x.id === product.id);
+          const countInBasket = existingProduct
+            ? existingProduct.countInBasket
+            : 0;
+
           return {
             ...product,
-            countInBasket: basketModel.find((x) => x.id === product.id)
-              .countInBasket,
+            countInBasket,
           };
         });
 

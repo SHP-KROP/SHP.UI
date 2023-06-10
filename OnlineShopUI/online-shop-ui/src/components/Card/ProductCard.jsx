@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
 import './ProductCard.scss';
-import ProductBg from '../../img/product-img.png';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import useLikes from '../../routers/LikesPage/hooks/useLikes';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import useAuth from '../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
-const ProductCard = ({ handleClick, card, basket }) => {
+const ProductCard = ({ card, addToBasket, basket }) => {
   const [isLoading, likedProducts, likeProductById, unlikeProductById] =
     useLikes();
   const [isLiked, setIsLiked] = useState(card.isLiked);
   const { user } = useAuth();
 
   const isInBasket = () => {
-    if (!basket) {
-      return false;
-    }
-    return !!basket.find((x) => x.id === card.id);
+    return basket.some((item) => item.id === card.id);
   };
 
   const onLikeClicked = () => {
@@ -32,17 +29,21 @@ const ProductCard = ({ handleClick, card, basket }) => {
     }
   };
 
+  const handleAddToBasket = () => {
+    addToBasket(card);
+  };
+
   return (
     <div
       style={{
-        background: user && isLiked ? ' rgb(241,252,164)' : 'white',
+        background: user && isLiked ? 'rgb(192, 192, 192)' : 'white',
         transition: '0.15s ease-in-out',
       }}
       onClick={handleDoubleClick}
       className="product-card__body"
     >
       <div className="product-card__img">
-        <img src={ProductBg} alt="img" />
+        <img src={card.photoUrl} alt="img" />
         <div className="product-card__img-buttons">
           <button onClick={onLikeClicked}>
             <div>
@@ -67,14 +68,19 @@ const ProductCard = ({ handleClick, card, basket }) => {
         <p>
           <strong>{card.price} USD</strong>
         </p>
-        <button>Buy now</button>
+        <Link to={`/product/${card.name}`}>Details</Link>
         <div className="product-card__addtobasket">
           <button
-            style={{ backgroundColor: 'inherit', border: 'none' }}
+            style={{
+              backgroundColor: 'inherit',
+              border: 'none',
+            }}
+            onClick={handleAddToBasket}
             disabled={isInBasket()}
-            onClick={() => handleClick(card)}
           >
-            <LocalMallIcon />
+            <LocalMallIcon
+              style={{ fill: isInBasket() ? 'gray' : 'inherit' }} // Set the fill color to gray when the button is disabled
+            />
           </button>
         </div>
       </div>

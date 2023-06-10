@@ -1,7 +1,11 @@
+import Sneakers from '../../.././img/sneakers.png';
+import Trousers from '../../.././img/trousers.png';
+import Jackets from '../../.././img/jackets.png';
 const useMenuFilling = () => {
   const menu = [
     {
-      nameCategory: 'asd',
+      nameCategory: 'Jackets',
+      iconCategory: Jackets,
       subCategories: [
         {
           name: 'asdasd',
@@ -10,7 +14,8 @@ const useMenuFilling = () => {
       ],
     },
     {
-      nameCategory: 'asd',
+      nameCategory: 'Trousers',
+      iconCategory: Trousers,
       subCategories: [
         {
           name: 'asdasd',
@@ -19,7 +24,8 @@ const useMenuFilling = () => {
       ],
     },
     {
-      nameCategory: 'ass',
+      nameCategory: 'Sneakers',
+      iconCategory: Sneakers,
       subCategories: [
         {
           name: 'pampers',
