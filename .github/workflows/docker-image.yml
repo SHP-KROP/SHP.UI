@@ -1,13 +1,13 @@
 name: Build and publish all Docker images
 
 env:
-  INITIAL_DIRECTORY: "./OnlineShopBE"
+  INITIAL_BACKEND_DIRECTORY: "./OnlineShopBE"
 
 on:
   workflow_dispatch:
 
 jobs:
-  Docker:
+    Docker:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +16,12 @@ jobs:
       - name: Log in Docker
         run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASS }}"
       - name: Docker Build Core API
-        working-directory: ${{ env.INITIAL_DIRECTORY }}
+        working-directory: ${{ env.INITIAL_BACKEND_DIRECTORY }}
         run: docker build --file DockerfileCore . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
       - name: Docker push Core API
         run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
+      - name: Docker Build Authorization Server
+        working-directory: ${{ env.INITIAL_BACKEND_DIRECTORY }}
+        run: docker build --file DockerfileAuth . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
+      - name: Docker push Authorization Server
+        run: docker push "${{ secrets.DOCKER_USERNAME }}/identity-server"
