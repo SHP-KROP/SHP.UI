@@ -91,7 +91,7 @@ namespace DAL
                 .WithOne(o => o.Order)
                 .HasForeignKey(x => x.OrderId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .Entity<AppUser>()
