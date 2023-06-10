@@ -9,4 +9,4 @@ RUN npm run build
 FROM nginx:latest
 COPY --from=build-stage /app/build /usr/share/nginx/html
 EXPOSE 3000
-CMD [ "npx", "serve", "build" ]
+CMD ["nginx", "-g", "daemon off;"]
