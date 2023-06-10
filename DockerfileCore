@@ -4,7 +4,7 @@ WORKDIR ./app
 # COPY SHP.Data/SHP.Data.csproj ./SHP.Data/
 # RUN dotnet restore SHP.Data/SHP.Data.csproj
 
-COPY [./OnlineShopBE/SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj, .]
+COPY [./OnlineShopBE/SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj, ./]
 RUN dotnet restore ./SHP.OnlineShopAPI.Web.csproj
 RUN dotnet publish ./SHP.OnlineShopAPI.Web.csproj -c Release -o out
 
