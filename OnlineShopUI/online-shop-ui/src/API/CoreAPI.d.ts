@@ -3,7 +3,7 @@ import axios from 'axios';
 declare const coreApiBaseUrl: string;
 
 const axiosConfig = {
-  baseURL: coreApiBaseUrl,
+  baseURL: process.env.CORE_API_URL,
   timeout: 30 * 1000,
 };
 
