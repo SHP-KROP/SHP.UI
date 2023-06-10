@@ -1,10 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR ./app
 
-# COPY SHP.Data/SHP.Data.csproj ./SHP.Data/
-# RUN dotnet restore SHP.Data/SHP.Data.csproj
-
-COPY ./OnlineShopBE/SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj, ./SHP.OnlineShopAPI/
+COPY ./SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj, ./SHP.OnlineShopAPI/
 RUN dotnet restore ./SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web.csproj
 RUN dotnet publish ./SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web.csproj -c Release -o out
 

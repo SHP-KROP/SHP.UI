@@ -16,12 +16,7 @@ jobs:
       - name: Log in Docker
         run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASS }}"
       - name: Docker Build Core API
-        working-directory: ./
-        run: docker build --file "DockerfileCore" . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
+        working-directory: ${{ env.INITIAL_DIRECTORY }}
+        run: docker build --file DockerfileCore . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
       - name: Docker push Core API
         run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
-      - name: Docker Build Authorization Server
-        working-directory: ${{ env.INITIAL_DIRECTORY }}
-        run: docker build --file "DockerfileAuth" . --tag "${{ secrets.DOCKER_USERNAME }}/identity-server:latest"
-      - name: Docker push Authorization Server
-        run: docker push "${{ secrets.DOCKER_USERNAME }}/identity-server"
