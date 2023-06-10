@@ -9,6 +9,6 @@ RUN dotnet restore SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web
 RUN dotnet publish SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
-WORKDIR /app
+WORKDIR ./app
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "SHP.OnlineShopAPI.Web.dll"]
