@@ -20,7 +20,6 @@ jobs:
       - name: Docker push Core API
         run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
       - name: Docker Build Authorization Server
-        working-directory: ${{ env.INITIAL_DIRECTORY }}
         run: docker build --file "DockerfileAuth" . --tag "${{ secrets.DOCKER_USERNAME }}/identity-server:latest"
       - name: Docker push Authorization Server
         run: docker push "${{ secrets.DOCKER_USERNAME }}/identity-server"
