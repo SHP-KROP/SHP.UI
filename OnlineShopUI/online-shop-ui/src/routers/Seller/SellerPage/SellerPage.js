@@ -15,8 +15,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SellerFormEdit from '../SellerForms/SellerFormEdit/SellerFormEdit';
 import useAuthHeaders from '../../../hooks/useAuthHeaders';
-import { deleteProduct } from '../SellerForms/deleteProduct';
-import { editProduct } from '../SellerForms/editProduct';
+import { deleteProduct } from '../SellerForms/Logic/deleteProduct';
+import { editProduct } from '../SellerForms/Logic/editProduct';
 
 const SellerPage = ({
   products,

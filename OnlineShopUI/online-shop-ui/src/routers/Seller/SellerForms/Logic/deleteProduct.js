@@ -1,4 +1,4 @@
-import CoreAPI from '../../../API/CoreAPI';
+import CoreAPI from '../../../../API/CoreAPI';
 export const deleteProduct = async (productName, authHeaders) => {
   try {
     await CoreAPI.delete(`/product/${productName}`, authHeaders);

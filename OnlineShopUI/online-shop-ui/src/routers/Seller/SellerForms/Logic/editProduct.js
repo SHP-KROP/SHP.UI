@@ -1,4 +1,4 @@
-import CoreAPI from '../../../API/CoreAPI';
+import CoreAPI from '../../../../API/CoreAPI';
 
 export const editProduct = async (productId, productData, authHeaders) => {
   try {
