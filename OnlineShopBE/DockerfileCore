@@ -3,10 +3,10 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 
-COPY SHP.Data/* ./SHP.Data
+COPY SHP.Data/*.csproj ./SHP.Data
 RUN dotnet restore SHP.Data/SHP.Data.csproj
 
-COPY SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/* ./SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web
+COPY SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/*.csproj ./SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web
 RUN dotnet restore SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj
 RUN dotnet publish SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj -c Release -o out
 
