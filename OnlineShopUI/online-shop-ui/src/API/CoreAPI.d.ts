@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-declare const coreApiBaseUrl: string;
-
 const axiosConfig = {
-  baseURL: process.env.CORE_API_URL,
+  baseURL: process.env.REACT_APP_CORE_API_URL,
   timeout: 30 * 1000,
 };
 

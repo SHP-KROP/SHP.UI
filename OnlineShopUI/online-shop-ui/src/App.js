@@ -25,7 +25,6 @@ function App() {
     handleClickIncreaseBasketCount,
     handleClickDecreaseBasketCount,
   ] = useBasketHandlers({ basket, setBasket });
-  console.log('APP:', basket);
   const productsInBasketCount = basket.reduce(
     (count, card) => count + card.countInBasket,
     0

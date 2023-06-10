@@ -67,6 +67,7 @@
   "devDependencies": {
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
+    "dotenv": "^16.1.4",
     "typescript": "^5.0.4"
   }
 }
