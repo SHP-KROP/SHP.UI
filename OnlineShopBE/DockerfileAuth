@@ -3,10 +3,10 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 
-COPY ./SHP.Data/* ./SHP.Data
+COPY ./SHP.Data/*.csproj ./SHP.Data
 RUN dotnet restore SHP.Data/SHP.Data.csproj
 
-COPY ./SHP.AuthorizationServer/SHP.AuthorizationServer.Web/* ./SHP.AuthorizationServer/SHP.AuthorizationServer.Web
+COPY ./SHP.AuthorizationServer/SHP.AuthorizationServer.Web/*.csproj ./SHP.AuthorizationServer/SHP.AuthorizationServer.Web
 RUN dotnet restore SHP.AuthorizationServer/SHP.AuthorizationServer.Web/SHP.AuthorizationServer.Web.csproj
 RUN dotnet publish SHP.AuthorizationServer/SHP.AuthorizationServer.Web/SHP.AuthorizationServer.Web.csproj -c Release -o out
 
