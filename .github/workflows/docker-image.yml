@@ -16,7 +16,6 @@ jobs:
       - name: Log in Docker
         run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASS }}"
       - name: Docker Build Core API
-        working-directory: ${{ env.INITIAL_DIRECTORY }}
         run: docker build --file "DockerfileCore" . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
       - name: Docker push Core API
         run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
