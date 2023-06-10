@@ -529,13 +529,13 @@ namespace SHP.Data.Migrations
                     b.HasOne("DAL.Entities.Order", "Order")
                         .WithMany("ProductsInOrder")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("DAL.Entities.Product", "Product")
                         .WithMany("ProductsInOrder")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");
