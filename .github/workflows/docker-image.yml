@@ -19,16 +19,16 @@ jobs:
         uses: actions/checkout@v3
       - name: Log in Docker
         run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASS }}"
-      - name: Docker Build Core API
-        working-directory: ${{ env.BACKEND_DIRECTORY }}
-        run: docker build --file DockerfileCore . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
-      - name: Docker push Core API
-        run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
-      - name: Docker Build Authorization Server
-        working-directory: ${{ env.BACKEND_DIRECTORY }}
-        run: docker build --file DockerfileAuth . --tag "${{ secrets.DOCKER_USERNAME }}/identity-server:latest"
-      - name: Docker push Authorization Server
-        run: docker push "${{ secrets.DOCKER_USERNAME }}/identity-server"
+      # - name: Docker Build Core API
+      #   working-directory: ${{ env.BACKEND_DIRECTORY }}
+      #   run: docker build --file DockerfileCore . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
+      # - name: Docker push Core API
+      #   run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
+      # - name: Docker Build Authorization Server
+      #   working-directory: ${{ env.BACKEND_DIRECTORY }}
+      #   run: docker build --file DockerfileAuth . --tag "${{ secrets.DOCKER_USERNAME }}/identity-server:latest"
+      # - name: Docker push Authorization Server
+      #   run: docker push "${{ secrets.DOCKER_USERNAME }}/identity-server"
       - name: Docker Build Online Shop UI
         working-directory: ${{ env.FRONTEND_DIRECTORY }}
         run: docker build . --tag "${{ secrets.DOCKER_USERNAME }}/online-shop-ui:latest"
