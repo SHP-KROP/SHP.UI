@@ -1,18 +1,18 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
-WORKDIR /app/OnlineShopBE
+WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 
-COPY SHP.Data/*.csproj ./SHP.Data
+COPY SHP.Data/ ./SHP.Data
 RUN dotnet restore SHP.Data/SHP.Data.csproj
 
-COPY SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/*.csproj ./SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web
+COPY SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/ ./SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web
 RUN dotnet restore SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj
 RUN dotnet publish SHP.OnlineShopAPI/SHP.OnlineShopAPI.Web/SHP.OnlineShopAPI.Web.csproj -c Release -o out
 
 # Build runtime image
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
-WORKDIR /app/OnlineShopBE
-COPY --from=build-env /app/OnlineShopBE/out .
+WORKDIR /app
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "SHP.OnlineShopAPI.Web.dll"]
