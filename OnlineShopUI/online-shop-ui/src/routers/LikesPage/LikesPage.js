@@ -4,7 +4,6 @@ import './LikesPage.scss';
 import useBasketFilling from '../Home/Logic/Basket/hooks/useBasketFilling';
 import useBasketHandlers from '../Home/Logic/Basket/hooks/useBasketHandlers';
 import ProductCard from '../../components/Card/ProductCard';
-import Header from '../../components/HeaderFunctionality/Header';
 
 export default function LikesPage() {
   const [isLoading, likedProducts, likeProductById, unlikeProductById] =
@@ -14,7 +13,6 @@ export default function LikesPage() {
 
   return (
     <div className="wrapper">
-      <Header />
       <div className="likespage">
         {isLoading ? (
           <h1>Loading</h1>

@@ -7,17 +7,14 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import useAuth from '../../hooks/useAuth';
 import { Link } from 'react-router-dom';
 
-const ProductCard = ({ handleClick, card, basket }) => {
+const ProductCard = ({ card, addToBasket, basket }) => {
   const [isLoading, likedProducts, likeProductById, unlikeProductById] =
     useLikes();
   const [isLiked, setIsLiked] = useState(card.isLiked);
   const { user } = useAuth();
 
   const isInBasket = () => {
-    if (!basket) {
-      return false;
-    }
-    return !!basket.find((x) => x.id === card.id);
+    return basket.some((item) => item.id === card.id);
   };
 
   const onLikeClicked = () => {
@@ -32,10 +29,14 @@ const ProductCard = ({ handleClick, card, basket }) => {
     }
   };
 
+  const handleAddToBasket = () => {
+    addToBasket(card);
+  };
+
   return (
     <div
       style={{
-        background: user && isLiked ? ' rgb(241,252,164)' : 'white',
+        background: user && isLiked ? 'rgb(192, 192, 192)' : 'white',
         transition: '0.15s ease-in-out',
       }}
       onClick={handleDoubleClick}
@@ -70,11 +71,16 @@ const ProductCard = ({ handleClick, card, basket }) => {
         <Link to={`/product/${card.name}`}>Details</Link>
         <div className="product-card__addtobasket">
           <button
-            style={{ backgroundColor: 'inherit', border: 'none' }}
+            style={{
+              backgroundColor: 'inherit',
+              border: 'none',
+            }}
+            onClick={handleAddToBasket}
             disabled={isInBasket()}
-            onClick={() => handleClick(card)}
           >
-            <LocalMallIcon />
+            <LocalMallIcon
+              style={{ fill: isInBasket() ? 'gray' : 'inherit' }} // Set the fill color to gray when the button is disabled
+            />
           </button>
         </div>
       </div>

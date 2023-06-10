@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import CoreAPI from '../../API/CoreAPI';
-import HeadBlock from '../../components/HeadBlock/HeadBlock';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import './ProductInfo.scss';
+import useBasketHandlers from '../Home/Logic/Basket/hooks/useBasketHandlers';
+import useBasketFilling from '../Home/Logic/Basket/hooks/useBasketFilling';
 
 export default function ProductInfo() {
   const params = useParams();
   const [product, setProduct] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [basket, setBasket] = useBasketFilling();
+  const [handleClickAddInBasket] = useBasketHandlers({ basket, setBasket });
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -24,14 +26,27 @@ export default function ProductInfo() {
     };
     fetchProduct();
   }, [params.productName]);
-  console.log(product);
+
+  useEffect(() => {
+    const basketItems = JSON.parse(localStorage.getItem('basket')) || [];
+    if (basketItems && basketItems.some((item) => item.id === product?.id)) {
+      setIsAddedToCart(true);
+    }
+  }, [product]);
+
+  const handleAddToCart = (product) => {
+    handleClickAddInBasket(product);
+    setIsAddedToCart(true);
+    const basketItems = JSON.parse(localStorage.getItem('basket')) || [];
+    localStorage.setItem('basket', JSON.stringify([...basketItems, product]));
+  };
+
   return (
     <>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
         <div className="product">
-          <HeadBlock />
           <div className="product__content">
             <div className="product__logo">
               <img src={product.photoUrl} alt="logo" />
@@ -65,36 +80,20 @@ export default function ProductInfo() {
                 </div>
               </div>
               <div className="product__functionality">
-                <div className="product__counter">
-                  <Box
-                    component="form"
-                    sx={{
-                      '& .MuiTextField-root': { m: 1, width: '25ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                  >
-                    <TextField
-                      id="outlined-number"
-                      label="Quantity"
-                      type="number"
-                      inputProps={{
-                        sx: { padding: '6%', textAlign: 'center' },
-                      }}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      style={{ width: '10ch' }}
-                    />
-                  </Box>
-                </div>
                 <div className="product__button-buy">
                   <Button variant="outlined" color="secondary">
-                    Add to cart
+                    <Link to={`/`}>Back</Link>
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handleAddToCart(product)}
+                    disabled={isAddedToCart}
+                  >
+                    {isAddedToCart ? 'Added to cart' : 'Add to cart'}
                   </Button>
                 </div>
               </div>
-              <Link to={`/`}>Back</Link>
             </div>
           </div>
         </div>

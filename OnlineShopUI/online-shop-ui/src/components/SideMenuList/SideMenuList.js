@@ -1,20 +1,15 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import TreeView from '@mui/lab/TreeView';
 import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
-import MailIcon from '@mui/icons-material/Mail';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Label from '@mui/icons-material/Label';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
-import InfoIcon from '@mui/icons-material/Info';
-import ForumIcon from '@mui/icons-material/Forum';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { sideMenuListData } from '../mock/side-menu-list';
+import CoreAPI from '../../API/CoreAPI';
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -91,6 +86,20 @@ StyledTreeItem.propTypes = {
 };
 
 export default function SideMenuList() {
+  const [sideMenuListData, setSideMenuListData] = React.useState([]);
+
+  useEffect(() => {
+    const fetchSideMenuListData = async () => {
+      try {
+        const response = await CoreAPI.get('/Category');
+        setSideMenuListData(response.data);
+      } catch (error) {
+        console.error('Failed to fetch side menu list:', error);
+      }
+    };
+
+    fetchSideMenuListData();
+  }, []);
   return (
     <TreeView
       aria-label="gmail"
@@ -102,24 +111,13 @@ export default function SideMenuList() {
     >
       {sideMenuListData.map((category) => (
         <StyledTreeItem
-          nodeId="3"
-          labelText={category.nameCategory}
+          key={category.id}
+          nodeId={category.id.toString()}
+          labelText={category.name}
           labelIcon={Label}
           sx={{ margin: '1%' }}
-        >
-          {category.subCategories.nameSubCategory.map((subCategory) => (
-            <StyledTreeItem
-              labelText={subCategory}
-              labelIcon={SupervisorAccountIcon}
-              labelInfo="90"
-              color="#1a73e8"
-              bgColor="#e8f0fe"
-            />
-          ))}
-        </StyledTreeItem>
+        ></StyledTreeItem>
       ))}
     </TreeView>
   );
-}
-{
 }

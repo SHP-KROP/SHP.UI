@@ -13,6 +13,7 @@ import {
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,9 +73,19 @@ const PaymentsForm: FC = () => {
         onSubmit={async (values, { setSubmitting }) => {
           try {
             setSubmitting(true);
-            axios.post('https://localhost:44318/api/Checkout', values, config);
+            const res = await axios.post(
+              'https://localhost:44318/api/Checkout',
+              values,
+              config
+            );
+            if (res.status === 200) {
+              toast.success('Payment successful');
+              localStorage.removeItem('basket');
+            } else if (res.status === 400) {
+              toast.error('Something went wrong');
+            }
           } catch (error) {
-            console.error(error);
+            toast.error('Something went wrong');
           } finally {
             setSubmitting(false);
           }
@@ -194,10 +205,19 @@ const PaymentsForm: FC = () => {
             >
               Submit
             </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={classes.submitButton}
+            >
+              <Link to="/" style={{ color: 'white' }}>
+                Back to home
+              </Link>
+            </Button>
           </Form>
         )}
       </Formik>
-      <Link to="/">Back to home</Link>
     </>
   );
 };

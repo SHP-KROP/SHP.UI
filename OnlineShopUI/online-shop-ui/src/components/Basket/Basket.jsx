@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Basket.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import CardInBasket from '../CardInBasket/CardInBasket';
@@ -8,12 +8,11 @@ const Basket = ({
   onClose,
   opened,
   basket,
+  handleClickAddInBasket,
   handleClickIncreaseBasketCount,
   handleClickDecreaseBasketCount,
-  handleClickRemoveFromBasket,
+  handleRemoveFromBasket,
 }) => {
-  const [totalChanged, setTotalChanged] = useState(false);
-
   function getTotal() {
     return basket
       .map((card) => card.countInBasket * card.price)
@@ -34,11 +33,11 @@ const Basket = ({
         <div className="basket__items">
           {basket.map((card) => (
             <CardInBasket
+              key={card.id}
               card={card}
               handleClickIncreaseBasketCount={handleClickIncreaseBasketCount}
               handleClickDecreaseBasketCount={handleClickDecreaseBasketCount}
-              handleClickRemoveFromBasket={handleClickRemoveFromBasket}
-              setTotalChanged={setTotalChanged}
+              handleRemoveFromBasket={handleRemoveFromBasket}
             />
           ))}
         </div>

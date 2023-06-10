@@ -44,4 +44,8 @@ table {
     align-items: center;
     justify-content: center;
   }
+  &__rowfunc {
+    display: flex;
+    align-items: center;
+  }
 }
