@@ -24,7 +24,7 @@ on:
         default: y
 
 jobs:
-  build_ui:
+  Build UI:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.build_ui == 'y' }}
     steps:
@@ -38,7 +38,7 @@ jobs:
       - name: Docker push Online Shop UI
         run: docker push "${{ secrets.DOCKER_USERNAME }}/online-shop-ui"
 
-  build_core_api:
+  Build Core API:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.build_core_api == 'y' }}
     steps:
@@ -52,7 +52,7 @@ jobs:
       - name: Docker push Core API
         run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
 
-  build_identity_server:
+  Build Identity Server:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.build_identity_server == 'y' }}
     steps:
