@@ -8,7 +8,8 @@
     <Company>RDS</Company>
     <Product>OnlineShop</Product>
     <Version>1.0.8</Version>
-  </PropertyGroup>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
