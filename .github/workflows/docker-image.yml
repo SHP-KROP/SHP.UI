@@ -9,20 +9,19 @@ on:
     branches:
       - master
   workflow_dispatch:
-
-inputs:
-  build_ui:
-    description: 'UI image needed?'
-    required: true
-    default: false
-  build_core_api:
-    description: 'Core API image needed?'
-    required: true
-    default: false
-  build_identity_server:
-    description: 'Identity Server image needed?'
-    required: true
-    default: false
+    inputs:
+      build_ui:
+        description: 'UI image needed?'
+        required: true
+        default: false
+      build_core_api:
+        description: 'Core API image needed?'
+        required: true
+        default: false
+      build_identity_server:
+        description: 'Identity Server image needed?'
+        required: true
+        default: false
 
 jobs:
   Docker:
