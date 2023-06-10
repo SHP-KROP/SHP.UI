@@ -1,7 +1,7 @@
 name: Build and publish all Docker images
 
 env:
-  CORE_API_DOCKERFILE_PATH: "OnlineShopAPI/OnlineShopAPI/Dockerfile"
+  CORE_API_DOCKERFILE_PATH: "./OnlineShopAPI/OnlineShopAPI/Dockerfile"
 
 on:
   workflow_dispatch:
