@@ -9,54 +9,59 @@ on:
     branches:
       - master
   workflow_dispatch:
-
-inputs:
-  build_ui:
-    description: 'UI image needed?'
-    required: true
-    default: false
-  build_core_api:
-    description: 'Core API image needed?'
-    required: true
-    default: false
-  build_identity_server:
-    description: 'Identity Server image needed?'
-    required: true
-    default: false
+    inputs:
+      build_ui:
+        description: 'UI image needed? y/n'
+        required: true
+        default: y
+      build_core_api:
+        description: 'Core API image needed? y/n'
+        required: true
+        default: y
+      build_identity_server:
+        description: 'Identity Server image needed? y/n'
+        required: true
+        default: y
 
 jobs:
-  Docker:
+  Build UI:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.inputs.build_ui == 'y' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Log in Docker
         run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASS }}"
-      
       - name: Docker Build Online Shop UI
-        if: ${{ github.event.inputs.build_ui == 'true' }}
         working-directory: ${{ env.FRONTEND_DIRECTORY }}
         run: docker build . --tag "${{ secrets.DOCKER_USERNAME }}/online-shop-ui:latest"
-      
       - name: Docker push Online Shop UI
-        if: ${{ github.event.inputs.build_ui == 'true' }}
         run: docker push "${{ secrets.DOCKER_USERNAME }}/online-shop-ui"
-      
+
+  Build Core API:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.build_core_api == 'y' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log in Docker
+        run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASS }}"
       - name: Docker Build Core API
-        if: ${{ github.event.inputs.build_core_api == 'true' }}
         working-directory: ${{ env.BACKEND_DIRECTORY }}
         run: docker build --file DockerfileCore . --tag "${{ secrets.DOCKER_USERNAME }}/core-api:latest"
-      
       - name: Docker push Core API
-        if: ${{ github.event.inputs.build_core_api == 'true' }}
         run: docker push "${{ secrets.DOCKER_USERNAME }}/core-api"
-      
+
+  Build Identity Server:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.build_identity_server == 'y' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log in Docker
+        run: docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASS }}"
       - name: Docker Build Authorization Server
-        if: ${{ github.event.inputs.build_identity_server == 'true' }}
         working-directory: ${{ env.BACKEND_DIRECTORY }}
         run: docker build --file DockerfileAuth . --tag "${{ secrets.DOCKER_USERNAME }}/identity-server:latest"
-      
       - name: Docker push Authorization Server
-        if: ${{ github.event.inputs.build_identity_server == 'true' }}
         run: docker push "${{ secrets.DOCKER_USERNAME }}/identity-server"
