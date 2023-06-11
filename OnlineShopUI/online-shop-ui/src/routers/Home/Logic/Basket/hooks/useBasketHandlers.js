@@ -1,23 +1,21 @@
-import storeInBasketById from "../functions/StoreInBasketById";
-import removeFromBasketById from "../functions/RemoveFromBasketById";
-import increaseCountInBasketById from "../functions/IncreaseCountInBasketById";
-import decreaseCountInBasketById from "../functions/DecreaseCountInBasketById";
+import storeInBasketById from '../functions/StoreInBasketById';
+import removeFromBasketById from '../functions/RemoveFromBasketById';
+import increaseCountInBasketById from '../functions/IncreaseCountInBasketById';
+import decreaseCountInBasketById from '../functions/DecreaseCountInBasketById';
 
 export default function useBasketHandlers({ basket, setBasket }) {
   const handleClickAddInBasket = (card) => {
-    if (!card.countInBasket) {
-      card = { ...card, countInBasket: 1 };
-      console.log(card);
+    if (!basket.some((item) => item.id === card.id)) {
+      card.countInBasket = 1;
+      storeInBasketById(card.id);
       setBasket([...basket, card]);
     }
-    storeInBasketById(card.id);
   };
 
   const handleClickRemoveFromBasket = (card) => {
-    card.countInBasket = 0;
     removeFromBasketById(card.id);
-    let newBasket = basket.filter((x) => x.id !== card.id);
-    setBasket(newBasket);
+    const updatedBasket = basket.filter((item) => item.id !== card.id);
+    setBasket(updatedBasket);
   };
 
   const handleClickIncreaseBasketCount = (card) => {

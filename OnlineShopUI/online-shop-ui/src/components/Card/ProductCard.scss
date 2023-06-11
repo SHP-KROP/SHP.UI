@@ -1,24 +1,46 @@
 @import '../../Helper/ListColorVariable.scss';
+@import '../../Helper/Mixins.scss';
 
 .product-card__body {
   background: white;
   border: 1px solid $searchBgInProductCard;
   border-radius: 12px;
+  flex: 0 0 250px;
+  margin: 1%;
+  max-width: 250px;
 }
 .product-card__img {
-  margin: 5%;
+  margin: 5% 5% 0 5%;
   > img {
-    width: 100%;
-    height: 100%;
+    @include ProductLogo;
   }
 }
+.product-card__img-buttons {
+  position: relative;
+  top: -40px;
+  display: flex;
+  justify-content: right;
+  margin-right: 5%;
+  > button {
+    background-color: inherit;
+    border: none;
+  }
+}
+
 .product-card__info {
   padding: 0 5% 0 5%;
   color: $TextColorInProductCard;
+  height: 50px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   > p {
     font-weight: 500;
     font-size: 15px;
     line-height: 22px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   > span {
     font-weight: 400;
@@ -36,5 +58,15 @@
     border: 2px solid $borderButtonsColorCardInProductCard;
     border-radius: 12px;
     color: white;
+  }
+}
+@media screen and (max-width: 900px) {
+  .product-card {
+    &__body {
+      max-width: 180px;
+    }
+    &__price {
+      flex-direction: column-reverse;
+    }
   }
 }

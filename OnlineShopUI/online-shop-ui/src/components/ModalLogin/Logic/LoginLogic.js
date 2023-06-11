@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
 import IdentityAPI from '../../../API/IdentityServerAPI.js';
+import useAuth from '../../../hooks/useAuth';
 
 toast.configure();
 
@@ -8,15 +9,17 @@ const useLogin = () => {
   const [name, setUsername] = useState(() => '');
   const [pass, setPassword] = useState(() => '');
   const [flag, setFlag] = useState(() => true);
-  let initialRender = useRef(true);
 
+  const { user, setUser } = useAuth();
+
+  let initialRender = useRef(true);
   useEffect(() => {
     if (initialRender.current) {
       initialRender.current = false;
       return;
     }
 
-    if (localStorage.getItem('token')) {
+    if (user) {
       toast.warn('You are already logged in!', {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
@@ -32,11 +35,10 @@ const useLogin = () => {
       return;
     }
 
-    IdentityAPI
-      .post('/user/login', {
-        userName: name,
-        password: pass,
-      })
+    IdentityAPI.post('/user/login', {
+      userName: name,
+      password: pass,
+    })
       .then((response) => {
         if (response) {
           proceedResponse(response?.data);
@@ -50,7 +52,6 @@ const useLogin = () => {
       })
       .catch((error) => {
         try {
-          console.warn(error?.response);
           if (typeof error.response.data !== 'object') {
             toast.error(`${error.response.data}`, {
               position: toast.POSITION.BOTTOM_RIGHT,
@@ -70,10 +71,11 @@ const useLogin = () => {
       toast.success(`Welcome ${response.userName}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
-      localStorage.setItem('token', response.token);
-      console.success('Success, window need to be closed!');
+      setUser(response);
+      localStorage.setItem('user', JSON.stringify(response));
+      localStorage.setItem('jwt', response.token);
+      localStorage.setItem('refreshToken', response.refreshToken);
     } catch (ex) {
-      console.warn(ex);
       toast.error(`${ex.error}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });

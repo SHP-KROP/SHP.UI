@@ -1,8 +1,0 @@
-docker build -t oleksandrbondarenko777/identity-server:latest .
-docker push oleksandrbondarenko777/identity-server:latest
-
-docker build -t oleksandrbondarenko777/core-api:latest . 
-docker push oleksandrbondarenko777/core-api:latest
-
-docker build -t oleksandrbondarenko777/online-shop-ui:latest .
-docker push oleksandrbondarenko777/online-shop-ui:latest

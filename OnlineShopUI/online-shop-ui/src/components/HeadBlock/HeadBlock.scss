@@ -29,7 +29,16 @@
       width: 60%;
       border-top-right-radius: 8px;
       border-bottom-right-radius: 8px;
+      background: $searchBgInHeadBlock;
+      background-repeat: no-repeat;
+      background-position: 1%;
     }
+  }
+}
+.logout {
+  > button {
+    background: inherit;
+    border: none;
   }
 }
 .profile {
