@@ -53,7 +53,17 @@ function App() {
           basket={basket}
         />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <Home
+                basket={basket}
+                setBasket={setBasket}
+                handleClickAddInBasket={handleClickAddInBasket}
+                handleClickRemoveFromBasket={handleClickRemoveFromBasket}
+              />
+            }
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/likes" element={<LikesPage />} />
           <Route path="/seller" element={<CrudSeller />} />

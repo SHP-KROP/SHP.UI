@@ -11,6 +11,9 @@ export default function useBasketFilling() {
   useEffect(() => {
     fillBasket();
   }, []);
+  useEffect(() => {
+    fillBasket();
+  }, [JSON.stringify(basket)]);
   function fillBasket() {
     let basketModel = JSON.parse(localStorage.getItem('basket')) ?? [];
 

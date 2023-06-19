@@ -28,7 +28,6 @@ const HeadBlock = ({ onClickCart, basketOpen, basket }) => {
         console.warn(error);
       });
   }, []);
-
   useEffect(() => {
     const count = basket.reduce(
       (count, product) => count + product.countInBasket,

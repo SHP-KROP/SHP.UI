@@ -1,19 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TextField, Button, Switch, FormControlLabel } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Switch,
+  FormControlLabel,
+  InputLabel,
+  Input,
+} from '@mui/material';
 import './SellerFormCreate.scss';
+import CoreAPI from '../../../../API/CoreAPI';
 export default function SellerFormCreate({ onCancel, setSellerProducts }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  const [photo, setPhoto] = useState(null);
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const { token } = user;
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  };
   // Function to handle form submission
   const onSubmit = (data) => {
     setSellerProducts(data);
+    const formData = new FormData();
+    if (photo) {
+      formData.append('photo', photo);
+    }
+    CoreAPI.post('/UserProfile/photo-to-product', formData, config);
   };
-
+  const handlePhotoChange = (event) => {
+    const selectedPhoto = event.target.files[0];
+    setPhoto(selectedPhoto);
+  };
   return (
     <div className="sellerForm">
       <form onSubmit={handleSubmit(onSubmit)} className="seller-form">
@@ -54,6 +78,13 @@ export default function SellerFormCreate({ onCancel, setSellerProducts }) {
         <FormControlLabel
           control={<Switch {...register('isAvailable')} color="primary" />}
           label="Available"
+        />
+        <InputLabel htmlFor="photo-input">Photo</InputLabel>
+        <Input
+          id="photo-input"
+          type="file"
+          {...register('photo')}
+          onChange={handlePhotoChange}
         />
         <div className="seller-form-button">
           <Button variant="contained" type="submit">

@@ -39,6 +39,9 @@ const PaymentsForm: FC = () => {
 
   return (
     <>
+      <h1 style={{ textAlign: 'center', margin: '1%' }}>
+        Payment Details Form
+      </h1>
       <Formik
         initialValues={{
           creditCard: {

@@ -5,7 +5,6 @@ import useProductCardFilling from './Logic/ProductLogic';
 import ReactPaginate from 'react-paginate';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
-import useBasketFilling from './Logic/Basket/hooks/useBasketFilling';
 import SearchIcon from '@mui/icons-material/Search';
 import {
   Search,
@@ -15,9 +14,13 @@ import {
 import TextField from '@mui/material/TextField';
 import './Home.scss';
 import { useForm } from 'react-hook-form';
-import useBasketHandlers from './Logic/Basket/hooks/useBasketHandlers';
 
-function Home() {
+function Home({
+  basket,
+  handleClickAddInBasket,
+  handleClickRemoveFromBasket,
+  setBasket,
+}) {
   const {
     register,
     watch,
@@ -28,7 +31,6 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
   const productCards = useProductCardFilling();
-  const [basket, setBasket] = useBasketFilling();
   const productPerPage = 8;
   const offset = currentPage * productPerPage;
   const searchValue = watch('searchTerm', '');
@@ -59,12 +61,6 @@ function Home() {
     setSearchTerm(data.searchTerm);
     setCurrentPage(0);
   };
-
-  const [handleClickAddInBasket, handleClickRemoveFromBasket] =
-    useBasketHandlers({
-      basket,
-      setBasket,
-    });
 
   return (
     <>
